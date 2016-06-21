@@ -38,6 +38,7 @@ The lower half of the keycode represents the ASCII value.
     int keycode = os_wait_for_key();
 
 The following keycode constants can be used:
+
     ESC_KEY
     ENTER_KEY
     UP_KEY
