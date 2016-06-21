@@ -37,10 +37,11 @@ Three example programs have been provided:
 
 ##### Can I use GCC to build MikeOS programs? #####
 No, GCC cannot generate real mode binaries that are needed by MikeOS.
-Additionally, GCC would need to be rebuilt to cross compile for another OS.
+Additionally, GCC would need to be rebuilt to cross compile for another
+operating system.
 
 ##### What if I am not running Linux? #####
-It should be okay to run on Mac but I haven't tested it.
+The build script should work fine on OSX but I haven't tested it.
 On Windows you might want to try installing Cygwin and building with that.
 
 ##### How can I use the wrapper functions? #####
@@ -65,6 +66,6 @@ No, use malloc() to allocate memory.
 If you want to load a file to memory, you must use a block returned by malloc.
 
 ##### Do I need to check the return value of malloc()? #####
-Yes, there is a limited amount of memory available and the memory manager is
-likely to fail if you attempted to allocate too much memory.
+Yes, there is a limited amount of memory available and the memory manager will 
+fail if you attempted to allocate too much memory.
 
