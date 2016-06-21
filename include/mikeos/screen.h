@@ -19,6 +19,6 @@ void os_print_digit(int digit);
 void os_print_1hex(unsigned char value);
 void os_print_2hex(unsigned char value);
 void os_print_4hex(unsigned short value);
-void os_print_char();
+void os_print_char(char value);
 #endif
 

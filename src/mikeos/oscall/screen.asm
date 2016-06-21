@@ -12,17 +12,17 @@
 %endmacro
 
 %macro OSCALL_MOVE_CURSOR 0
-	mov dh, [bp+4]
-	mov dl, [bp+6]
+	mov dh, [bp + 4]
+	mov dl, [bp + 6]
 	call os_move_cursor
 %endmacro
 
 %macro OSCALL_GET_CURSOR_POS 0
 	push si
 	call os_get_cursor_pos
-	mov si, [bp+4]
+	mov si, [bp + 4]
 	mov [si], dh
-	mov si, [bp+6]
+	mov si, [bp + 6]
 	mov [si], dl
 	pop si
 %endmacro
@@ -44,11 +44,11 @@
 	push si
 	push di
 
-	mov bl, [bp+4]
-	mov dl, [bp+6]
-	mov dh, [bp+8]
-	mov si, [bp+10]
-	mov di, [bp+12]
+	mov bl, [bp + 4]
+	mov dl, [bp + 6]
+	mov dh, [bp + 8]
+	mov si, [bp + 10]
+	mov di, [bp + 12]
 	call os_draw_block
 
 	pop di
@@ -62,18 +62,18 @@
 
 %macro OSCALL_LIST_DIALOG 0
 	push bx
-	mov ax, [bp+4]
-	mov bx, [bp+6]
-	mov cx, [bp+8]
+	mov ax, [bp + 4]
+	mov bx, [bp + 6]
+	mov cx, [bp + 8]
 	call os_list_dialog
 	pop bx
 %endmacro
 
 %macro OSCALL_DRAW_BACKGROUND 0
 	push bx
-	mov ax, [bp+4]
-	mov bx, [bp+6]
-	mov cx, [bp+8]
+	mov ax, [bp + 4]
+	mov bx, [bp + 6]
+	mov cx, [bp + 8]
 	call os_draw_background
 	pop bx
 %endmacro
@@ -84,18 +84,18 @@
 
 %macro OSCALL_INPUT_DIALOG 0
 	push bx
-	mov ax, [bp+4]
-	mov bx, [bp+6]
+	mov ax, [bp + 4]
+	mov bx, [bp + 6]
 	call os_input_dialog
 	pop bx
 %endmacro
 
 %macro OSCALL_DIALOG_BOX 0
 	push bx
-	mov ax, [bp+4]
-	mov bx, [bp+6]
-	mov cx, [bp+8]
-	mov dx, [bp+10]
+	mov ax, [bp + 4]
+	mov bx, [bp + 6]
+	mov cx, [bp + 8]
+	mov dx, [bp + 10]
 	call os_dialog_box
 	pop bx
 %endmacro
@@ -105,7 +105,7 @@
 %endmacro
 
 %macro OSCALL_PRINT_DIGIT 0
-	mov ax, [bp+4]
+	mov ax, [bp + 4]
 	call os_print_digit
 %endmacro
 
