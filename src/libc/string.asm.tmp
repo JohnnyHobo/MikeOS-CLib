@@ -1,0 +1,235 @@
+bits 16
+
+; glb os_string_length : (
+; prm     str : * char
+;     ) int
+; glb os_find_char_in_string : (
+; prm     str : * char
+; prm     to_find : char
+;     ) int
+; glb os_string_reverse : (
+; prm     str : * char
+;     ) * char
+; glb os_string_charchange : (
+; prm     str : * char
+; prm     to_find : char
+; prm     replacement : char
+;     ) * char
+; glb os_string_uppercase : (
+; prm     str : * char
+;     ) * char
+; glb os_string_lowercase : (
+; prm     str : * char
+;     ) * char
+; glb os_string_copy : (
+; prm     src : * char
+; prm     dest : * char
+;     ) * char
+; glb os_string_truncate : (
+; prm     str : * char
+; prm     length : int
+;     ) * char
+; glb os_string_join : (
+; prm     str1 : * char
+; prm     str2 : * char
+; prm     dest : * char
+;     ) * char
+; glb os_string_chomp : (
+; prm     str : * char
+;     ) * char
+; glb os_string_strip : (
+; prm     str : * char
+; prm     to_remove : char
+;     ) * char
+; glb os_string_compare : (
+; prm     str1 : * char
+; prm     str2 : * char
+;     ) int
+; glb os_string_strincmp : (
+; prm     str1 : * char
+; prm     str2 : * char
+;     ) int
+; glb os_string_parse : (
+; prm     src : * char
+; prm     str1 : * char
+; prm     str2 : * char
+; prm     str3 : * char
+; prm     str4 : * char
+;     ) void
+; glb os_string_to_int : (
+; prm     str : * char
+;     ) int
+; glb os_int_to_string : (
+; prm     value : unsigned
+;     ) * char
+; glb os_sint_to_string : (
+; prm     value : int
+;     ) * char
+; glb os_long_int_to_string : (
+; prm     longint : * int
+;     ) * char
+; glb os_set_time_fmt : (
+; prm     flags : int
+;     ) void
+; glb os_get_time_string : (
+; prm     buffer : * char
+;     ) * char
+; glb os_date_format : (
+; prm     flags : int
+;     ) void
+; glb os_get_date_string : (
+; prm     buffer : * char
+;     ) * char
+; glb strlen : (
+; prm     str : * char
+;     ) int
+section .text
+	global	_strlen
+_strlen:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     str : (@4): * char
+; return
+; RPN'ized expression: "( str os_string_length ) "
+; Expanded expression: " (@4) *(2)  os_string_length ()2 "
+; Fused expression:    "( *(2) (@4) , os_string_length )2  "
+	push	word [bp+4]
+	call	_os_string_length
+	sub	sp, -2
+L1:
+	leave
+	ret
+
+; glb strcpy : (
+; prm     destination : * char
+; prm     source : * char
+;     ) * char
+section .text
+	global	_strcpy
+_strcpy:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     destination : (@4): * char
+; loc     source : (@6): * char
+; RPN'ized expression: "( destination , source os_string_copy ) "
+; Expanded expression: " (@4) *(2)  (@6) *(2)  os_string_copy ()4 "
+; Fused expression:    "( *(2) (@4) , *(2) (@6) , os_string_copy )4 "
+	push	word [bp+4]
+	push	word [bp+6]
+	call	_os_string_copy
+	sub	sp, -4
+; return
+; RPN'ized expression: "destination "
+; Expanded expression: "(@4) *(2) "
+; Fused expression:    "*(2) (@4)  "
+	mov	ax, [bp+4]
+L3:
+	leave
+	ret
+
+; glb strcat : (
+; prm     destination : * char
+; prm     source : * char
+;     ) * char
+section .text
+	global	_strcat
+_strcat:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     destination : (@4): * char
+; loc     source : (@6): * char
+; RPN'ized expression: "( destination , source , destination os_string_join ) "
+; Expanded expression: " (@4) *(2)  (@6) *(2)  (@4) *(2)  os_string_join ()6 "
+; Fused expression:    "( *(2) (@4) , *(2) (@6) , *(2) (@4) , os_string_join )6 "
+	push	word [bp+4]
+	push	word [bp+6]
+	push	word [bp+4]
+	call	_os_string_join
+	sub	sp, -6
+; return
+; RPN'ized expression: "destination "
+; Expanded expression: "(@4) *(2) "
+; Fused expression:    "*(2) (@4)  "
+	mov	ax, [bp+4]
+L5:
+	leave
+	ret
+
+
+	extern	_os_string_length
+	extern	_os_string_copy
+	extern	_os_string_join
+
+; Syntax/declaration table/stack:
+; Bytes used: 1200/15360
+
+
+; Macro table:
+; Macro __SMALLER_C__ = `0x0100`
+; Macro __SMALLER_C_16__ = ``
+; Macro __SMALLER_C_SCHAR__ = ``
+; Macro MOSCLIB_HAS_STRING = ``
+; Bytes used: 84/5120
+
+
+; Identifier table:
+; Ident __floatsisf
+; Ident __floatunsisf
+; Ident __fixsfsi
+; Ident __fixunssfsi
+; Ident __addsf3
+; Ident __subsf3
+; Ident __negsf2
+; Ident __mulsf3
+; Ident __divsf3
+; Ident __lesf2
+; Ident __gesf2
+; Ident os_string_length
+; Ident str
+; Ident os_find_char_in_string
+; Ident to_find
+; Ident os_string_reverse
+; Ident os_string_charchange
+; Ident replacement
+; Ident os_string_uppercase
+; Ident os_string_lowercase
+; Ident os_string_copy
+; Ident src
+; Ident dest
+; Ident os_string_truncate
+; Ident length
+; Ident os_string_join
+; Ident str1
+; Ident str2
+; Ident os_string_chomp
+; Ident os_string_strip
+; Ident to_remove
+; Ident os_string_compare
+; Ident os_string_strincmp
+; Ident os_string_parse
+; Ident str3
+; Ident str4
+; Ident os_string_to_int
+; Ident os_int_to_string
+; Ident value
+; Ident os_sint_to_string
+; Ident os_long_int_to_string
+; Ident longint
+; Ident os_set_time_fmt
+; Ident flags
+; Ident os_get_time_string
+; Ident buffer
+; Ident os_date_format
+; Ident os_get_date_string
+; Ident strlen
+; Ident strcpy
+; Ident destination
+; Ident source
+; Ident strcat
+; Bytes used: 696/5632
+
+; Next label number: 7
+; Compilation succeeded.

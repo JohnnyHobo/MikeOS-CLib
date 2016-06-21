@@ -1,0 +1,98 @@
+bits 16
+
+; glb os_bcd_to_int : (
+; prm     bcd : char
+;     ) int
+; glb os_long_int_negate : (
+; prm     input : * int
+; prm     output : * int
+;     ) void
+; glb os_get_random : (
+; prm     min : unsigned
+; prm     max : unsigned
+;     ) int
+; glb malloc : (
+; prm     size : int
+;     ) * void
+; glb free : (
+; prm     blk : * void
+;     ) void
+; glb exit : (
+; prm     status : int
+;     ) void
+; glb rand : () int
+; glb atoi : (
+; prm     str : * char
+;     ) int
+; glb rand : () int
+section .text
+	global	_rand
+_rand:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; return
+; RPN'ized expression: "( 32768u , 0 os_get_random ) "
+; Expanded expression: " 32768u  0  os_get_random ()4 "
+; Fused expression:    "( 32768u , 0 , os_get_random )4  "
+	push	-32768
+	push	0
+	call	_os_get_random
+	sub	sp, -4
+L1:
+	leave
+	ret
+
+
+	extern	_os_get_random
+
+; Syntax/declaration table/stack:
+; Bytes used: 345/15360
+
+
+; Macro table:
+; Macro __SMALLER_C__ = `0x0100`
+; Macro __SMALLER_C_16__ = ``
+; Macro __SMALLER_C_SCHAR__ = ``
+; Macro MOSCLIB_HAS_MATH = ``
+; Macro MOSCLIB_HAS_STDLIB = ``
+; Macro MOSCLIB_HAS_MEMORY = ``
+; Macro EXIT_SUCCESS = `1`
+; Macro EXIT_FAILURE = `0`
+; Macro RAND_MAX = `(32768u)`
+; Bytes used: 175/5120
+
+
+; Identifier table:
+; Ident __floatsisf
+; Ident __floatunsisf
+; Ident __fixsfsi
+; Ident __fixunssfsi
+; Ident __addsf3
+; Ident __subsf3
+; Ident __negsf2
+; Ident __mulsf3
+; Ident __divsf3
+; Ident __lesf2
+; Ident __gesf2
+; Ident os_bcd_to_int
+; Ident bcd
+; Ident os_long_int_negate
+; Ident input
+; Ident output
+; Ident os_get_random
+; Ident min
+; Ident max
+; Ident malloc
+; Ident size
+; Ident free
+; Ident blk
+; Ident exit
+; Ident status
+; Ident rand
+; Ident atoi
+; Ident str
+; Bytes used: 257/5632
+
+; Next label number: 3
+; Compilation succeeded.

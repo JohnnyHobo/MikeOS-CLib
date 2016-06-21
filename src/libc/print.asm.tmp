@@ -1,0 +1,677 @@
+bits 16
+
+; glb os_print_string : (
+; prm     str : * char
+;     ) void
+; glb os_clear_screen : () void
+; glb os_move_cursor : (
+; prm     row : int
+; prm     col : int
+;     ) void
+; glb os_get_cursor_pos : (
+; prm     row : * int
+; prm     col : * int
+;     ) void
+; glb os_print_horiz_line : (
+; prm     type : int
+;     ) void
+; glb os_show_cursor : () void
+; glb os_hide_cursor : () void
+; glb os_draw_block : (
+; prm     colour : int
+; prm     x : int
+; prm     y : int
+; prm     width : int
+; prm     finish_y : int
+;     ) void
+; glb os_file_selector : () * char
+; glb os_list_dialog : (
+; prm     list : * char
+; prm     help1 : * char
+; prm     help2 : * char
+;     ) int
+; glb os_draw_background : (
+; prm     top_text : * char
+; prm     bottom_text : * char
+; prm     colour : int
+;     ) void
+; glb os_print_newline : () void
+; glb os_input_dialog : (
+; prm     buffer : * char
+; prm     msg2 : * char
+;     ) * char
+; glb os_dialog_box : (
+; prm     msg1 : * char
+; prm     msg2 : * char
+; prm     msg3 : * char
+; prm     type : int
+;     ) int
+; glb os_print_space : () void
+; glb os_print_digit : (
+; prm     digit : int
+;     ) void
+; glb os_print_1hex : (
+; prm     value : unsigned char
+;     ) void
+; glb os_print_2hex : (
+; prm     value : unsigned char
+;     ) void
+; glb os_print_4hex : (
+; prm     value : unsigned
+;     ) void
+; glb os_print_char : () void
+; glb printf : (
+; prm     fmt : * char
+; prm     ...
+;     ) int
+section .text
+	global	_printf
+_printf:
+	push	bp
+	mov	bp, sp
+	 sub	sp,          8
+; loc     fmt : (@4): * char
+; loc     i : (@-2): int
+; RPN'ized expression: "i 0 = "
+; Expanded expression: "(@-2) 0 =(2) "
+; Fused expression:    "=(170) *(@-2) 0 "
+	mov	ax, 0
+	mov	[bp-2], ax
+; loc     printed : (@-4): int
+; RPN'ized expression: "printed 0 = "
+; Expanded expression: "(@-4) 0 =(2) "
+; Fused expression:    "=(170) *(@-4) 0 "
+	mov	ax, 0
+	mov	[bp-4], ax
+; loc     arg : (@-6): * char
+; loc     <something> : * char
+; loc     <something> : * char
+; RPN'ized expression: "arg fmt &u (something3) <something4> sizeof + = "
+; Expanded expression: "(@-6) (@6) =(2) "
+; Fused expression:    "=(170) *(@-6) (@6) "
+	lea	ax, [bp+6]
+	mov	[bp-6], ax
+; loc     str : (@-8): * char
+; if
+; RPN'ized expression: "fmt 0 + *u 0 == "
+; Expanded expression: "(@4) *(2) 0 + *(-1) 0 == "
+; Fused expression:    "+ *(@4) 0 == *ax 0 IF! "
+	mov	ax, [bp+4]
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	cmp	ax, 0
+	jne	L5
+; {
+; return
+; RPN'ized expression: "0 "
+; Expanded expression: "0 "
+; Expression value: 0
+; Fused expression:    "0  "
+	mov	ax, 0
+	jmp	L1
+; }
+L5:
+; do
+L7:
+; {
+; if
+; RPN'ized expression: "fmt i + *u 10 == "
+; Expanded expression: "(@4) *(2) (@-2) *(2) + *(-1) 10 == "
+; Fused expression:    "+ *(@4) *(@-2) == *ax 10 IF! "
+	mov	ax, [bp+4]
+	add	ax, [bp-2]
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	cmp	ax, 10
+	jne	L10
+; {
+; RPN'ized expression: "( os_print_newline ) "
+; Expanded expression: " os_print_newline ()0 "
+; Fused expression:    "( os_print_newline )0 "
+	call	_os_print_newline
+; RPN'ized expression: "printed 2 += "
+; Expanded expression: "(@-4) 2 +=(2) "
+; Fused expression:    "+=(170) *(@-4) 2 "
+	mov	ax, [bp-4]
+	add	ax, 2
+	mov	[bp-4], ax
+; continue
+	jmp	L8
+; }
+	jmp	L11
+L10:
+; else
+; if
+; RPN'ized expression: "fmt i + *u 37 != "
+; Expanded expression: "(@4) *(2) (@-2) *(2) + *(-1) 37 != "
+; Fused expression:    "+ *(@4) *(@-2) != *ax 37 IF! "
+	mov	ax, [bp+4]
+	add	ax, [bp-2]
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	cmp	ax, 37
+	je	L12
+; {
+; RPN'ized expression: "( fmt i + *u os_print_char ) "
+; Expanded expression: " (@4) *(2) (@-2) *(2) + *(-1)  os_print_char ()2 "
+; Fused expression:    "( + *(@4) *(@-2) *(-1) ax , os_print_char )2 "
+	mov	ax, [bp+4]
+	add	ax, [bp-2]
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	push	ax
+	call	_os_print_char
+	sub	sp, -2
+; RPN'ized expression: "printed ++p "
+; Expanded expression: "(@-4) ++p(2) "
+; Fused expression:    "++p(2) *(@-4) "
+	mov	ax, [bp-4]
+	inc	word [bp-4]
+; continue
+	jmp	L8
+; }
+L12:
+L11:
+; switch
+; RPN'ized expression: "fmt i ++ + *u "
+; Expanded expression: "(@4) *(2) (@-2) ++(2) + *(-1) "
+; Fused expression:    "++(2) *(@-2) + *(@4) ax *(-1) ax  "
+	inc	word [bp-2]
+	mov	ax, [bp-2]
+	mov	cx, ax
+	mov	ax, [bp+4]
+	add	ax, cx
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	jmp	L15
+; {
+; case
+; RPN'ized expression: "100 "
+; Expanded expression: "100 "
+; Expression value: 100
+L16:
+; case
+; RPN'ized expression: "105 "
+; Expanded expression: "105 "
+; Expression value: 105
+L17:
+; loc             <something> : * int
+; RPN'ized expression: "str ( arg (something18) *u os_sint_to_string ) = "
+; Expanded expression: "(@-8)  (@-6) *(2) *(2)  os_sint_to_string ()2 =(2) "
+; Fused expression:    "( *(2) (@-6) *(2) ax , os_sint_to_string )2 =(170) *(@-8) ax "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	push	word [bx]
+	call	_os_sint_to_string
+	sub	sp, -2
+	mov	[bp-8], ax
+; RPN'ized expression: "printed ( str os_string_length ) += "
+; Expanded expression: "(@-4)  (@-8) *(2)  os_string_length ()2 +=(2) "
+; Fused expression:    "( *(2) (@-8) , os_string_length )2 +=(170) *(@-4) ax "
+	push	word [bp-8]
+	call	_os_string_length
+	sub	sp, -2
+	mov	cx, ax
+	mov	ax, [bp-4]
+	add	ax, cx
+	mov	[bp-4], ax
+; RPN'ized expression: "( str os_print_string ) "
+; Expanded expression: " (@-8) *(2)  os_print_string ()2 "
+; Fused expression:    "( *(2) (@-8) , os_print_string )2 "
+	push	word [bp-8]
+	call	_os_print_string
+	sub	sp, -2
+; loc             <something> : int
+; RPN'ized expression: "arg <something19> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "117 "
+; Expanded expression: "117 "
+; Expression value: 117
+L20:
+; loc             <something> : * int
+; RPN'ized expression: "str ( arg (something21) *u os_int_to_string ) = "
+; Expanded expression: "(@-8)  (@-6) *(2) *(2)  os_int_to_string ()2 =(2) "
+; Fused expression:    "( *(2) (@-6) *(2) ax , os_int_to_string )2 =(170) *(@-8) ax "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	push	word [bx]
+	call	_os_int_to_string
+	sub	sp, -2
+	mov	[bp-8], ax
+; RPN'ized expression: "printed ( str os_string_length ) += "
+; Expanded expression: "(@-4)  (@-8) *(2)  os_string_length ()2 +=(2) "
+; Fused expression:    "( *(2) (@-8) , os_string_length )2 +=(170) *(@-4) ax "
+	push	word [bp-8]
+	call	_os_string_length
+	sub	sp, -2
+	mov	cx, ax
+	mov	ax, [bp-4]
+	add	ax, cx
+	mov	[bp-4], ax
+; RPN'ized expression: "( str os_print_string ) "
+; Expanded expression: " (@-8) *(2)  os_print_string ()2 "
+; Fused expression:    "( *(2) (@-8) , os_print_string )2 "
+	push	word [bp-8]
+	call	_os_print_string
+	sub	sp, -2
+; loc             <something> : int
+; RPN'ized expression: "arg <something22> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "120 "
+; Expanded expression: "120 "
+; Expression value: 120
+L23:
+; case
+; RPN'ized expression: "88 "
+; Expanded expression: "88 "
+; Expression value: 88
+L24:
+; loc             <something> : * int
+; RPN'ized expression: "( arg (something25) *u os_print_4hex ) "
+; Expanded expression: " (@-6) *(2) *(2)  os_print_4hex ()2 "
+; Fused expression:    "( *(2) (@-6) *(2) ax , os_print_4hex )2 "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	push	word [bx]
+	call	_os_print_4hex
+	sub	sp, -2
+; RPN'ized expression: "printed 4 += "
+; Expanded expression: "(@-4) 4 +=(2) "
+; Fused expression:    "+=(170) *(@-4) 4 "
+	mov	ax, [bp-4]
+	add	ax, 4
+	mov	[bp-4], ax
+; loc             <something> : int
+; RPN'ized expression: "arg <something26> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "99 "
+; Expanded expression: "99 "
+; Expression value: 99
+L27:
+; RPN'ized expression: "( arg *u os_print_char ) "
+; Expanded expression: " (@-6) *(2) *(-1)  os_print_char ()2 "
+; Fused expression:    "( *(2) (@-6) *(-1) ax , os_print_char )2 "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+	push	ax
+	call	_os_print_char
+	sub	sp, -2
+; RPN'ized expression: "printed ++p "
+; Expanded expression: "(@-4) ++p(2) "
+; Fused expression:    "++p(2) *(@-4) "
+	mov	ax, [bp-4]
+	inc	word [bp-4]
+; loc             <something> : int
+; RPN'ized expression: "arg <something28> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "115 "
+; Expanded expression: "115 "
+; Expression value: 115
+L29:
+; loc             <something> : * * char
+; RPN'ized expression: "str arg (something30) *u = "
+; Expanded expression: "(@-8) (@-6) *(2) *(2) =(2) "
+; Fused expression:    "*(2) (@-6) =(170) *(@-8) *ax "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	mov	ax, [bx]
+	mov	[bp-8], ax
+; RPN'ized expression: "printed ( str os_string_length ) += "
+; Expanded expression: "(@-4)  (@-8) *(2)  os_string_length ()2 +=(2) "
+; Fused expression:    "( *(2) (@-8) , os_string_length )2 +=(170) *(@-4) ax "
+	push	word [bp-8]
+	call	_os_string_length
+	sub	sp, -2
+	mov	cx, ax
+	mov	ax, [bp-4]
+	add	ax, cx
+	mov	[bp-4], ax
+; RPN'ized expression: "( str os_print_string ) "
+; Expanded expression: " (@-8) *(2)  os_print_string ()2 "
+; Fused expression:    "( *(2) (@-8) , os_print_string )2 "
+	push	word [bp-8]
+	call	_os_print_string
+	sub	sp, -2
+; loc             <something> : * char
+; RPN'ized expression: "arg <something31> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "112 "
+; Expanded expression: "112 "
+; Expression value: 112
+L32:
+
+section .rodata
+L33:
+	db	"0x"
+	times	1 db 0
+
+section .text
+; RPN'ized expression: "( L33 os_print_string ) "
+; Expanded expression: " L33  os_print_string ()2 "
+; Fused expression:    "( L33 , os_print_string )2 "
+	push	L33
+	call	_os_print_string
+	sub	sp, -2
+; loc             <something> : * int
+; RPN'ized expression: "( arg (something34) *u os_print_4hex ) "
+; Expanded expression: " (@-6) *(2) *(2)  os_print_4hex ()2 "
+; Fused expression:    "( *(2) (@-6) *(2) ax , os_print_4hex )2 "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	push	word [bx]
+	call	_os_print_4hex
+	sub	sp, -2
+; RPN'ized expression: "printed 6 += "
+; Expanded expression: "(@-4) 6 +=(2) "
+; Fused expression:    "+=(170) *(@-4) 6 "
+	mov	ax, [bp-4]
+	add	ax, 6
+	mov	[bp-4], ax
+; loc             <something> : int
+; RPN'ized expression: "arg <something35> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "110 "
+; Expanded expression: "110 "
+; Expression value: 110
+L36:
+; loc             <something> : * int
+; RPN'ized expression: "arg (something37) *u printed = "
+; Expanded expression: "(@-6) *(2) (@-4) *(2) =(2) "
+; Fused expression:    "*(2) (@-6) =(170) *ax *(@-4) "
+	mov	ax, [bp-6]
+	mov	bx, ax
+	mov	ax, [bp-4]
+	mov	[bx], ax
+; loc             <something> : * int
+; RPN'ized expression: "arg <something38> sizeof += "
+; Expanded expression: "(@-6) 2u +=(2) "
+; Fused expression:    "+=(170) *(@-6) 2u "
+	mov	ax, [bp-6]
+	add	ax, 2
+	mov	[bp-6], ax
+; break
+	jmp	L14
+; case
+; RPN'ized expression: "37 "
+; Expanded expression: "37 "
+; Expression value: 37
+L39:
+; RPN'ized expression: "( 37 os_print_char ) "
+; Expanded expression: " 37  os_print_char ()2 "
+; Fused expression:    "( 37 , os_print_char )2 "
+	push	37
+	call	_os_print_char
+	sub	sp, -2
+; RPN'ized expression: "printed ++p "
+; Expanded expression: "(@-4) ++p(2) "
+; Fused expression:    "++p(2) *(@-4) "
+	mov	ax, [bp-4]
+	inc	word [bp-4]
+; break
+	jmp	L14
+; }
+	jmp	L14
+L15:
+	cmp	ax, 100
+	je	L16
+	cmp	ax, 105
+	je	L17
+	cmp	ax, 117
+	je	L20
+	cmp	ax, 120
+	je	L23
+	cmp	ax, 88
+	je	L24
+	cmp	ax, 99
+	je	L27
+	cmp	ax, 115
+	je	L29
+	cmp	ax, 112
+	je	L32
+	cmp	ax, 110
+	je	L36
+	cmp	ax, 37
+	je	L39
+L14:
+; }
+; while
+; RPN'ized expression: "fmt i ++ + *u "
+; Expanded expression: "(@4) *(2) (@-2) ++(2) + *(-1) "
+L8:
+; Fused expression:    "++(2) *(@-2) + *(@4) ax *(-1) ax  "
+	inc	word [bp-2]
+	mov	ax, [bp-2]
+	mov	cx, ax
+	mov	ax, [bp+4]
+	add	ax, cx
+	mov	bx, ax
+	mov	al, [bx]
+	cbw
+; JumpIfNotZero
+	test	ax, ax
+	jne	L7
+L9:
+; return
+; RPN'ized expression: "printed "
+; Expanded expression: "(@-4) *(2) "
+; Fused expression:    "*(2) (@-4)  "
+	mov	ax, [bp-4]
+L1:
+	leave
+	ret
+
+; glb putchar : (
+; prm     character : int
+;     ) int
+section .text
+	global	_putchar
+_putchar:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     character : (@4): int
+; RPN'ized expression: "( character os_print_char ) "
+; Expanded expression: " (@4) *(2)  os_print_char ()2 "
+; Fused expression:    "( *(2) (@4) , os_print_char )2 "
+	push	word [bp+4]
+	call	_os_print_char
+	sub	sp, -2
+; return
+; RPN'ized expression: "character "
+; Expanded expression: "(@4) *(2) "
+; Fused expression:    "*(2) (@4)  "
+	mov	ax, [bp+4]
+L40:
+	leave
+	ret
+
+; glb puts : (
+; prm     str : * char
+;     ) int
+section .text
+	global	_puts
+_puts:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     str : (@4): * char
+; RPN'ized expression: "( str os_print_string ) "
+; Expanded expression: " (@4) *(2)  os_print_string ()2 "
+; Fused expression:    "( *(2) (@4) , os_print_string )2 "
+	push	word [bp+4]
+	call	_os_print_string
+	sub	sp, -2
+; return
+; RPN'ized expression: "( str os_string_length ) "
+; Expanded expression: " (@4) *(2)  os_string_length ()2 "
+; Fused expression:    "( *(2) (@4) , os_string_length )2  "
+	push	word [bp+4]
+	call	_os_string_length
+	sub	sp, -2
+L42:
+	leave
+	ret
+
+; glb gets : (
+; prm     str : * char
+;     ) * char
+section .text
+	global	_gets
+_gets:
+	push	bp
+	mov	bp, sp
+	;sub	sp,          0
+; loc     str : (@4): * char
+; RPN'ized expression: "( str os_input_string ) "
+; Expanded expression: " (@4) *(2)  os_input_string ()2 "
+; Fused expression:    "( *(2) (@4) , os_input_string )2 "
+	push	word [bp+4]
+	call	_os_input_string
+	sub	sp, -2
+; RPN'ized expression: "( os_print_newline ) "
+; Expanded expression: " os_print_newline ()0 "
+; Fused expression:    "( os_print_newline )0 "
+	call	_os_print_newline
+; return
+; RPN'ized expression: "str "
+; Expanded expression: "(@4) *(2) "
+; Fused expression:    "*(2) (@4)  "
+	mov	ax, [bp+4]
+L44:
+	leave
+	ret
+
+
+	extern	_os_print_newline
+	extern	_os_print_char
+	extern	_os_sint_to_string
+	extern	_os_string_length
+	extern	_os_print_string
+	extern	_os_int_to_string
+	extern	_os_print_4hex
+	extern	_os_input_string
+
+; Syntax/declaration table/stack:
+; Bytes used: 945/15360
+
+
+; Macro table:
+; Macro __SMALLER_C__ = `0x0100`
+; Macro __SMALLER_C_16__ = ``
+; Macro __SMALLER_C_SCHAR__ = ``
+; Macro MOSCLIB_HAS_SCREEN = ``
+; Bytes used: 84/5120
+
+
+; Identifier table:
+; Ident __floatsisf
+; Ident __floatunsisf
+; Ident __fixsfsi
+; Ident __fixunssfsi
+; Ident __addsf3
+; Ident __subsf3
+; Ident __negsf2
+; Ident __mulsf3
+; Ident __divsf3
+; Ident __lesf2
+; Ident __gesf2
+; Ident os_print_string
+; Ident str
+; Ident os_clear_screen
+; Ident os_move_cursor
+; Ident row
+; Ident col
+; Ident os_get_cursor_pos
+; Ident os_print_horiz_line
+; Ident type
+; Ident os_show_cursor
+; Ident os_hide_cursor
+; Ident os_draw_block
+; Ident colour
+; Ident x
+; Ident y
+; Ident width
+; Ident finish_y
+; Ident os_file_selector
+; Ident os_list_dialog
+; Ident list
+; Ident help1
+; Ident help2
+; Ident os_draw_background
+; Ident top_text
+; Ident bottom_text
+; Ident os_print_newline
+; Ident os_input_dialog
+; Ident buffer
+; Ident msg2
+; Ident os_dialog_box
+; Ident msg1
+; Ident msg3
+; Ident os_print_space
+; Ident os_print_digit
+; Ident digit
+; Ident os_print_1hex
+; Ident value
+; Ident os_print_2hex
+; Ident os_print_4hex
+; Ident os_print_char
+; Ident printf
+; Ident fmt
+; Ident <something>
+; Ident putchar
+; Ident character
+; Ident puts
+; Ident gets
+; Bytes used: 647/5632
+
+; Next label number: 46
+; Compilation succeeded.
