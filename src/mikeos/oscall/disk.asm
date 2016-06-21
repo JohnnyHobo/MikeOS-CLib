@@ -3,7 +3,6 @@
 %macro OSCALL_GET_FILE_LIST 0
 	mov ax, [bp+4]
 	call os_get_file_list
-	CF_TO_AX
 %endmacro
 
 %macro OSCALL_LOAD_FILE 0

@@ -1,7 +1,7 @@
 asm("%include 'mikedev.inc'");
 asm("%include 'oscall/disk.asm'");
 
-int os_get_file_list(char *store)
+void os_get_file_list(char *store)
 {
 	asm("OSCALL_GET_FILE_LIST");
 }
