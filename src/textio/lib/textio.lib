@@ -1,0 +1,427 @@
+; textio
+
+
+textio_init:
+	pusha
+
+	mov byte [textio_data.text_colour], 7
+	mov byte [textio_data.output_page], 0
+	
+	mov al, 0
+	call textio_set_visible_page
+
+	mov dh, 79
+	mov dl, 24
+	call textio_set_screen_limits
+
+	popa
+	ret
+	
+; AL = character
+textio_write_char:
+	pusha
+
+	cmp al, 0x0A
+	je .newline
+	
+	mov ah, 0x09
+	mov bh, [textio_data.output_page]
+	mov bl, [textio_data.text_colour]
+	mov cx, 1
+	int 0x10
+
+	call textio_advance_cursor
+.done:
+	popa
+	ret
+
+.newline:
+	call textio_newline
+	jmp .done
+
+; AH = colour, AL = character, DH = row, DL = column
+textio_draw_char:
+	pusha
+
+	call textio_set_cursor
+
+	mov bl, ah
+	mov ah, 0x09
+	mov bh, [textio_data.output_page]
+	mov cx, 1
+	int 0x10
+
+	popa
+	ret
+
+
+; AH = colour, AL = character
+textio_read_char:
+	pusha
+
+	mov ah, 0x08
+	mov bh, [textio_data.output_page]
+	int 0x10
+
+	mov bp, sp
+	mov [bp + 14], ax
+	
+	popa
+	ret
+
+
+; AH = colour, AL = character, BX = length, DH = row, DL = column
+textio_draw_hline:
+	pusha
+
+	mov cx, bx
+	
+.draw_next:
+	call textio_get_cursor
+	call textio_draw_char
+	call textio_advance_cursor
+	
+	loop .draw_next
+
+	popa
+	ret
+
+; AH = colour, AL = character, BX = length, DH = row, DL = column
+textio_draw_vline:
+	pusha
+	
+	mov cx, bx
+
+	mov bl, ah
+	mov ah, 0x09
+	mov bh, [textio_data.output_page]
+	
+.print_char:
+	push cx
+	mov cx, 1
+	int 0x10
+	
+	call textio_get_cursor
+	
+	inc dh
+	
+	cmp dh, [textio_data.last_row]
+	ja .scroll
+	
+	call textio_set_cursor
+	
+.next_char:
+	pop cx
+	loop .print_char
+	
+.scroll:
+	mov cx, 1
+	call textio_scroll_down
+	jmp .next_char
+	
+	popa
+	ret
+	
+	
+
+; AH = colour, AL = character
+; BH = initial row, BL = initial column, CH = final row, CL = final column
+textio_draw_block:
+	pusha
+
+	mov dx, bx
+	call textio_set_cursor
+
+	sub cl, bl
+	movzx dx, cl
+
+	sub ch, bh
+	movzx cx, ch
+	inc cx
+
+	mov bx, dx
+
+.next_line:
+	call textio_get_cursor
+	call textio_draw_hline
+	call textio_newline
+
+	loop .next_line
+
+	popa
+	ret
+
+
+; BH = start row, BL = start column, CH = final row, CL = final column
+; SI = output buffer
+textio_grab_area:
+	pusha
+
+	; DH = rows left
+	; DL = column count
+	; BL = initial column
+
+	sub ch, bh
+	mov dh, ch
+	inc dh
+
+	sub cl, bl
+	mov dl, cl
+
+.next_row:
+	cmp dh, 0
+	je .done
+
+	dec dh
+
+	movzx cx, dl
+
+	push dx
+	call textio_get_cursor
+	mov dl, bl
+	call textio_get_cursor
+	pop dx
+
+.grab_row:
+	call textio_read_char
+	stosb
+	call textio_advance_cursor
+	loop .grab_row
+
+	call textio_newline
+
+	jmp .next_row
+
+.done:
+	popa
+	ret
+
+
+textio_restore_area:
+	; DH = rows left
+	; DL = column count
+	; BL = initial column
+
+	sub ch, bh
+	mov dh, ch
+	inc dh
+
+	sub cl, bl
+	mov dl, cl
+
+.next_row:
+	cmp dh, 0
+	je .done
+
+	dec dh
+
+	movzx cx, dl
+
+	push dx
+	call textio_get_cursor
+	mov dl, bl
+	call textio_get_cursor
+	pop dx
+
+.grab_row:
+	push dx
+	lodsw
+	call textio_get_cursor
+	call textio_draw_char
+	pop dx
+
+	loop .grab_row
+
+	call textio_newline
+
+	jmp .next_row
+
+.done:
+	popa
+	ret
+
+
+textio_set_text_colour:
+	mov [textio_data.text_colour], al
+	ret
+
+textio_set_output_page:
+	mov [textio_data.output_page], al
+	ret
+
+textio_set_visible_page:
+	push ax
+
+	mov ah, 0x05
+	int 0x10
+
+	mov [textio_data.visible_page], al
+
+	pop ax
+	ret
+
+
+
+textio_print_string:
+	push ax
+	push si
+
+.next_char:
+	lodsb
+
+	cmp al, 0
+	je .done
+
+	call textio_write_char
+
+	jmp .next_char
+
+.done:
+	pop si
+	pop ax
+	ret
+
+
+textio_reverse_cursor:
+	push dx
+
+	call textio_get_cursor
+
+	cmp dl, 0
+	je .back_line
+
+	dec dl
+	call textio_set_cursor
+	
+.done:
+	pop dx
+	ret
+
+.back_line:
+	cmp dh, 0
+	je .done
+
+	dec dh
+	call textio_set_cursor
+
+	jmp .done
+
+
+textio_advance_cursor:
+	push dx
+	
+	call textio_get_cursor
+
+	inc dl
+
+	cmp dl, [textio_data.last_column]
+	ja .next_line
+
+	call textio_set_cursor
+
+	pop dx
+	ret
+
+.next_line:
+	call textio_newline
+	pop dx
+	ret
+
+textio_newline:
+	push cx
+	push dx
+
+	call textio_get_cursor
+
+	mov dl, 0
+	inc dh
+	
+	cmp dh, [textio_data.last_row]
+	ja .scroll
+
+	call textio_set_cursor
+
+	pop dx
+	pop cx
+	ret
+
+.scroll:
+	mov cx, 1
+	call textio_scroll_down
+
+	pop dx
+	pop cx
+	ret
+
+
+textio_set_cursor:
+	pusha
+	
+	mov ah, 0x02
+	mov bh, [textio_data.output_page]
+	int 0x10
+
+	popa
+	ret
+
+
+textio_get_cursor:
+	push ax
+	push bx
+	push cx
+
+	mov ah, 0x03
+	mov bh, [textio_data.output_page]
+	int 0x10
+
+	pop cx
+	pop bx
+	pop ax
+	ret
+
+textio_scroll_down:
+	pusha
+
+	mov bl, [textio_data.output_page]
+
+	mov al, [textio_data.visible_page]
+	call textio_set_visible_page
+
+	mov ah, 0x07
+	mov al, cl
+	mov bh, 7
+	mov ch, 0
+	mov cl, 0
+	mov dh, [textio_data.last_row]
+	mov dl, [textio_data.last_column]
+	int 0x10
+
+	mov al, bl
+	call textio_set_visible_page
+
+	popa
+	ret
+
+
+textio_clear_screen:
+	push cx
+
+	mov cx, 0
+	call textio_scroll_down
+
+	pop cx
+	ret
+
+textio_set_screen_limits:
+	mov [textio_data.last_row], dh
+	mov [textio_data.last_column], dl
+	ret
+
+
+textio_data:
+	.text_colour		db 0
+	.visible_page		db 0
+	.output_page		db 0
+	.last_row		db 0
+	.last_column		db 0
+
