@@ -22,5 +22,6 @@ void textio_get_cursor(int *row, int *column);
 void textio_scroll_down(int lines);
 void textio_clear_screen();
 void textio_set_screen_limits(int row, int column);
+void textio_clone_page(int src_page, int dest_page);
 
 #endif

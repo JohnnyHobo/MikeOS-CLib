@@ -21,5 +21,6 @@ GLOBAL textio_get_cursor
 GLOBAL textio_scroll_down
 GLOBAL textio_clear_screen
 GLOBAL textio_set_screen_limits
+GLOBAL textio_clone_page
 
 %include 'lib/textio.lib'

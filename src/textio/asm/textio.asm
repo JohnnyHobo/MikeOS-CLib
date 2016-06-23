@@ -11,12 +11,20 @@
 
 %macro LIBCALL_TEXTIO_READ_CHAR 0
 	call textio_read_char
-	mov ah, 0
+	
+	push bx
+	
+	mov bx, [bp + 4]
+	movzx dx, ah
+	mov [bx], dx
+	
+	mov bx, [bp + 6]
+	mov [bx], al
+	
+	pop bx
 %endmacro
 
 %macro LIBCALL_TEXTIO_DRAW_CHAR 0
-	mov bp, sp
-
 	mov ah, [bp + 4]
 	mov al, [bp + 6]
 	mov dh, [bp + 8]
@@ -26,7 +34,6 @@
 
 %macro LIBCALL_TEXTIO_DRAW_HLINE 0
 	push bx
-	mov bp, sp
 
 	mov ah, [bp + 4]
 	mov al, [bp + 6]
@@ -89,7 +96,7 @@
 	mov ch, [bp + 8]
 	mov cl, [bp + 10]
 	mov si, [bp + 12]
-	call textio_grab_area
+	call textio_restore_area
 
 	pop si
 	pop bx
@@ -166,5 +173,11 @@
 	mov dh, [bp + 4]
 	mov dl, [bp + 6]
 	call textio_set_screen_limits
+%endmacro
+
+%macro LIBCALL_TEXTIO_CLONE_PAGE 0
+	mov ah, [bp + 4]
+	mov al, [bp + 6]
+	call textio_clone_page
 %endmacro
 

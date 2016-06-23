@@ -10,8 +10,8 @@ textio_init:
 	mov al, 0
 	call textio_set_visible_page
 
-	mov dh, 79
-	mov dl, 24
+	mov dh, 24
+	mov dl, 79
 	call textio_set_screen_limits
 
 	popa
@@ -74,6 +74,7 @@ textio_read_char:
 textio_draw_hline:
 	pusha
 
+	call textio_set_cursor
 	mov cx, bx
 	
 .draw_next:
@@ -90,7 +91,9 @@ textio_draw_hline:
 textio_draw_vline:
 	pusha
 	
+	call textio_set_cursor
 	mov cx, bx
+	inc cx
 
 	mov bl, ah
 	mov ah, 0x09
@@ -114,6 +117,9 @@ textio_draw_vline:
 	pop cx
 	loop .print_char
 	
+	popa
+	ret
+	
 .scroll:
 	mov cx, 1
 	call textio_scroll_down
@@ -131,6 +137,8 @@ textio_draw_block:
 
 	mov dx, bx
 	call textio_set_cursor
+	
+	mov [.start_col], bl
 
 	sub cl, bl
 	movzx dx, cl
@@ -141,16 +149,32 @@ textio_draw_block:
 
 	mov bx, dx
 
-.next_line:
+.draw_line:
 	call textio_get_cursor
 	call textio_draw_hline
-	call textio_newline
+	
+	mov dl, [.start_col]
+	
+	inc dh
+	cmp dh, [textio_data.last_row]
+	je .scroll
+	
+	call textio_set_cursor
 
-	loop .next_line
+.next_line:
+	loop .draw_line
 
 	popa
 	ret
+	
+.scroll:
+	push cx
+	mov cx, 1
+	call textio_scroll_down
+	pop cx
+	jmp .next_line
 
+.start_col		db 0
 
 ; BH = start row, BL = start column, CH = final row, CL = final column
 ; SI = output buffer
@@ -252,10 +276,10 @@ textio_set_output_page:
 textio_set_visible_page:
 	push ax
 
+	mov [textio_data.visible_page], al
+
 	mov ah, 0x05
 	int 0x10
-
-	mov [textio_data.visible_page], al
 
 	pop ax
 	ret
@@ -382,9 +406,9 @@ textio_get_cursor:
 textio_scroll_down:
 	pusha
 
-	mov bl, [textio_data.output_page]
+	mov bl, [textio_data.visible_page]
 
-	mov al, [textio_data.visible_page]
+	mov al, [textio_data.output_page]
 	call textio_set_visible_page
 
 	mov ah, 0x07
@@ -405,10 +429,15 @@ textio_scroll_down:
 
 textio_clear_screen:
 	push cx
+	push dx
 
 	mov cx, 0
 	call textio_scroll_down
+	
+	mov dx, 0
+	call textio_set_cursor
 
+	pop dx
 	pop cx
 	ret
 
@@ -417,6 +446,73 @@ textio_set_screen_limits:
 	mov [textio_data.last_column], dl
 	ret
 
+; AH = old page, AL = new page
+textio_clone_page:
+	pusha
+
+	mov bh, ah
+	mov bl, al
+
+	; Preserve the original output page
+	movzx ax, [textio_data.output_page]
+	push ax
+
+	; Preserve the cursor position on both pages to copy
+	mov al, bh
+	call textio_set_output_page
+	call textio_get_cursor
+	push dx
+
+	mov al, bl
+	call textio_set_output_page
+	call textio_get_cursor
+	push dx
+
+	; Now copy all data from the source to destination pages.
+	mov dx, 0
+
+.next_char:
+	mov al, bh
+	call textio_set_output_page
+	call textio_set_cursor
+	call textio_read_char
+
+	push ax
+	mov al, bl
+	call textio_set_output_page
+	pop ax
+	call textio_draw_char
+
+	inc dl
+
+	cmp dl, [textio_data.last_column]
+	jb .next_char
+
+.next_line:
+	mov dl, 0
+	
+	inc dh
+
+	cmp dh, [textio_data.last_row]
+	jb .next_char
+
+.done:
+	; Restore the cursor position and current page.
+	mov al, bl
+	call textio_set_output_page
+	pop dx
+	call textio_set_cursor
+
+	mov al, bh
+	call textio_set_output_page
+	pop dx
+	call textio_set_cursor
+
+	pop ax
+	call textio_set_output_page
+
+	popa
+	ret
 
 textio_data:
 	.text_colour		db 0
@@ -424,4 +520,5 @@ textio_data:
 	.output_page		db 0
 	.last_row		db 0
 	.last_column		db 0
+
 

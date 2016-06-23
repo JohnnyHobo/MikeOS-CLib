@@ -10,7 +10,7 @@ void textio_write_char(char ch)
 	asm("LIBCALL_TEXTIO_WRITE_CHAR");
 }
 
-char textio_read_char()
+char textio_read_char(int *colour, char *ch)
 {
 	asm("LIBCALL_TEXTIO_READ_CHAR");
 }
@@ -30,7 +30,7 @@ void textio_draw_vline(int colour, char ch, int length, int start_y, int start_x
 	asm("LIBCALL_TEXTIO_DRAW_VLINE");
 }
 
-void textio_draw_block(int colour, char ch, int start_y, int start_x, int finish_x, int finish_y)
+void textio_draw_block(int colour, char ch, int start_y, int start_x, int finish_y, int finish_x)
 {
 	asm("LIBCALL_TEXTIO_DRAW_BLOCK");
 }
@@ -104,5 +104,10 @@ void textio_clear_screen()
 void textio_set_screen_limits(int row, int column)
 {
 	asm("LIBCALL_TEXTIO_SET_SCREEN_LIMITS");
+}
+
+void textio_clone_page(int src_page, int dest_page)
+{
+	asm("LIBCALL_TEXTIO_CLONE_PAGE");
 }
 
