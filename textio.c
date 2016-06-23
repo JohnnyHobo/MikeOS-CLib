@@ -17,15 +17,16 @@ int main()
 	textio_print_string(hello);
 	textio_print_string("Next line\n");
 	
-	textio_draw_block(BOX_COLOUR, ' ', 10, 30, 16, 61);
-	textio_draw_hline(BOX_COLOUR, '-', 30, 10, 31);
-	textio_draw_hline(BOX_COLOUR, '-', 30, 16, 31);
-	textio_draw_vline(BOX_COLOUR, '|', 4, 11, 30);
-	textio_draw_vline(BOX_COLOUR, '|', 4, 11, 61);
-	textio_draw_char(BOX_COLOUR, '+', 10, 30);
-	textio_draw_char(BOX_COLOUR, '+', 10, 61);
-	textio_draw_char(BOX_COLOUR, '+', 16, 30);
-	textio_draw_char(BOX_COLOUR, '+', 16, 61);
+	textio_set_text_colour(BOX_COLOUR);
+	textio_draw_block(' ', 10, 30, 16, 61);
+	textio_draw_hline('-', 30, 10, 31);
+	textio_draw_hline('-', 30, 16, 31);
+	textio_draw_vline('|', 4, 11, 30);
+	textio_draw_vline('|', 4, 11, 61);
+	textio_set_char('+', 10, 30);
+	textio_set_char('+', 10, 61);
+	textio_set_char('+', 16, 30);
+	textio_set_char('+', 16, 61);
 	
 	textio_set_output_page(0);
 	textio_set_text_colour(7);

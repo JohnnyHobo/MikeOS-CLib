@@ -24,22 +24,20 @@
 	pop bx
 %endmacro
 
-%macro LIBCALL_TEXTIO_DRAW_CHAR 0
-	mov ah, [bp + 4]
-	mov al, [bp + 6]
-	mov dh, [bp + 8]
-	mov dl, [bp + 10]
-	call textio_draw_char
+%macro LIBCALL_TEXTIO_SET_CHAR 0
+	mov al, [bp + 4]
+	mov dh, [bp + 6]
+	mov dl, [bp + 8]
+	call textio_set_char
 %endmacro
 
 %macro LIBCALL_TEXTIO_DRAW_HLINE 0
 	push bx
 
-	mov ah, [bp + 4]
-	mov al, [bp + 6]
-	mov bx, [bp + 8]
-	mov dh, [bp + 10]
-	mov dl, [bp + 12]
+	mov al, [bp + 4]
+	mov bx, [bp + 6]
+	mov dh, [bp + 8]
+	mov dl, [bp + 10]
 	call textio_draw_hline
 
 	pop bx
@@ -48,11 +46,10 @@
 %macro LIBCALL_TEXTIO_DRAW_VLINE 0
 	push bx
 
-	mov ah, [bp + 4]
-	mov al, [bp + 6]
-	mov bx, [bp + 8]
-	mov dh, [bp + 10]
-	mov dl, [bp + 12]
+	mov al, [bp + 4]
+	mov bx, [bp + 6]
+	mov dh, [bp + 8]
+	mov dl, [bp + 10]
 	call textio_draw_vline
 
 	pop bx
@@ -61,12 +58,11 @@
 %macro LIBCALL_TEXTIO_DRAW_BLOCK 0
 	push bx
 
-	mov ah, [bp + 4]
-	mov al, [bp + 6]
-	mov bh, [bp + 8]
-	mov bl, [bp + 10]
-	mov ch, [bp + 12]
-	mov cl, [bp + 14]
+	mov al, [bp + 4]
+	mov bh, [bp + 6]
+	mov bl, [bp + 8]
+	mov ch, [bp + 10]
+	mov cl, [bp + 12]
 	call textio_draw_block
 
 	pop bx

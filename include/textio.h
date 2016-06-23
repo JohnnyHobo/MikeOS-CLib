@@ -3,11 +3,11 @@
 
 void textio_init();
 void textio_write_char(char ch);
-char textio_read_char();
-int textio_draw_char(int colour, char ch, int y, int x);
-void textio_draw_hline(int colour, char ch, int length, int start_y, int start_x);
-void textio_draw_vline(int colour, char ch, int length, int start_y, int start_x);
-void textio_draw_block(int colour, char ch, int start_y, int start_x, int finish_x, int finish_y);
+void textio_read_char(int *colour, char *ch);
+void textio_set_char(char ch, int y, int x);
+void textio_draw_hline(char ch, int length, int start_y, int start_x);
+void textio_draw_vline(char ch, int length, int start_y, int start_x);
+void textio_draw_block(char ch, int start_y, int start_x, int finish_x, int finish_y);
 void textio_grab_area(int start_y, int start_x, int finish_y, int finish_x, char *buffer);
 void textio_restore_area(int start_y, int start_x, int finish_y, int finish_x, char *buffer);
 void textio_set_text_colour(int colour);

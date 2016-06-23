@@ -15,22 +15,22 @@ char textio_read_char(int *colour, char *ch)
 	asm("LIBCALL_TEXTIO_READ_CHAR");
 }
 
-int textio_draw_char(int colour, char ch, int y, int x)
+int textio_set_char(char ch, int y, int x)
 {
-	asm("LIBCALL_TEXTIO_DRAW_CHAR");
+	asm("LIBCALL_TEXTIO_SET_CHAR");
 }
 
-void textio_draw_hline(int colour, char ch, int length, int start_y, int start_x)
+void textio_draw_hline(char ch, int length, int start_y, int start_x)
 {
 	asm("LIBCALL_TEXTIO_DRAW_HLINE");
 }
 
-void textio_draw_vline(int colour, char ch, int length, int start_y, int start_x)
+void textio_draw_vline(char ch, int length, int start_y, int start_x)
 {
 	asm("LIBCALL_TEXTIO_DRAW_VLINE");
 }
 
-void textio_draw_block(int colour, char ch, int start_y, int start_x, int finish_y, int finish_x)
+void textio_draw_block(char ch, int start_y, int start_x, int finish_y, int finish_x)
 {
 	asm("LIBCALL_TEXTIO_DRAW_BLOCK");
 }

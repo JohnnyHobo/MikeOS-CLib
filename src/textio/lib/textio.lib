@@ -1,6 +1,7 @@
 ; textio
 
 
+; Initialises the TextIO library.
 textio_init:
 	pusha
 
@@ -17,7 +18,11 @@ textio_init:
 	popa
 	ret
 	
-; AL = character
+; Write a character at the current cursor position in the current output colour 
+; and advances the cursor.
+; 
+; IN: AL = character code
+; OUT: nothing
 textio_write_char:
 	pusha
 
@@ -39,15 +44,18 @@ textio_write_char:
 	call textio_newline
 	jmp .done
 
-; AH = colour, AL = character, DH = row, DL = column
-textio_draw_char:
+; Sets the character and colour at a given current cursor position.
+;
+; IN: AL = character, DH = row, DL = column
+; OUT: nothing
+textio_set_char:
 	pusha
 
 	call textio_set_cursor
 
-	mov bl, ah
 	mov ah, 0x09
 	mov bh, [textio_data.output_page]
+	mov bl, [textio_data.text_colour]
 	mov cx, 1
 	int 0x10
 
@@ -55,7 +63,11 @@ textio_draw_char:
 	ret
 
 
-; AH = colour, AL = character
+
+; Retrieves the character at the current cursor position.
+;
+; IN: nothing
+; OUT: AH = colour, AL = character
 textio_read_char:
 	pusha
 
@@ -70,16 +82,21 @@ textio_read_char:
 	ret
 
 
-; AH = colour, AL = character, BX = length, DH = row, DL = column
+; Draws a horizontal line of a given length.
+; 
+; IN: AL = line character, BX = length, DH = row, DL = column
+; OUT: nothing
 textio_draw_hline:
 	pusha
 
 	call textio_set_cursor
 	mov cx, bx
 	
+	mov ah, [textio_data.text_colour]
+
 .draw_next:
 	call textio_get_cursor
-	call textio_draw_char
+	call textio_set_char
 	call textio_advance_cursor
 	
 	loop .draw_next
@@ -87,7 +104,10 @@ textio_draw_hline:
 	popa
 	ret
 
-; AH = colour, AL = character, BX = length, DH = row, DL = column
+; Draws a vertical line of a given length.
+; 
+; IN: AL = line character, BX = length, DH = row, DL = column
+; OUT: nothing
 textio_draw_vline:
 	pusha
 	
@@ -95,9 +115,9 @@ textio_draw_vline:
 	mov cx, bx
 	inc cx
 
-	mov bl, ah
 	mov ah, 0x09
 	mov bh, [textio_data.output_page]
+	mov bl, [textio_data.text_colour]
 	
 .print_char:
 	push cx
@@ -130,15 +150,18 @@ textio_draw_vline:
 	
 	
 
-; AH = colour, AL = character
-; BH = initial row, BL = initial column, CH = final row, CL = final column
+; Draws a block of the given character and colour.
+;
+; IN: AL = character
+; IN: BH = initial row, BL = initial column, CH = final row, CL = final column
+; OUT: nothing
 textio_draw_block:
 	pusha
 
 	mov dx, bx
 	call textio_set_cursor
 	
-	mov [.start_col], bl
+	mov ah, bl
 
 	sub cl, bl
 	movzx dx, cl
@@ -153,7 +176,7 @@ textio_draw_block:
 	call textio_get_cursor
 	call textio_draw_hline
 	
-	mov dl, [.start_col]
+	mov dl, ah
 	
 	inc dh
 	cmp dh, [textio_data.last_row]
@@ -174,10 +197,12 @@ textio_draw_block:
 	pop cx
 	jmp .next_line
 
-.start_col		db 0
 
-; BH = start row, BL = start column, CH = final row, CL = final column
-; SI = output buffer
+; Copies the contents of a given area on the screen to memory.
+;
+; IN: BH = start row, BL = start column, CH = final row, CL = final column
+; IN: SI = output buffer
+; OUT: nothing
 textio_grab_area:
 	pusha
 
@@ -221,6 +246,11 @@ textio_grab_area:
 	ret
 
 
+; Restores the contexts of a given area of the screen from memory.
+;
+; IN: BH = start row, BL = start column, CH = final row, CL = final column
+; IN: SI = input buffer
+; OUT: nothing
 textio_restore_area:
 	; DH = rows left
 	; DL = column count
@@ -251,7 +281,8 @@ textio_restore_area:
 	push dx
 	lodsw
 	call textio_get_cursor
-	call textio_draw_char
+	mov [textio_data.text_colour], ah
+	call textio_set_char
 	pop dx
 
 	loop .grab_row
@@ -265,14 +296,26 @@ textio_restore_area:
 	ret
 
 
+; Sets the text colour to use for drawing operations.
+;
+; IN: AL = colour value
+; OUT: nothing
 textio_set_text_colour:
 	mov [textio_data.text_colour], al
 	ret
 
+
+; Sets the video page to use for drawing operations.
+;
+; IN: AL = page number
 textio_set_output_page:
 	mov [textio_data.output_page], al
 	ret
 
+
+; Set the video page that is display on the screen.
+;
+; IN: AL = page number
 textio_set_visible_page:
 	push ax
 
@@ -286,6 +329,9 @@ textio_set_visible_page:
 
 
 
+; Display a string at the cursor position.
+;
+; IN: SI = address of string
 textio_print_string:
 	push ax
 	push si
@@ -305,7 +351,11 @@ textio_print_string:
 	pop ax
 	ret
 
-
+	
+; Move the cursor back one position.
+;
+; IN: nothing
+; OUT: nothing
 textio_reverse_cursor:
 	push dx
 
@@ -331,6 +381,10 @@ textio_reverse_cursor:
 	jmp .done
 
 
+; Move the cursor forward one position.
+;
+; IN: nothing
+; OUT: nothing
 textio_advance_cursor:
 	push dx
 	
@@ -351,6 +405,10 @@ textio_advance_cursor:
 	pop dx
 	ret
 
+; Move the cursor to the next line.
+;
+; IN: nothing
+; OUT: nothing
 textio_newline:
 	push cx
 	push dx
@@ -378,6 +436,10 @@ textio_newline:
 	ret
 
 
+; Move the cursor to a given position on the screen.
+; 
+; IN: DH = cursor row, DL = cursor column
+; OUT: nothing
 textio_set_cursor:
 	pusha
 	
@@ -389,6 +451,10 @@ textio_set_cursor:
 	ret
 
 
+; Retrieves the current position of the cursor.
+; 
+; IN: nothing
+; OUT: DH = cursor row, DL = cursor column
 textio_get_cursor:
 	push ax
 	push bx
@@ -403,6 +469,10 @@ textio_get_cursor:
 	pop ax
 	ret
 
+; Scrolls the screen by the given number of lines.
+;
+; IN: CX = lines to scroll
+; OUT: nothing
 textio_scroll_down:
 	pusha
 
@@ -427,6 +497,10 @@ textio_scroll_down:
 	ret
 
 
+; Clears the screen are reset the cursor position.
+;
+; IN: nothing
+; OUT: nothing
 textio_clear_screen:
 	push cx
 	push dx
@@ -441,12 +515,19 @@ textio_clear_screen:
 	pop cx
 	ret
 
+; Sets the maximum cursor position on the screen.
+; 
+; IN: DH = highest row number, DL = highest column number
+; OUT: nothing
 textio_set_screen_limits:
 	mov [textio_data.last_row], dh
 	mov [textio_data.last_column], dl
 	ret
 
-; AH = old page, AL = new page
+; Copies the contents of one video page to another.
+;
+; IN: AH = source page, AL = destination page
+; OUT: nothing
 textio_clone_page:
 	pusha
 
@@ -472,16 +553,13 @@ textio_clone_page:
 	mov dx, 0
 
 .next_char:
-	mov al, bh
-	call textio_set_output_page
+	mov [textio_data.output_page], bh
 	call textio_set_cursor
 	call textio_read_char
 
-	push ax
-	mov al, bl
-	call textio_set_output_page
-	pop ax
-	call textio_draw_char
+	mov [textio_data.output_page], bl
+	mov [textio_data.text_colour], ah
+	call textio_set_char
 
 	inc dl
 
@@ -514,6 +592,7 @@ textio_clone_page:
 	popa
 	ret
 
+; Library data preserved between calls.
 textio_data:
 	.text_colour		db 0
 	.visible_page		db 0

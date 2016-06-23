@@ -2,7 +2,7 @@ BITS 16
 
 GLOBAL textio_init
 GLOBAL textio_write_char
-GLOBAL textio_draw_char
+GLOBAL textio_set_char
 GLOBAL textio_read_char
 GLOBAL textio_draw_hline
 GLOBAL textio_draw_vline
