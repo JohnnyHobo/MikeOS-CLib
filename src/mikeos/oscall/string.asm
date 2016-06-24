@@ -142,12 +142,11 @@
 	push bx
 	push di
 
-	mov si, [bp + 4]
-	mov ax, [si]
-	mov dx, [si + 2]
+	mov ax, [bp + 4]
+	mov dx, [bp + 6]
 
-	mov bx, [bp + 6]
-	mov di, [bp + 8]
+	mov bx, [bp + 8]
+	mov di, [bp + 10]
 	call os_long_int_to_string
 	mov ax, di
 
