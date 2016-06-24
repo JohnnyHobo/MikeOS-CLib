@@ -101,7 +101,7 @@ void os_print_char(char ch)
 	asm("OSCALL_PRINT_CHAR");
 }
 
-char *os_input_string(char *string)
+char *os_input_string(char *buffer, int max_bytes)
 {
 	asm("OSCALL_INPUT_STRING");
 } 

@@ -100,7 +100,7 @@ int puts(char *str)
 
 char *gets(char *str)
 {
-	os_input_string(str);
+	os_input_string(str, 256);
 	os_print_newline();
 	return str;
 }

@@ -20,5 +20,6 @@ void os_print_1hex(unsigned char value);
 void os_print_2hex(unsigned char value);
 void os_print_4hex(unsigned short value);
 void os_print_char(char value);
+char *os_input_string(char *buffer, int max_bytes);
 #endif
 

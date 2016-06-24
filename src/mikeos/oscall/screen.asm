@@ -126,6 +126,7 @@
 
 %macro OSCALL_INPUT_STRING 0
 	mov ax, [bp + 4]
+	mov bx, [bp + 6]
 	call os_input_string
 %endmacro
 

@@ -113,6 +113,7 @@ The os\_print\_char function has been added for printing a single character.
     void os_print_2hex(unsigned char value);
     void os_print_4hex(unsigned short value);
     void os_print_char(char value);
+    char *os_input_string(char *buffer, int max_bytes);
 
 #### String Functions ####
     int length = os_string_length(char *str);
