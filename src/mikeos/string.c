@@ -1,3 +1,5 @@
+#include "mikeos/struct.h"
+
 asm("%include 'mikedev.inc'");
 asm("%include 'oscall/string.asm'");
 
@@ -86,7 +88,7 @@ char *os_sint_to_string(signed int value)
 	asm("OSCALL_SINT_TO_STRING");
 }
 
-char *os_long_int_to_string(int lower_part, int upper_part, int base, char *buffer)
+char *os_long_int_to_string(struct longint *value, int base, char *buffer)
 {
 	asm("OSCALL_LONG_INT_TO_STRING");
 }

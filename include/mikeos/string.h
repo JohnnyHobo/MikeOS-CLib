@@ -1,5 +1,8 @@
 #ifndef MOSCLIB_HAS_STRING
 #define MOSCLIB_HAS_STRING
+
+#include "mikeos/struct.h"
+
 int os_string_length(char *str);
 int os_find_char_in_string(char *str, char to_find);
 char *os_string_reverse(char *str);
@@ -17,7 +20,7 @@ void os_string_parse(char *src, char *str1, char *str2, char *str3, char *str4);
 int os_string_to_int(char *str);
 char *os_int_to_string(unsigned int value);
 char *os_sint_to_string(signed int value);
-char *os_long_int_to_string(int lower_part, int upper_part, int base, char *buffer);
+char *os_long_int_to_string(struct longint *value, int base, char *buffer);
 void os_set_time_fmt(int flags);
 char *os_get_time_string(char *buffer);
 void os_date_format(int flags);

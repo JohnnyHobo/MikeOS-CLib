@@ -1,5 +1,7 @@
 /* Master Include file for MikeOS */
 
+#include "mikeos/struct.h"
+
 #include "mikeos/basic.h"
 #include "mikeos/disk.h"
 #include "mikeos/keyboard.h"

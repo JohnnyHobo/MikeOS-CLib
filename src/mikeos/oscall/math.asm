@@ -4,20 +4,17 @@
 %endmacro
 
 %macro OSCALL_LONG_INT_NEGATE 0
-	push si
-	push di
+	push bx
 
-	mov si, [bp+4]
-	mov di, [bp+6]
+	mov bx, [bp + 4]
 
-	mov ax, [si]
-	mov dx, [si+2]
+	mov ax, [bx]
+	mov dx, [bx + 2]
 	call os_long_int_negate
-	mov [di], ax
-	mov [di+2], dx
+	mov [bx], ax
+	mov [bx + 2], dx
 
-	pop di
-	pop si
+	pop bx
 %endmacro
 
 %macro OSCALL_GET_RANDOM 0
