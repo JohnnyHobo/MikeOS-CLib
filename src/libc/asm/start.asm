@@ -5,7 +5,7 @@ bits 16
 %define STACK_SIZE	512
 
 GLOBAL __start
-GLOBAL __exit
+GLOBAL __Exit
 EXTERN _main
 EXTERN memory_initialise
 EXTERN __stop_alldata__
@@ -107,7 +107,7 @@ __start:
 	jmp .init_heap
 	
 
-__exit:
+__Exit:
 	; Handles Exit()
 	; Exiting at any point is easy, just restore the saved stack and return
 	jmp __start.finished

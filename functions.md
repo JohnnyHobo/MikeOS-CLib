@@ -1,16 +1,35 @@
 ### Standard Library Functions ###
-    int strlen(char *str);
-    char *strcpy(char *destination, char *source);
-    char *strcat(char *destination, char *source);
-    void exit(int status);
-    int rand();
-    int atoi(char *str);
+
+#### stdio.h ####
     int printf(char *fmt, ...);
     int putchar(int character);
     int puts(char *str);
     char *gets(char *str);
+    char getchar();
+    int remove(char *filename);
+    int rename(char *oldname, char *newname);
+    char *tmpnam(char *str);
+
+#### stdlib.h ####
     void *malloc(int size);
     void free(void *blk);
+    void *calloc(size_t num, size_t size);
+    void exit(int status);
+    void abort();
+    void _Exit();
+    int atoi(char *str);
+    int rand();
+    int abs(int n);
+    struct div_v div(int numer, int denom);
+
+#### string.h ####
+    int strlen(char *str);
+    char *strcpy(char *destination, char *source);
+    char *strcat(char *destination, char *source);
+    void *memset(void *ptr, int value, size_t num);
+    void *memcpy(void *destination, void *source, size_t num);
+    void *memcmp(void *ptr1, void *ptr2, size_t num);
+    void *memchr(void *ptr1, void *ptr2, size_t num);
 
 ### TextIO Functions ###
     void textio_init();

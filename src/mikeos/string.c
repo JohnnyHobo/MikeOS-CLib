@@ -18,7 +18,7 @@ char *os_string_reverse(char *str)
 	asm("OSCALL_STRING_REVERSE");
 }
 
-char *os_string_charchange(char *str, char to_find, char replacement)
+char *os_string_charchange(char *str, char to_find, char replace_with)
 {
 	asm("OSCALL_STRING_CHARCHANGE");
 }
@@ -63,7 +63,7 @@ int os_string_compare(char *str1, char *str2)
 	asm("OSCALL_STRING_COMPARE");
 }
 
-int os_string_strincmp(char *str1, char *str2, int chars)
+int os_string_strincmp(char *str1, char *str2, int num_chars)
 {
 	asm("OSCALL_STRING_STRINCMP");
 }
@@ -103,7 +103,7 @@ char *os_get_time_string(char *buffer)
 	asm("OSCALL_GET_TIME_STRING");
 }
 
-void os_date_format(int flags)
+void os_set_date_format(int flags)
 {
 	asm("OSCALL_SET_DATE_FMT");
 }

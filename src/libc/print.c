@@ -94,9 +94,14 @@ int putchar(int character)
 int puts(char *str)
 {
 	os_print_string(str);
+	os_print_newline();
 	return os_string_length(str);
 }
 
+char getchar()
+{
+	return os_wait_for_key() & 0x00FF;
+}
 
 char *gets(char *str)
 {

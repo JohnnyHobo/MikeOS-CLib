@@ -1,4 +1,7 @@
 #ifndef MOSCLIB_HAS_STDIO
 #define MOSCLIB_HAS_STDIO
-#include "print.h"
+
+#include "libc/print.h"
+#include "libc/fs.h"
+
 #endif
