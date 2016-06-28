@@ -1,3 +1,4 @@
+%define TEXTIO_USE_STATE_SAVE
 %include 'lib/textio.asm'
 
 %macro LIBCALL_TEXTIO_INIT 0
@@ -103,15 +104,35 @@
 	call textio_set_text_colour
 %endmacro
 
+%macro LIBCALL_TEXTIO_GET_TEXT_COLOUR 0
+	call textio_get_text_colour
+	mov ah, 0
+%endmacro
+
+
 %macro LIBCALL_TEXTIO_SET_OUTPUT_PAGE 0
 	mov al, [bp + 4]
 	call textio_set_output_page
 %endmacro
 
+
+%macro LIBCALL_TEXTIO_GET_OUTPUT_PAGE 0
+	call textio_get_output_page 
+	mov ah, 0
+%endmacro
+
+
 %macro LIBCALL_TEXTIO_SET_VISIBLE_PAGE 0
 	mov al, [bp + 4]
 	call textio_set_visible_page
 %endmacro
+
+
+%macro LIBCALL_TEXTIO_GET_VISIBLE_PAGE 0
+	call textio_get_visible_page 
+	mov ah, 0
+%endmacro
+
 
 %macro LIBCALL_TEXTIO_PRINT_STRING 0
 	push si
@@ -171,9 +192,76 @@
 	call textio_set_screen_limits
 %endmacro
 
+
+%macro LIBCALL_TEXTIO_GET_SCREEN_LIMITS 0
+	push bx
+
+	call textio_get_screen_limits
+
+	mov bx, [bp + 4]
+	movzx ax, dh
+	mov [bx], ax
+
+	mov bx, [bp + 6]
+	movzx ax, dl
+	mov [bx], ax
+
+	pop bx
+%endmacro
+
+
 %macro LIBCALL_TEXTIO_CLONE_PAGE 0
 	mov ah, [bp + 4]
 	mov al, [bp + 6]
 	call textio_clone_page
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_SET_SCROLL_MODE 0
+	mov al, [bp + 4]
+	call textio_set_scroll_mode
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_GET_SCROLL_MODE 0
+	call textio_get_scroll_mode
+	mov ah, 0
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_SET_TEXT_MODE 0
+	mov al, [bp + 4]
+	call textio_set_text_mode
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_GET_TEXT_MODE 0
+	call textio_get_text_mode
+	mov ah, 0
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_GET_STATE_SIZE 0
+	call textio_get_state_size
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_SAVE_STATE 0
+	push si
+
+	mov si, [bp + 4]
+	call textio_save_state
+
+	pop si
+%endmacro
+
+
+%macro LIBCALL_TEXTIO_RESTORE_STATE 0
+	push si
+
+	mov si, [bp + 4]
+	call textio_restore_state
+
+	pop si
 %endmacro
 

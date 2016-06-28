@@ -1,113 +1,227 @@
-asm("%include 'asm/textio.asm'");
+#include "common/minmax.h"
+#include "mikeos/string.h"
+#include "textio/rawtio.h"
 
-void textio_init()
+
+void charout(char ch)
 {
-	asm("LIBCALL_TEXTIO_INIT");
+	textio_write_char(ch);
 }
 
-void textio_write_char(char ch)
+void grabchar(char *ch, int *colour)
 {
-	asm("LIBCALL_TEXTIO_WRITE_CHAR");
+	textio_read_char(colour, ch);
 }
 
-char textio_read_char(int *colour, char *ch)
+void setchar(char ch, int col, int row)
 {
-	asm("LIBCALL_TEXTIO_READ_CHAR");
+	col = abscol(col);
+	row = absrow(row);
+	textio_set_char(ch, col, row);
 }
 
-int textio_set_char(char ch, int y, int x)
+void vline(char ch, int col, int row, int len)
 {
-	asm("LIBCALL_TEXTIO_SET_CHAR");
+	textio_draw_vline(ch, len, absrow(row), abscol(col));
 }
 
-void textio_draw_hline(char ch, int length, int start_y, int start_x)
+void hline(char ch, int col, int row, int len)
 {
-	asm("LIBCALL_TEXTIO_DRAW_HLINE");
+	textio_draw_hline(ch, len, absrow(row), abscol(col));
 }
 
-void textio_draw_vline(char ch, int length, int start_y, int start_x)
+void rectangle(char ch, int c1, int r1, int c2, int r2)
 {
-	asm("LIBCALL_TEXTIO_DRAW_VLINE");
+	int start_row, end_row, start_col, end_col;
+
+	r1 = absrow(r1);
+	r2 = absrow(r2);
+	c1 = abscol(c1);
+	c2 = abscol(c2);
+
+	start_row = min(r1, r2);
+	end_row = max(r1, r2);
+	start_col = min(c1, c2);
+	end_col = max(c1, c2);
+
+	textio_draw_block(ch, start_row, start_col, end_row, end_col);
 }
 
-void textio_draw_block(char ch, int start_y, int start_x, int finish_y, int finish_x)
+void grabarea(char *buffer, int c1, int r1, int c2, int r2)
 {
-	asm("LIBCALL_TEXTIO_DRAW_BLOCK");
-}
+	int start_row, end_row, start_col, end_col;
 
-void textio_grab_area(int start_y, int start_x, int finish_y, int finish_x, char *buffer)
-{
-	asm("LIBCALL_TEXTIO_GRAB_AREA");
-}
+	r1 = absrow(r1);
+	r2 = absrow(r2);
+	c1 = abscol(c1);
+	c2 = abscol(c2);
 
-void textio_restore_area(int start_y, int start_x, int finish_y, int finish_x, char *buffer)
-{
-	asm("LIBCALL_TEXTIO_RESTORE_AREA");
-}
+	start_row = min(c1, c2);
+	end_row = max(c1, c2);
+	start_col = min(c1, c2);
+	end_col = max(c1, c2);
 
-void textio_set_text_colour(int colour)
-{
-	asm("LIBCALL_TEXTIO_SET_TEXT_COLOUR");
-}
-
-void textio_set_output_page(int page)
-{
-	asm("LIBCALL_TEXTIO_SET_OUTPUT_PAGE");
-}
-
-void textio_set_visible_page(int page)
-{
-	asm("LIBCALL_TEXTIO_SET_VISIBLE_PAGE");
-}
-
-void textio_print_string(char *str)
-{
-	asm("LIBCALL_TEXTIO_PRINT_STRING");
-}
-
-void textio_reverse_cursor()
-{
-	asm("LIBCALL_TEXTIO_REVERSE_CURSOR");
+	textio_grab_area(start_row, start_col, end_row, end_col, buffer);
 }
 
 
-void textio_advance_cursor()
+void putarea(char *buffer, int c1, int r1, int c2, int r2)
 {
-	asm("LIBCALL_TEXTIO_ADVANCE_CURSOR");
+	int start_row, end_row, start_col, end_col;
+
+	r1 = absrow(r1);
+	r2 = absrow(r2);
+	c1 = abscol(c1);
+	c2 = abscol(c2);
+
+	start_row = min(c1, c2);
+	end_row = max(c1, c2);
+	start_col = min(c1, c2);
+	end_col = max(c1, c2);
+
+	textio_restore_area(start_row, start_col, end_row, end_col, buffer);
 }
 
-void textio_newline()
+
+int textcolour(int colour)
 {
-	asm("LIBCALL_TEXTIO_NEWLINE");
+	if (colour == -1) {
+		return textio_get_text_colour();
+	}
+
+	textio_set_text_colour(colour);
+	return textio_get_text_colour();
 }
 
-void textio_set_cursor(int row, int column)
+
+int outpage(int page)
 {
-	asm("LIBCALL_TEXTIO_SET_CURSOR");
+	if (page == -1) {
+		return textio_get_output_page();
+	}
+
+	textio_set_output_page(page);
+	return textio_get_output_page();
 }
 
-void textio_get_cursor(int *row, int *column)
+int viewpage(int page)
 {
-	asm("LIBCALL_TEXTIO_GET_CURSOR");
+	if (page == -1) {
+		return textio_get_visible_page();
+	}
+
+	textio_set_visible_page(page);
+	return textio_get_output_page();
 }
 
-void textio_scroll_down(int lines)
+
+int strout(char *str)
 {
-	asm("LIBCALL_TEXTIO_SCROLL_DOWN");
+	if (str) {
+		textio_print_string(str);
+		return os_string_length(str);
+	} else {
+		return -1;
+	}
 }
 
-void textio_clear_screen()
+
+int newline()
 {
-	asm("LIBCALL_TEXTIO_CLEAR_SCREEN");
+	int row, col;
+
+	textio_newline();
+	textio_get_cursor(&row, &col);
+
+	return row;
 }
 
-void textio_set_screen_limits(int row, int column)
+void movecur(int col, int row)
 {
-	asm("LIBCALL_TEXTIO_SET_SCREEN_LIMITS");
+	int maxrow, maxcol;
+
+	row = absrow(row);
+	col = abscol(col);
+	textio_set_cursor(row, col);
 }
 
-void textio_clone_page(int src_page, int dest_page)
+
+void getcur(int *col, int *row)
 {
-	asm("LIBCALL_TEXTIO_CLONE_PAGE");
+	textio_get_cursor(row, col);
 }
+
+void scroll(int lines)
+{
+	textio_scroll_down(lines);
+}
+
+void clearscr()
+{
+	textio_clear_screen();
+}
+
+void scrlimit(int col, int row)
+{
+	textio_set_screen_limits(row, col);
+}
+
+int maxcol()
+{
+	int row, col;
+
+	textio_get_screen_limits(&row, &col);
+	return col;
+}
+
+int maxrow()
+{
+	int row, col;
+
+	textio_get_screen_limits(&row, &col);
+	return row;
+}
+
+int scrollmode(int mode)
+{
+	if (mode == -1) {
+		return textio_get_scroll_mode();
+	}
+
+	textio_set_scroll_mode(mode);
+	return textio_get_scroll_mode();
+}
+
+
+int textmode(int mode)
+{
+	if (mode == -1) {
+		return textio_get_text_mode();
+	}
+
+	textio_set_text_mode(mode);
+	return textio_get_text_mode();
+}
+
+
+
+int absrow(int row)
+{
+	int maxrow, maxcol;
+
+	textio_get_screen_limits(&maxrow, &maxcol);
+	if (row < 0) row += maxrow + 1;
+	return row;
+}
+
+int abscol(int col)
+{
+	int maxrow, maxcol;
+
+	textio_get_screen_limits(&maxrow, &maxcol);
+	if (col < 0) col += maxcol + 1;
+	return col;
+}
+
+
 

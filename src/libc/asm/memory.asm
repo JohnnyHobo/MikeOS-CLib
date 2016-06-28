@@ -21,7 +21,7 @@ _memcpy:
 	pop di
 	pop si
 
-	pop bp
+	leave
 	ret
 
 
@@ -38,7 +38,7 @@ _memset:
 	mov ax, [bp + 4]
 
 	pop di
-	pop bp
+	leave
 	ret
 
 
@@ -66,7 +66,7 @@ _memcmp:
 	pop di
 	pop si
 
-	pop bp
+	leave
 	ret
 
 .greater:
@@ -96,7 +96,7 @@ _memchr:
 
 .done:
 	pop di
-	pop bp
+	leave
 	ret
 
 .not_found:
