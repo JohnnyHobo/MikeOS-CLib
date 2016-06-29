@@ -1,24 +1,27 @@
+bits 16
+
 GLOBAL _div
 
 _div:
 	push bp
 	mov bp, sp
 
-	mov ax, [bp + 4]
-	mov dx, 0
+	push bx
+	mov bx, [bp + 4]
 
-	mov cx, [bp + 6]
-	div cx
+	mov ax, [bp + 6]
+	cwd
+
+	mov cx, [bp + 8]
+	idiv cx
 	
-	mov [div_result], ax
-	mov [div_modulo], dx
+	mov [bx], ax
+	mov [bx + 2], dx
 
-	mov ax, div_result
+	pop bx
 
-	pop bp
+	leave
 	ret
 
-div_result dw 0
-div_modulo dw 0
 	
 	

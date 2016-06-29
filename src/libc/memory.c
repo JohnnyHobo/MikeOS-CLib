@@ -5,10 +5,15 @@
 void *calloc(size_t num, size_t size)
 {
 	void *mem;
+	size_t total;
 
-	mem = malloc(num * size);
+	total = size * num;
+	/* Check for an overflow */
+	if (num == 0 || total / num != size) return NULL;
+
+	mem = malloc(total);
 	if (!mem) return NULL;
 
-	return memset(mem, 0, num * size);
+	return memset(mem, 0, total);
 }
 

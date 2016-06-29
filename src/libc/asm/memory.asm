@@ -1,3 +1,5 @@
+bits 16
+
 GLOBAL _memcpy
 GLOBAL _memset
 GLOBAL _memcmp
@@ -14,6 +16,7 @@ _memcpy:
 	mov di, [bp + 4]
 	mov si, [bp + 6]
 	mov cx, [bp + 8]
+	cld
 	rep movsb
 	
 	mov ax, [bp + 4]
@@ -34,6 +37,7 @@ _memset:
 	mov di, [bp + 4]
 	mov al, [bp + 6]
 	mov cx, [bp + 8]
+	cld
 	rep stosb
 	mov ax, [bp + 4]
 
@@ -53,11 +57,9 @@ _memcmp:
 	mov si, [bp + 4]
 	mov di, [bp + 6]
 	mov cx, [bp + 8]
+	cld
 	repe cmpsb
 	je .equal
-
-	mov al, [si]
-	cmp al, [di]
 	ja .greater
 
 	mov ax, -1
@@ -71,11 +73,11 @@ _memcmp:
 
 .greater:
 	mov ax, 1
-	je .done
+	jmp .done
 
 .equal:
 	mov ax, 0
-	je .done
+	jmp .done
 	
 
 
@@ -88,6 +90,7 @@ _memchr:
 	mov di, [bp + 4]
 	mov al, [bp + 6]
 	mov cx, [bp + 8]
+	cld
 	repne scasb
 	jne .not_found
 

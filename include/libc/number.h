@@ -10,7 +10,7 @@ typedef struct {
 
 int rand();
 int abs(int n);
-struct div_v div(int numer, int denom);
+div_t div(int numer, int denom);
 
 
 #endif

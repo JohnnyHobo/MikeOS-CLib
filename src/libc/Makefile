@@ -1,5 +1,5 @@
 OBJECTS = print.o exit.o conv.o math.o string.o asm/memory.o 
-OBJECTS += asm/math.o fs.o
+OBJECTS += asm/math.o fs.o memory.o
 
 all: $(OBJECTS)
 	smlrcc -flat16 -c -o libc.a $(OBJECTS)
