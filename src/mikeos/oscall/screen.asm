@@ -1,5 +1,3 @@
-%include '../common/carry.asm'
-
 %macro OSCALL_PRINT_STRING 0
 	push si
 	mov si, [bp + 4]

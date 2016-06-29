@@ -1,4 +1,4 @@
-OBJECTS = print.o asm/start.o exit.o conv.o math.o string.o asm/memory.o 
+OBJECTS = print.o exit.o conv.o math.o string.o asm/memory.o 
 OBJECTS += asm/math.o fs.o
 
 all: $(OBJECTS)

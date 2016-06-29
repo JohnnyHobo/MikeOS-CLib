@@ -1,5 +1,5 @@
-SRCDIRS = mikeos memory libc textio
-LIBOBJS = libc.a libmikeos.a libmemory.a libtextio.a
+SRCDIRS = mikeos memory libc textio common
+LIBOBJS = libc.a libmikeos.a libmemory.a libtextio.a crt0.o
 
 
 all: libs

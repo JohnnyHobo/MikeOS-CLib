@@ -1,9 +1,5 @@
 #include "mikeos/screen.h"
 
-void dummy()
-{
-}
-
 int printf(char *fmt, ...)
 {
 	int i = 0;

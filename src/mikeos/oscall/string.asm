@@ -1,5 +1,3 @@
-%include '../common/carry.asm'
-
 %macro OSCALL_STRING_LENGTH 0
 	mov ax, [bp + 4]
 	call os_string_length

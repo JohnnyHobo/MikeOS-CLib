@@ -1,4 +1,3 @@
-%include '../common/carry.asm'
 %include 'lib/memory.asm'
 
 %macro LIBCALL_MEMORY_INITIALISE 0
@@ -6,7 +5,10 @@
 	mov si, [bp+4]
 	mov ax, [bp+6]
 	call memory_initialise
-	CF_TO_AX
+
+	mov ah, 0
+	setc al
+
 	pop si
 %endmacro
 
