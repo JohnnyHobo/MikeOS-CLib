@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 
 int main()
 {
@@ -34,6 +35,11 @@ int main()
 	printf("MEMCHR Find Valid, Pointer: %p; Data: %d\n", ptr2, *ptr2);
 	ptr2 = memchr(ptr, 'Z', 18);
 	printf("MEMCHR Find Invalid, Pointer: %p\n", ptr2);
+
+	strcpy(ptr, "One Two");
+	printf("MEMMOVE initial string: %s\n", ptr);
+	memmove(ptr + 4, ptr, 8);
+	printf("MEMMOVE final string: %s\n", ptr);
 
 	return 0;
 }

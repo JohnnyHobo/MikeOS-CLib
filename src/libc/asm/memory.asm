@@ -4,6 +4,7 @@ GLOBAL _memcpy
 GLOBAL _memset
 GLOBAL _memcmp
 GLOBAL _memchr
+GLOBAL _memmove
 
 
 _memcpy:
@@ -106,3 +107,44 @@ _memchr:
 	mov ax, 0
 	jmp .done
 
+
+_memmove:
+	push bp
+	mov bp, sp
+
+	push si
+	push di
+
+	mov di, [bp + 4]
+	mov si, [bp + 6]
+	mov cx, [bp + 8]
+
+	; If the destination is greater than the source, copy backwards.
+	cmp si, di
+	jb .backwards
+
+	cld
+	rep movsb
+
+.done:
+	pop di
+	pop si
+	leave
+	ret
+
+
+.backwards:
+	; Start at the end to avoid overwriting the source data.
+	std
+	add di, cx
+	dec di
+	add si, cx
+	dec si
+
+	rep movsb
+
+	cld
+	jmp .done
+
+
+	
