@@ -51,11 +51,15 @@ __start:
 	call os_string_tokenize
 
 	cmp di, 0
-	je .init_heap
+	je .args_done
 
 	inc dx
 	mov si, di
 	loop .get_parameter
+
+.args_done:
+	mov word [bx], 0
+	mov [argc], dx
 %endif
 
 %ifdef MOSCLIB_USE_MM
@@ -83,6 +87,8 @@ __start:
 	mov ss, ax
 	mov sp, 0		; The stack starts at the end of memory space
 	sti
+%else
+	mov [os_sp], sp
 %endif
 
 %ifdef MOSCLIB_USE_PARAMS
@@ -90,11 +96,15 @@ __start:
 	; It should look like this:
 	; int main(int argc, char **argv);
 
-	; MikeOS does not pass the program name as a parameter,
-	; so this is non-standard.
-	mov bx, param_array
+	mov bx, argv0
 	push bx
+
+	mov dx, [argc]
+	inc dx
 	push dx
+%else
+	push word 0
+	push word 0
 %endif
 	call _main
 
@@ -106,6 +116,8 @@ __start:
 	mov ax, [os_ss]
 	mov ss, ax
 	sti
+%else
+	mov sp, [os_sp]
 %endif
 	
 	ret
@@ -119,9 +131,8 @@ __start:
 
 %ifdef MOSCLIB_USE_PARAMS
 .no_parameters:
-	mov dx, 0
-	mov word [param_array], 0
-	jmp .init_heap
+	mov dx, 1
+	jmp .args_done
 %endif
 	
 
@@ -135,13 +146,16 @@ section .data
 
 %ifdef MOSCLIB_USE_ALTSTACK
 os_ss				dw 0
-os_sp				dw 0
 %endif
+
+os_sp				dw 0
 
 %ifdef MOSCLIB_USE_MM
 heap_errmsg			db 'HEAP ERROR', 13, 10, 0
 %endif
 
 %ifdef MOSCLIB_USE_PARAMS
-param_array			times MAX_PARAMS dw 0
+argv0				dw 0
+param_array			times MAX_PARAMS + 1 dw 0
+argc				dw 0
 %endif

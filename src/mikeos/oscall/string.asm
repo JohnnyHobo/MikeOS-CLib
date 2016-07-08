@@ -15,9 +15,11 @@
 
 %macro OSCALL_STRING_REVERSE 0
 	push si
+
 	mov si, [bp + 4]
 	call os_string_reverse
 	mov ax, si
+
 	pop si
 %endmacro
 
@@ -29,6 +31,7 @@
 	mov al, [bp + 6]
 	mov bl, [bp + 8]
 	call os_string_charchange
+	mov ax, si
 
 	pop bx
 	pop si
@@ -122,6 +125,9 @@
 
 	pop di
 	pop si
+
+	mov ah, 0
+	setc al
 %endmacro
 
 %macro OSCALL_STRING_PARSE 0

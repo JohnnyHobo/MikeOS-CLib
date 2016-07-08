@@ -56,6 +56,10 @@
 
 %macro OSCALL_FILE_SELECTOR 0
 	call os_file_selector
+	jnc %%done
+
+	mov ax, 0
+%%done:
 %endmacro
 
 %macro OSCALL_LIST_DIALOG 0
