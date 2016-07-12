@@ -1,0 +1,3 @@
+textio.c
+rawtio.c
+../common/minmax.c

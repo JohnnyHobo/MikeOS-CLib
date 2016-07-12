@@ -1,0 +1,2 @@
+asm/crt0.asm
+asm/crt0_s.asm
