@@ -25,6 +25,7 @@ int scrollmode(int mode);
 int textmode(int mode);
 int absrow(int row);
 int abscol(int col);
+int advcur(int direction);
 
 #endif
 

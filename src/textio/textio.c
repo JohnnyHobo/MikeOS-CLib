@@ -224,4 +224,27 @@ int abscol(int col)
 }
 
 
+int advcur(int direction)
+{
+	int x, y, max_x, max_y;
+	
+	if (direction == 0) {
+		textio_advance_cursor();
+	} else if (direction == 1) {
+		textio_reverse_cursor();
+	} else if (direction == 2) {
+		textio_get_cursor(&x, &y);
+		if (y > 0) {
+			textio_set_cursor(x, --y);
+		}
+	} else if (direction == 3) {
+		textio_get_cursor(&x, &y);
+		textio_get_screen_limits(&max_x, &max_y);
+		if (y < max_y) {
+			textio_set_cursor(x, ++y);
+		} else {
+			textio_scroll_down(1);
+		}
+	}
+}
 

@@ -7,31 +7,56 @@ You will need:
  * NASM Assembler - http://www.nasm.us/
  * Smaller C Compiler - https://github.com/alexfru/SmallerC
  * MikeOS 4.5 or later - http://mikeos.sourceforge.net/
- * A Linux environment for the build.
-
-### Building Libraries ###
-Run `make libs` to build the libraries.
-
-This should produce three library objects:
- * *libc.a* - Provides a few standard library functions.
- * *libmemory.a* - Provides the memory manager.
- * *libmikeos.a* - Provides MikeOS API Wrappers.
+ * A Windows or Linux environment for the build.
 
 ### Building C Programs ###
-Place the C source file in the library's root directory and run
-`make (name).bin` to build. (e.g. for 'foo.c' run `make foo.bin`).
+Place with .c file you would like to build in the library's folder.
+
+On Linux, run `make (name).bin` to build. 
+(e.g. for 'foo.c' run `make foo.bin`)
+
+On Windows, run the batch file 'build.bat' and enter the filename when
+prompted or run `build.bat (filename)` from the commandline.
 
 A MikeOS binary file will be produced.
 
-Copy the MikeOS binary to the 'programs' directory in the MikeOS directory and
-run the build script appropriate for your operating system, or simple add the
-binary file to the MikeOS disk image.
+The binary file can be added to a MikeOS disk image by using a disk image
+tool, such as WinImage on Windows or by mounting the image on Linux.
+
+### Building Libraries ###
+Precompiled libraries are provided, but you can rebuild them manually if you
+have added/changed part of it.
+
+On Linux, run `make libs` to build the libraries.
+
+On Windows, run 'MAKELIBS.BAT' from the 'buildwin' folder.
+
+This should produce the following library objects in the 'lib' folder:
+ * *libc.a* - Provides a few standard library functions.
+ * *libmemory.a* - Provides the memory manager.
+ * *libmikeos.a* - Provides MikeOS API Wrappers.
+ * *libtextio.a* - Text mode drawing library.
+ * *crt0.o* - Program starter.
+ * *crt0_s.o* - Simplified program starter for programs not using libc.
+
+### Headers ###
+See the [Functions List](functions.md) for a list of usable functions.
+ * *mikeos.h* - Provides C prototypes for all the MikeOS API.
+ * *textio.h* - Provides text mode drawing functions.
+ * *stdlib.h* - Provides limited C Language functionality.
+ * *stdio.h* - Provides limited C Language functionality.
+ * *string.h* - Provides limited C Language functionality.
+ * *stdbool.h* - Provides limited C Language functionality.
 
 ### Example Programs ###
-Three example programs have been provided:
+Three example programs have been provided in the 'test' folder
+ * *args.c* - Echos the arguments passed from the commandline.
+ * *disktest.c* - Tests the disk API.
  * *echo.c* - Reports the character code and key code for each key press.
- * *prog.c* - An example programs using only standard library functions.
+ * *prog.c* - A simple example programs using only standard library functions.
  * *prog2.c* - A keyboard and text-based graphics example.
+ * *prog3.c* - Tests standard library memory and string functions.
+ * *textio.c* - An example program for the TextIO library.
 
 ### FAQ ###
 
@@ -40,9 +65,8 @@ No, GCC cannot generate real mode binaries that are needed by MikeOS.
 Additionally, GCC would need to be rebuilt to cross compile for another
 operating system.
 
-##### What if I am not running Linux? #####
-The build script should work fine on OSX but I haven't tested it.
-On Windows you might want to try installing Cygwin and building with that.
+##### I have found bug in the build script. #####
+Email me at: zerokelvinkeyboard@gmail.com
 
 ##### How can I use the wrapper functions? #####
 Take a look at the prototypes in the [Functions List](functions.md).
@@ -59,7 +83,16 @@ The size of 'int' is 16-bits.
 Don't forget the put 'U' on the end of unsigned constants larger than 32767.
 
 ##### Can I use a 32-bit (or larger) variable? #####
-No, this is a limitation of the Smaller C compiler.
+No, this is a limitation of the Smaller C compiler in 16-bit mode.
+
+MikeOS function that use 32-bit integers use the 'longint' structure.
+
+    struct longint {
+	    unsigned int lower;
+	    unsigned int upper;
+    };
+
+I may add a library to work with these.
 
 ##### Can I put data at a fixed address like in MikeOS Assembly? #####
 No, use malloc() to allocate memory.
