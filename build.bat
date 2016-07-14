@@ -104,11 +104,13 @@ Set BINNAME=test\%BINNAME%
 
 :StartCompile
 Echo Compiling...
-Echo smlrcc -entry __start -flat16 -origin 32768 -SIinclude -o %BINNAME% %CNAME% %LIBS%
-smlrcc -entry __start -flat16 -origin 32768 -SIinclude -o %BINNAME% %CNAME% %LIBS%
+Echo smlrcc -entry __start -flat16 -SIinclude -o %BINNAME% %CNAME% %LIBS%
+smlrcc -entry __start -flat16 -SIinclude -o %BINNAME% %CNAME% %LIBS%
+
+Echo.
 
 If %ErrorLevel% == 0 (
-	Echo Done.
+	Echo Build Complete.
 ) Else (
 	Echo Build Failed.
 )

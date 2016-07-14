@@ -31,6 +31,13 @@ Echo @echo off > %ScriptDir%\UTILPATH.BAT
 Set <NUL /p=Searching for NASM...
 
 Set NASM=Unknown
+
+For %%X in (nasm.exe) Do (
+  If %NASM% == Unknown (
+    Set NASM=%%~$PATH:X
+  )
+)
+
 If Exist "%PROGRAMFILES%\NASM\" (Set "NASM=%PROGRAMFILES%\NASM\")
 If Exist "%PROGRAMFILES(X86)%\NASM\" (Set "NASM=%PROGRAMFILES(X86)%\NASM\")
 If Exist "%USERPROFILE%\AppData\Local\NASM\" (Set "NASM=%USERPROFILE%\AppData\Local\NASM\")
@@ -56,7 +63,14 @@ Echo Set "NASM=%NASM%" >> %ScriptDir%\UTILPATH.BAT
 
 Set <NUL /p=Searching for Smaller C...
 
-Set SMALLERC=Unknown
+Set SmallerC=Unknown
+
+For %%X in (smlrcc.exe) Do (
+  If %SmallerC% == Unknown (
+    Set SmallerC=%%~$PATH:X
+  )
+)
+
 If Exist "%CD%\SmallerC" (Set "SmallerC=%CD%\SmallerC\v0100\binw")
 If Exist "%CD%\..\SmallerC" (Set "SmallerC=%CD%\..\SmallerC\v0100\binw")
 If Exist "%CD%\..\SmallerC" (Set "SmallerC=%CD%\..\SmallerC\v0100\binw")
