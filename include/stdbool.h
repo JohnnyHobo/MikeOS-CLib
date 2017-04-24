@@ -1,13 +1,13 @@
 #ifndef MOSCLIB_HAS_BOOLEAN
 #define MOSCLIB_HAS_BOOLEAN
 
-typedef enum {
+typedef enum __bool_s {
 	_Bool_is_int = -1,
 	false = 0,
 	true = 1
-} _Bool;
+} _Bool_t;
 
-#define bool _Bool
+#define bool _Bool_t
 
 #define false 0
 #define true 1

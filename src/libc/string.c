@@ -1,4 +1,5 @@
 #include "mikeos/string.h"
+#include "libc/types.h"
 
 int strlen(char *str)
 {
