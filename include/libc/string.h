@@ -4,6 +4,7 @@
 int strlen(char *str);
 char *strcpy(char *destination, char *source);
 char *strcat(char *destination, char *source);
+char *strncpy(char *destination, char *source, size_t num);
 
 #endif
 

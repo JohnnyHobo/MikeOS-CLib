@@ -17,4 +17,14 @@ char *strcat(char *destination, char *source)
 	return destination;
 }
 
+char *strncpy(char *destination, char *source, size_t num)
+{
+	if (os_string_length(source) < num) {
+		os_string_copy(destination, source);
+	} else {
+		memcpy(destination, source, num);
+	}
+	
+	return destination;
+}
 
