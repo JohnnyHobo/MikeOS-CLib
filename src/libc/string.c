@@ -29,3 +29,4 @@ char *strncpy(char *destination, char *source, size_t num)
 	return destination;
 }
 
+

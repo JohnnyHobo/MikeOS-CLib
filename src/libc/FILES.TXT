@@ -7,3 +7,4 @@ asm/memory.asm
 asm/math.asm
 fs.c
 memory.c
+asm/string.asm

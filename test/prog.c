@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 	
 	printf("Here's 12: %d\n", atoi(twelve));
 	printf("Here's a random number: %d\n", rand());
+	gets(first_name);
 	
 	return 0;
 }

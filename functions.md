@@ -9,6 +9,15 @@
     int remove(char *filename);
     int rename(char *oldname, char *newname);
     char *tmpnam(char *str);
+    int fputc(int ch, FILE *stream);
+    int putc(int ch, FILE *stream);
+    int vprintf(char *format, va_list args);
+    int fprintf(FILE *stream, char *format, ...);
+    int vfprintf(FILE *stream, char *format, va_list args);
+    int sprint(char *str, char *format, ...);
+    int vsprintf(char *str, char *format, va_list args);
+    int snprintf(char *str, size_t n, char *format, ...);
+    int vsnprintf(char *str, size_t n, char *format, va_list args);
 
 #### stdlib.h ####
     void *malloc(int size);
@@ -32,6 +41,8 @@
     void *memchr(void *ptr1, void *ptr2, size_t num);
     void *memmove(void *destination, void *source, size_t num);
     char *strncpy(char *destination, char *source, size_t num)
+    int strcmp(char *str1, char *str2);
+    char *strncat(char *destination, char *source, size_t num);
 
 ### TextIO Functions ###
     void textio_init();
@@ -154,7 +165,7 @@ The os\_print\_char function has been added for printing a single character.
     char *os_string_chomp(char *str);
     char *os_string_strip(char *str, char to_remove);
     int os_string_compare(char *str1, char *str2);
-    int os_string_strincmp(char *str1, char *str2);
+    int os_string_strincmp(char *str1, char *str2, int num_chars);
     void os_string_parse(char *src, char *str1, char *str2, char *str3, char *str4);
     int os_string_to_int(char *str);
     char *os_int_to_string(unsigned int value);

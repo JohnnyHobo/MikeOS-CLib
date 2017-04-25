@@ -3,5 +3,6 @@
 
 #include "libc/print.h"
 #include "libc/fs.h"
+#include "libc/file.h"
 
 #endif
