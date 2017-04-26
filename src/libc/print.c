@@ -39,8 +39,10 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 {
 	int fmtcnt = 0;
 	int count = 0;
-	char ch, *str;
+	char ch, *s;
 	char numstr[7];
+
+	if (!tofile) str[0] = '\0';
 
 	while (fmt[fmtcnt] != 0) {
 		if (limit > 0 && count >= (limit - 1)) break;
@@ -63,26 +65,26 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 		switch (fmt[fmtcnt]) {
 			case 'd':
 			case 'i':
-				str = sint_to_str(va_arg(arg, int), numstr);
+				s = sint_to_str(va_arg(arg, int), numstr);
 				break;
 
 			case 'u':
-				str = uint_to_str(va_arg(arg, int), numstr);
+				s = uint_to_str(va_arg(arg, int), numstr);
 				break;
 
 
 			case 'x':
-				str = hd_to_str(va_arg(arg, int), numstr);
-				os_string_lowercase(str);
+				s = hd_to_str(va_arg(arg, int), numstr);
+				os_string_lowercase(s);
 				break;
 
 			case 'X':
-				str = hd_to_str(va_arg(arg, int), numstr);
+				s = hd_to_str(va_arg(arg, int), numstr);
 				break;
 
 			case 'p':
 				strcpy(numstr, "0x");
-				str = hd_to_str(va_arg(arg, int), numstr + 2);
+				s = hd_to_str(va_arg(arg, int), numstr + 2);
 				break;
 
 			case 'c':
@@ -94,7 +96,7 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 				break;
 
 			case 's':
-				str = va_arg(arg, char*);
+				s = va_arg(arg, char*);
 				break;
 
 			case 'n':
@@ -112,11 +114,12 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 			case 'p':
 			case 's':
 				if (tofile) {
-					fputs(str, f);
-					count += strlen(str);
+					fputs(s, f);
+					count += strlen(s);
 				} else {
-					count += strncat(str, 
-						str, limit - count - 1);
+					str[count] = '\0';
+					strncat(str, s, limit - count - 1);
+					count = strlen(str);
 				}
 				break;
 
@@ -133,6 +136,8 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 		}
 
 	}
+
+	if (!tofile) str[count] = '\0';
 
 	return count;
 }
@@ -225,7 +230,6 @@ int fputs(char *str, FILE *stream)
 	int i;
 
 	for (i = 0; str[i] != 0; i++) {
-		/* if (stream->write(str[i]) == -1) return -1; */
 		if (stream->write(str[i]) == -1) return -1;
 	}
 
@@ -275,7 +279,7 @@ int vfprintf(FILE *stream, char *format, va_list args)
 }
 
 
-int sprint(char *str, char *format, ...)
+int sprintf(char *str, char *format, ...)
 {
 	va_list args;
 

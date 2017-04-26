@@ -46,6 +46,8 @@ _strcmp:
 	jmp .finish
 
 
+	EXTERN _os_print_4hex
+	EXTERN _os_print_string
 _strncat:
 	push bp
 	mov bp, sp
@@ -53,25 +55,31 @@ _strncat:
 	push si
 	push di
 
-	mov si, [bp + 6]
-	mov cx, -1
+	; Find the length of the string to add.
+	mov di, [bp + 6]
+	mov cx, [bp + 8]
+	inc cx
 	mov al, 0
 	cld
 	repne scasb
 
-	mov di, si
+	; Remember the last chararacter address.
+	mov si, di
 
-	mov si, [bp + 4]
-	mov cx, [bp + 8]
+	; Now find the end of the base string.
+	mov di, [bp + 4]
+	mov cx, -1
 	mov al, 0
 	repne scasb
+	dec di
 
+	; Now figure out the length to copy.
 	mov cx, si
-	sub cx, [bp + 4]
+	sub cx, [bp + 6]
 	dec cx
 
+	; Copy the new string after the end of the base string.
 	mov si, [bp + 6]
-	mov di, [bp + 4]
 	rep movsb
 
 	mov al, 0
