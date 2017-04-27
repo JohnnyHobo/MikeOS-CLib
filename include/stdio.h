@@ -5,5 +5,6 @@
 #include "libc/fs.h"
 #include "libc/file.h"
 #include "libc/io.h"
+#include "libc/null.h"
 
 #endif

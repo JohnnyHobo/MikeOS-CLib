@@ -48,11 +48,11 @@ char *fgets(char *str, int num, FILE *f)
 
 	if (num < 1) return 0;
 
-	for (i = 0; i < (num - 1); i++) {
+	for (i = 0; i < (num - 1); ) {
 		ch = fgetc(f);
 
 		if (ch == EOF) break;
-		str[i] = ch;
+		str[i++] = ch;
 		if (ch == '\n') break;
 	}
 

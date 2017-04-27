@@ -3,7 +3,7 @@
 int readcons();
 int writecons(int ch);
 char inbuf[257] = {'\0'};
-FILE console = {&readcons, &writecons, {256, 0, inbuf}};
+FILE console = {&readcons, &writecons, {257, 0, inbuf}};
 
 /* May need 256 bytes for older versions of MikeOS */
 int readcons()
