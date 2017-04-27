@@ -3,6 +3,6 @@
 
 #include "textio/rawtio.h"
 #include "textio/tiowrap.h"
-
+#include "textio/colours.h"
 
 #endif
