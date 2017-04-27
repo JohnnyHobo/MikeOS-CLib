@@ -2,16 +2,20 @@
 
 int readcons();
 int writecons(int ch);
-FILE console = {&readcons, &writecons};
+char inbuf[257] = {'\0'};
+FILE console = {&readcons, &writecons, {256, 0, inbuf}};
 
+/* May need 256 bytes for older versions of MikeOS */
 int readcons()
 {
-	int key;
-	key = os_wait_for_key() & 0x00FF;
-	os_print_char(key);
-	return key;
+	os_input_string(console.ibuf.data, 256);
+	os_print_newline();
+	console.ibuf.offset = 0;
+	strcat(console.ibuf.data, "\n");
+	return strlen(console.ibuf.data);
 }
 
+/* Unbuffered for now. */
 int writecons(int ch)
 {
 	if (ch == '\n') {

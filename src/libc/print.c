@@ -1,38 +1,10 @@
-#include "mikeos/screen.h"
+#include <stdbool.h>
 #include <stdarg.h>
+
+#include "mikeos/screen.h"
 #include "libc/file.h"
 #include "libc/types.h"
-#include <stdbool.h>
-
-int putchar(int character)
-{
-	return putc(character, stdout);
-}
-
-int puts(char *str)
-{
-	if (fputs(str, stdout) == EOF) {
-		return EOF;
-	}
-
-	if (fputc('\n', stdout) == EOF) {
-		return EOF;
-	} else {
-		return 0;
-	}
-}
-
-char getchar()
-{
-	return os_wait_for_key() & 0x00FF;
-}
-
-char *gets(char *str)
-{
-	os_input_string(str, 256);
-	os_print_newline();
-	return str;
-}
+#include "common/minmax.h"
 
 int print_string(int tofile, FILE *f, char *str, int limit, char *fmt, 
 		va_list arg)
@@ -42,7 +14,7 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 	char ch, *s;
 	char numstr[7];
 
-	if (!tofile) str[0] = '\0';
+	if (!tofile && str) str[0] = '\0';
 
 	while (fmt[fmtcnt] != 0) {
 		if (limit > 0 && count >= (limit - 1)) break;
@@ -116,16 +88,19 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 				if (tofile) {
 					fputs(s, f);
 					count += strlen(s);
-				} else {
+				} else if (str) {
 					str[count] = '\0';
 					strncat(str, s, limit - count - 1);
 					count = strlen(str);
+				} else {
+					count += min(limit - count - 1, 
+							strlen(str));
 				}
 				break;
 
 			case 'c':
 			case '%':
-				if (tofile) {
+				if (tofile && str) {
 					fputc(ch, f);
 				} else {
 					str[count] = ch;
@@ -137,71 +112,11 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 
 	}
 
-	if (!tofile) str[count] = '\0';
+	if (!tofile && str) str[count] = '\0';
 
 	return count;
 }
 
-char *uint_to_str(unsigned int value, char *str)
-{
-
-	int count;
-
-	do {
-		str[count++] = value % 10 + '0';		
-		value /= 10;
-	} while (value > 0);
-	str[count] = '\0';
-
-	os_string_reverse(str);
-	return str;
-}
-
-
-char *sint_to_str(int value, char *str)
-{
-	int count = 0;
-	int sign = false;
-
-	if (value < 0) {
-		sign = true;
-		value = -value;
-		count++;
-	}
-
-	do {
-		str[count++] = value % 10 + '0';		
-		value /= 10;
-	} while (value > 0);
-	str[count] = '\0';
-
-	if (!sign) {
-		os_string_reverse(str);
-	} else {
-		os_string_reverse(str + 1);
-		str[0] = '-';
-	}
-
-	return str;
-}
-
-
-char *hd_to_str(int value, char *str)
-{
-	int count;
-	char *hexchar = "0123456789ABCDEF";
-
-	do {
-		str[count++] = hexchar[value % 16];		
-		value /= 16;
-	} while (value > 0);
-	str[count] = '\0';
-
-	os_string_reverse(str);
-	return str;
-}
-
-	
 char *num_to_str(int hassign, int base, int size, void *value, 
 		char *str, int maxlen)
 {
@@ -225,30 +140,6 @@ char *num_to_str(int hassign, int base, int size, void *value,
 }
 
 
-int fputs(char *str, FILE *stream)
-{
-	int i;
-
-	for (i = 0; str[i] != 0; i++) {
-		if (stream->write(str[i]) == -1) return -1;
-	}
-
-	return 0;
-}
-
-
-int fputc(int ch, FILE *stream)
-{
-	return stream->write(ch);
-}
-
-
-int putc(int ch, FILE *stream)
-{
-	return stream->write(ch);
-}
-
-
 int printf(char *format, ...)
 {
 	va_list args;
@@ -256,6 +147,7 @@ int printf(char *format, ...)
 	va_start(args, format);
 	print_string(true, stdout, 0, 0, format, args);
 }
+
 
 int vprintf(char *format, va_list args)
 {

@@ -4,5 +4,6 @@
 #include "libc/print.h"
 #include "libc/fs.h"
 #include "libc/file.h"
+#include "libc/io.h"
 
 #endif

@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 	printf("Your name is %d characters long!\n", strlen(first_name));
 	
 	printf("What is your last name?\n");
-	gets(last_name);
+	fgets(last_name, 50, stdin);
 	strcpy(full_name, first_name);
 	strcat(full_name, " ");
 	strcat(full_name, last_name);
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	
 	printf("Here's 12: %d\n", atoi(twelve));
 	printf("Here's a random number: %d\n", rand());
-	gets(first_name);
+	fgets(first_name, 2, stdin);
 	
 	return 0;
 }

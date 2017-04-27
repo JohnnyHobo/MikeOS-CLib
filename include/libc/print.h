@@ -6,12 +6,6 @@
 #include "libc/types.h"
 
 int printf(char *fmt, ...);
-int putchar(int character);
-int puts(char *str);
-char *gets(char *str);
-char getchar();
-int fputc(int ch, FILE *stream);
-int putc(int ch, FILE *stream);
 int vprintf(char *format, va_list args);
 int fprintf(FILE *stream, char *format, ...);
 int vfprintf(FILE *stream, char *format, va_list args);

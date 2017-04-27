@@ -46,8 +46,6 @@ _strcmp:
 	jmp .finish
 
 
-	EXTERN _os_print_4hex
-	EXTERN _os_print_string
 _strncat:
 	push bp
 	mov bp, sp

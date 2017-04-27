@@ -2,15 +2,6 @@
 
 #### stdio.h ####
     int printf(char *fmt, ...);
-    int putchar(int character);
-    int puts(char *str);
-    char *gets(char *str);
-    char getchar();
-    int remove(char *filename);
-    int rename(char *oldname, char *newname);
-    char *tmpnam(char *str);
-    int fputc(int ch, FILE *stream);
-    int putc(int ch, FILE *stream);
     int vprintf(char *format, va_list args);
     int fprintf(FILE *stream, char *format, ...);
     int vfprintf(FILE *stream, char *format, va_list args);
@@ -18,6 +9,19 @@
     int vsprintf(char *str, char *format, va_list args);
     int snprintf(char *str, size_t n, char *format, ...);
     int vsnprintf(char *str, size_t n, char *format, va_list args);
+    int fgetc(FILE *f);
+    int getc(FILE *f);
+    int getchar();
+    char *gets(char *str);
+    char *fgets(char *str, int num, FILE *f);
+    int fputc(int ch, FILE *f);
+    int putc(int ch, FILE *f);
+    int putchar(int ch);
+    int fputs(char *str, FILE *f);
+    int puts(char *str);
+    int remove(char *filename);
+    int rename(char *oldname, char *newname);
+    char *tmpnam(char *str);
 
 #### stdlib.h ####
     void *malloc(int size);
