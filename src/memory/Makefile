@@ -1,15 +1,15 @@
 OBJECTS = memory.o
 
 all: $(OBJECTS)
-	smlrcc -flat16 -c -o libmemory.a $(OBJECTS)
+	smlrcc -flat32 -c -o libmemory.a $(OBJECTS)
 	cp libmemory.a ../../lib/libmemory.a
 	
 %.o : %.c;
-	smlrc -seg16 $*.c $*.asm
-	nasm -f elf -o $@ $*.asm 
+	smlrc -unreal $*.c $*.asm
+	nasm -f elf32 -o $@ $*.asm 
 	
 %.o : %.asm;
-	nasm -f elf -o $@ $*.asm
+	nasm -f elf32 -o $@ $*.asm
 
 
 

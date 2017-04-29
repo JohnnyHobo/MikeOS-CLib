@@ -11,7 +11,7 @@ libs: $(addprefix lib/,$(LIBOBJ))
 	done
 
 %.bin : %.c;
-	smlrcc -entry __start -flat16 -origin 32768 -SIinclude -o $@ $*.c $(addprefix lib/,$(LIBOBJS))
+	smlrcc -entry __start -flat32 -origin 32768 -SIinclude -o $@ $*.c $(addprefix lib/,$(LIBOBJS))
 	
 clean:
 	rm -f lib/*.a

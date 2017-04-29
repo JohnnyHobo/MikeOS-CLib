@@ -1,9 +1,43 @@
 %macro OSCALL_PRINT_STRING 0
-	push si
-	mov si, [bp + 4]
+	START_API
+
+	RELOC_STR 1
+
+	mov si, [bp - 10]
 	call os_print_string
-	pop si
+
+	END_API
 %endmacro
+
+%macro START_API 0
+	push esi
+	push edi
+
+	mov dword [local_address], 40000
+%endmacro
+local_address dd 0
+
+%macro END_API 0
+	mov edi, [ebp - 8]
+	mov esi, [ebp - 4]
+%endmacro
+
+
+%macro RELOC_STR 1
+	mov esi, [ebp + 8 + (4 * %1)]
+	call copy_str_low
+%endmacro
+	
+copy_str_low:
+	mov edi, [local_address]
+	.next:
+	lodsb
+	stosb
+	cmp al, 0
+	jne .next
+	mov [local_address], edi
+	ret
+
 
 %macro OSCALL_CLEAR_SCREEN 0
 	call os_clear_screen
