@@ -1,7 +1,7 @@
 %macro OSCALL_PRINT_STRING 0
 	START_API
 
-	RELOC_STR 1
+	RELOC_STR 0
 
 	mov si, [bp - 10]
 	call os_print_string

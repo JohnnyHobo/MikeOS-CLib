@@ -96,9 +96,21 @@ __start:
 
 
 .enter_unreal_mode:
+	mov dx, ss
+
+	mov ax, cs
+	mov si, gdt_table.code
+	call modify_selector
+
+	mov ax, ds
+	mov si, gdt_table.data
+	call modify_selector
+
+	mov ax, es
+	mov si, gdt_table.data2
+	call modify_selector
+
 	cli
-	push ds
-	push es
 
 	; Load a 32-bit segment descriptor table
 	lgdt [gdt_desc]
@@ -110,17 +122,15 @@ __start:
 
 	; Setup the new segment descriptors
 	; We are now in protected mode, but not for long.
-	xchg bx, bx
-	jmp 0x08:.set_cs
+	jmp dword 0x08:.set_cs
 .set_cs:
 	
-bits 32
-
 	mov ax, 0x10
-	mov bx, 0x18
 	mov ds, ax
+	mov ax, 0x18
 	mov es, ax
-	mov ss, bx
+	mov ax, 0x20
+	mov ss, ax
 
 	; Exit protected mode with the descriptors intact.
 	mov eax, cr0
@@ -128,12 +138,13 @@ bits 32
 	mov cr0, eax
 
 	; Now put the normal real mode segments back in place.
-	jmp 0x2000:.set_cs_again
+	xchg bx, bx
+	jmp 0:.set_cs_again
 .set_cs_again:
-	pop es
-	pop ds
-	mov ax, ds
-	mov ss, ax
+	mov ss, dx
+	mov ax, 0
+	mov es, ax
+	mov ds, ax
 	sti
 	
 	call _main
@@ -166,6 +177,15 @@ __Exit:
 	jmp __start.finished
 	
 
+modify_selector:
+	push ax
+	shl ax, 4
+	or [si + 2], ax
+	pop ax
+	shr ax, 12
+	or [si + 4], al
+	ret
+
 section .data
 
 os_ss				dw 0
@@ -184,7 +204,7 @@ gdt_desc:
 
 gdt_table:
 	.empty		dq 0
-	.code		db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x9A, 0xCF, 0x00
+	.code		db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x9A, 0x8F, 0x00
 	.data		db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x92, 0xCF, 0x00
+	.data2		db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x92, 0xCF, 0x00
 	.stack		db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x92, 0xCF, 0x00
-	.code_fake	db 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x9A, 0xCF, 0x00

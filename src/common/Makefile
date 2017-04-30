@@ -7,6 +7,6 @@ all: $(OBJECTS)
 	smlrcc -unreal -I../../include -c $*.c -o $@ 
 	
 %.o : %.asm;
-	nasm -f elf32 -i../../include -o $@ $*.asm
+	nasm -f elf -i../../include -o $@ $*.asm
 
 
