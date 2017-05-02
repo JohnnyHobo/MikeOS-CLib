@@ -1,5 +1,5 @@
 SRCDIRS = mikeos memory libc textio common
-LIBOBJS = libc.a libmikeos.a libmemory.a libtextio.a crt0.o
+LIBOBJS = libc.a libmikeos.a libmemory.a libtextio.a crt0.o c0du.o
 
 
 all: libs
@@ -11,8 +11,11 @@ libs: $(addprefix lib/,$(LIBOBJ))
 	done
 
 %.bin : %.c;
-	smlrcc -unreal -SIinclude -o src/common/exefile.dat $*.c c0du.o $(addprefix lib/,$(LIBOBJS))
-	nasm -fbin -o $@ src/common/loader.asm
+	smlrcc -unreal -SIinclude -o src/common/exefile.dat $*.c $(addprefix lib/,$(LIBOBJS))
+	nasm -fbin -o $@ src/common/asm/loader.asm
+
+%.asm : %.c;
+	smlrcc -unreal -SIinclude -c -S $*.c -o $@
 	
 clean:
 	rm -f lib/*.a

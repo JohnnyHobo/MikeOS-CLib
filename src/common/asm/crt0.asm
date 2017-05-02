@@ -8,10 +8,12 @@ bits 16
 GLOBAL ___start__
 GLOBAL ___Irq5Isr
 GLOBAL __Exit
-EXTERN _main
+GLOBAL os_call
+GLOBAL lowmem_start
 
+
+EXTERN _main
 EXTERN memory_initialise
-EXTERN __stop_alldata__
 
 
 section .text
@@ -20,13 +22,27 @@ ___Irq5Isr:
 	retf
 
 ___start__:
-	xchg bx, bx
-	mov ax, [fs:LOADER_EXITPTR]
-	mov [exitptr.offset], ax
-	mov ax, [fs:LOADER_OS_CS]
-	mov [exitptr.osseg], ax
+	movzx ebp, sp
+	mov esi, [ebp + 4]
+
+	mov [dword os_data], esi
+
+	mov ax, [esi + LOADER_OS_EXIT]
+	mov [dword os_exit], ax
+	mov ax, [esi + LOADER_OS_CALL]
+	mov [dword os_call], ax
+
+	mov ax, [esi + LOADER_OS_CS]
+	mov [dword os_exit + 2], ax
+	mov [dword os_call + 2], ax
 
 .init_heap:
+	movzx eax, word [esi + LOADER_OS_DS]
+	shl eax, 4
+	movzx ebx, word [esi + LOADER_LOWMEM_START]
+	add eax, ebx
+	mov [dword lowmem_start], eax
+
 	; TODO: Call the new memory manager
 
 
@@ -36,42 +52,40 @@ ___start__:
 	; int main(int argc, char **argv);
 
 	
-	movzx eax, word [fs:LOADER_ARGV]
-	mov ebx, [fs:LOADER_OS_DS]
+	movzx eax, word [esi + LOADER_ARGV]
+	movzx ebx, word [esi + LOADER_OS_DS]
 	shl ebx, 4
 	add eax, ebx
 	push eax
 
-	movzx eax, word [fs:LOADER_ARGC]
+	movzx eax, word [esi + LOADER_ARGC]
 	push eax
 
-	call _main
+	db 0x9A		; 0x9A = call instruction
+section .relot
+	dd main_addr
+section .text
+main_addr:	dd _main	; _main is the address to relocate.
 
+
+; Handles _Exit()
 __Exit:
-	; Handles Exit()
+	mov esi, [os_data]
+	mov ax, [esi + LOADER_OS_SS]
 
 	cli
-	mov ax, [fs:LOADER_OS_SS]
 	mov ss, ax
-	mov sp, [fs:LOADER_OS_SP]
+	mov sp, [esi + LOADER_OS_SP]
 	sti
 	
-	jmp far [exitptr]
+	jmp far [os_exit]
 	
-
-modify_selector:
-	push ax
-	shl ax, 4
-	or [si + 2], ax
-	pop ax
-	shr ax, 12
-	or [si + 4], al
-	ret
-
 
 section .data
 
-exitptr:
-	.offset		dw 0
-	.osseg		dw 0
+os_data			dd 0
+os_exit			dd 0
+os_call			dd 0
+lowmem_start		dd 0
+
 

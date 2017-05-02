@@ -1,0 +1,15 @@
+%ifndef MOSCLIB_HAS_LOADER_OFFSETS
+%define MOSCLIB_HAS_LOADER_OFFSETS
+
+%define LOADER_ARGC		 0
+%define LOADER_ARGV		 2
+%define LOADER_OS_EXIT		 4
+%define LOADER_OS_CS		 6
+%define LOADER_OS_DS		 8
+%define LOADER_OS_SS		10
+%define LOADER_OS_SP		12
+%define LOADER_LDROFFS		14
+%define LOADER_OS_CALL		16
+%define LOADER_LOWMEM_START	18
+
+%endif

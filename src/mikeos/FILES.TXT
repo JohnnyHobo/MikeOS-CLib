@@ -1,8 +1,8 @@
-string.c
-screen.c
-disk.c
-math.c
-misc.c
-ports.c
-basic.c
-keyboard.c
+asm/string.asm
+asm/screen.asm
+asm/disk.asm
+asm/math.asm
+asm/misc.asm
+asm/ports.asm
+asm/basic.asm
+asm/keyboard.asm

@@ -16,6 +16,8 @@ loader:
 	.os_ss			dw 0
 	.os_sp			dw 0
 	.ldroffs		dw $$
+	.os_call		dw oscall_handler
+	.lowmem_start		dw file_start
 	
 
 times 32-($-$$) db 0
@@ -36,13 +38,6 @@ start:
 	mov [loader.os_cs], ax
 	mov ax, ds
 	mov [loader.os_ds], ax
-
-	; FS points to addresses in this loader.
-	mov ax, ds
-	mov bx, $$
-	shr bx, 4
-	add ax, bx
-	mov fs, ax
 
 	; Program start routine --- called directly by the OS
 
@@ -105,6 +100,8 @@ start_exe:
 	mov ss, bx
 	mov sp, [file_start + 0x10]
 
+	push dword loader + 0x20000
+
 	add ax, [file_start + 0x16]
 	push ax
 	push word [file_start + 0x14]
@@ -112,6 +109,30 @@ start_exe:
 	mov ax, 0x3000
 	mov ds, ax
 
+	retf
+
+
+; oscall_handler(short dataseg, short address)
+; Calls a local function from unreal mode.
+oscall_handler:
+	push bp
+	mov bp, sp
+
+	push ds
+	push es
+
+	push ax
+	; TODO: Fix this offset
+	mov ax, [bp + 4]
+	mov ds, ax
+	mov es, ax
+	pop ax
+
+	call near [bp + 6]
+
+	pop es
+	pop ds
+	leave
 	retf
 	
 
