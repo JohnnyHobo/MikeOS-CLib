@@ -1,6 +1,7 @@
 /* Master Include file for MikeOS */
 
 #include "mikeos/struct.h"
+#include "mikeos/colours.h"
 
 #include "mikeos/basic.h"
 #include "mikeos/disk.h"

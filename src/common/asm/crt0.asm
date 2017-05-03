@@ -11,6 +11,7 @@ GLOBAL __Exit
 GLOBAL os_call
 GLOBAL os_ds
 GLOBAL lowmem_start
+GLOBAL lowmem_segoffs
 
 
 EXTERN _main
@@ -43,9 +44,9 @@ ___start__:
 .init_heap:
 	movzx eax, word [esi + LOADER_OS_DS]
 	shl eax, 4
-	movzx ebx, word [esi + LOADER_LOWMEM_START]
-	add eax, ebx
-	mov [dword lowmem_start], eax
+	mov [dword lowmem_segoffs], eax
+	mov ax, [esi + LOADER_LOWMEM_START]
+	mov [dword lowmem_start], ax
 
 	; TODO: Call the new memory manager
 
@@ -91,7 +92,8 @@ align 4
 os_data			dd 0
 os_exit			dd 0
 os_call			dd 0
-lowmem_start		dd 0
 os_ds			dw 0
+lowmem_start		dw 0
+lowmem_segoffs		dd 0
 
 
