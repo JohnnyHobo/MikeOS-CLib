@@ -9,6 +9,7 @@ GLOBAL ___start__
 GLOBAL ___Irq5Isr
 GLOBAL __Exit
 GLOBAL os_call
+GLOBAL os_ds
 GLOBAL lowmem_start
 
 
@@ -35,6 +36,9 @@ ___start__:
 	mov ax, [esi + LOADER_OS_CS]
 	mov [dword os_exit + 2], ax
 	mov [dword os_call + 2], ax
+
+	mov ax, [esi + LOADER_OS_DS]
+	mov [dword os_ds], ax
 
 .init_heap:
 	movzx eax, word [esi + LOADER_OS_DS]
@@ -70,7 +74,7 @@ main_addr:	dd _main	; _main is the address to relocate.
 
 ; Handles _Exit()
 __Exit:
-	mov esi, [os_data]
+	mov esi, [dword os_data]
 	mov ax, [esi + LOADER_OS_SS]
 
 	cli
@@ -78,14 +82,16 @@ __Exit:
 	mov sp, [esi + LOADER_OS_SP]
 	sti
 	
-	jmp far [os_exit]
+	jmp far [dword os_exit]
 	
 
 section .data
+align 4
 
 os_data			dd 0
 os_exit			dd 0
 os_call			dd 0
 lowmem_start		dd 0
+os_ds			dw 0
 
 

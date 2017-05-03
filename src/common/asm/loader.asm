@@ -123,12 +123,12 @@ oscall_handler:
 
 	push ax
 	; TODO: Fix this offset
-	mov ax, [bp + 4]
+	mov ax, [bp + 6]
 	mov ds, ax
 	mov es, ax
 	pop ax
 
-	call near [bp + 6]
+	call near [bp + 8]
 
 	pop es
 	pop ds

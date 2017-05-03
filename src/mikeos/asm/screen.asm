@@ -15,7 +15,6 @@ _os_print_string:
 	RELOC_STR 0
 	
 	mov si, [ebp - 10]
-	xchg bx, bx
 	MOSCALL os_print_string
 
 	END_API

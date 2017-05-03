@@ -2,6 +2,7 @@ EXTERN copy_str_low
 EXTERN lowmem_offset
 EXTERN lowmem_start
 EXTERN os_call
+EXTERN os_ds
 
 %macro START_API 0
 	push ebp
@@ -18,7 +19,7 @@ EXTERN os_call
 	mov esi, [ebp - 8]
 	mov edi, [ebp - 4]
 
-	leave
+	o32 leave
 	retf
 %endmacro
 
@@ -37,7 +38,7 @@ EXTERN os_call
 
 %macro MOSCALL 1
 	push word %1
-	; Push the dataseg? Hmmm...
+	push word [dword os_ds]
 	call far [dword os_call]
 %endmacro
 
