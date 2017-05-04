@@ -1,3 +1,25 @@
+; OS Wrapper
+; void os_print_string(const char *str)
+; void os_clear_screen()
+; void os_move_cursor()
+; void os_print_horiz_line(int type)
+; void os_show_cursor()
+; void os_hide_cursor();
+; void os_draw_block(int colour, int x, int y, int width, int finish_y);
+; char *filename = os_file_selector();
+; int option_number = os_list_dialog(char *list, char *help1, char *help2);
+; void os_draw_background(char *top_text, char *bottom_text, int colour);
+; void os_print_newline();
+; char *input_text = os_input_dialog(char *buffer, char *msg);
+; int result = os_dialog_box(char *msg1, char *msg2, char *msg3, int type);
+; void os_print_space();
+; void os_dump_string(char *str);
+; void os_print_digit(int digit);
+; void os_print_1hex(unsigned char value);
+; void os_print_2hex(unsigned char value);
+; void os_print_4hex(unsigned short value);
+; void os_print_char(char value);
+; char *os_input_string(char *buffer, int max_bytes);
 bits 16
 
 %include 'mikedev.inc'
@@ -44,7 +66,7 @@ _os_move_cursor:
 	END_API
 
 
-;void os_get_cursor_pos(int *row, int *col)
+; void os_get_cursor_pos(int *row, int *col)
 GLOBAL _os_get_cursor_pos
 
 _os_get_cursor_pos:

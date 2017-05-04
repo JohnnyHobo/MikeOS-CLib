@@ -39,7 +39,7 @@ _memset:
 	mov al, [bp + 6]
 	mov cx, [bp + 8]
 	cld
-	rep stosb
+	rep a32 stosb
 	mov ax, [bp + 4]
 
 	pop di
