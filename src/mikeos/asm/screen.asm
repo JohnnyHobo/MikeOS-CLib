@@ -112,7 +112,7 @@ _os_draw_block:
 	mov di, [ebp + 24]
 	MOSCALL os_draw_block
 
-	pop bx
+	mov bx, [ebp - 10]
 
 	END_API
 
@@ -171,7 +171,7 @@ _os_draw_background:
 	mov cx, [ebp + 16]
 	MOSCALL os_draw_background
 
-	pop bx
+	mov bx, [ebp - 10]
 	END_API
 
 	
@@ -201,8 +201,9 @@ _os_input_dialog:
 	MOSCALL os_input_dialog
 
 	RESTORE_STR ax, [ebp + 8]
+	mov eax, [ebp + 8]
 
-	pop bx
+	mov bx, [ebp - 10]
 	END_API
 
 	
@@ -224,7 +225,7 @@ _os_dialog_box:
 	MOSCALL os_dialog_box
 	movzx eax, ax
 
-	pop bx
+	mov bx, [ebp - 10]
 	END_API
 
 	
@@ -314,7 +315,7 @@ _os_print_char:
 	mov bh, 0
 	int 0x10
 
-	pop bx
+	mov bx, [ebp - 10]
 
 	END_API
 
@@ -333,8 +334,9 @@ _os_input_string:
 	MOSCALL os_input_string
 
 
-	pop bx
+	mov bx, [ebp - 10]
 	END_API
 
-	
+section .bss
+	file_selector_buffer 	times 13 db 0
 

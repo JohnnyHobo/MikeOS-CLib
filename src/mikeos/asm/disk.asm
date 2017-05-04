@@ -1,91 +1,166 @@
-%macro OSCALL_GET_FILE_LIST 0
-	mov ax, [bp + 4]
-	call os_get_file_list
-%endmacro
+bits 16
 
-%macro OSCALL_LOAD_FILE 0
-	push si
-	push bx
+%include 'mikedev.inc'
+%include 'macros.inc'
 
-	mov ax, [bp + 4]
-	mov cx, [bp + 6]
-	call os_load_file
+section .text
+
+
+; char *os_get_file_list(void *buffer);
+GLOBAL _os_get_file_list
+
+_os_get_file_list:
+	START_API
+
+	ALLOC_DATA 1024
+
+	mov ax, [ebp - 10]
+	MOSCALL os_get_file_list
+
+	RESTORE_STR ax, [ebp + 8]
+	mov eax, [ebp + 8]
+
+	END_API
+
 	
-	mov ah, 0
-	setnc al
+; int os_load_file(char *filename, void *buffer, int *size);
+GLOBAL _os_load_file
 
-	mov si, [bp + 8]
-	mov [si], bx
-
-	pop bx
-	pop si
-%endmacro
-
-%macro OSCALL_WRITE_FILE 0
+_os_load_file:
+	START_API
 	push bx
 
-	mov ax, [bp + 4]
-	mov bx, [bp + 6]
-	mov cx, [bp + 8]
-	call os_write_file
+	RELOC_STR 0
+	ALLOC_DATA 30000
 
-	mov ah, 0
-	setnc al
+	mov ax, [ebp - 12]
+	mov cx, [ebp - 14]
+	MOSCALL os_load_file
+	setnc dl
 
-	pop bx
-%endmacro
+	RESTORE_DATA ax, 30000, [ebp + 12]
 
-%macro OSCALL_FILE_EXISTS 0
-	mov ax, [bp + 4]
-	call os_file_exists
+	mov esi, [ebp + 16]
+	movzx eax, bx
+	mov [esi], eax
 
-	mov ah, 0
-	setnc al
-%endmacro
+	movzx eax, dl
 
-%macro OSCALL_CREATE_FILE 0
-	mov ax, [bp + 4]
-	call os_file_exists
+	mov bx, [ebp - 10]
+	END_API
 
-	mov ah, 0
-	setnc al
-%endmacro
+	
+; int os_write_file(char *filename, void *buffer, int size);
+GLOBAL _os_write_file
 
-%macro OSCALL_REMOVE_FILE 0
-	mov ax, [bp + 4]
-	call os_file_exists
-
-	mov ah, 0
-	setnc al
-%endmacro
-
-%macro OSCALL_RENAME_FILE 0
+_os_write_file:
+	START_API
 	push bx
 
-	mov ax, [bp + 4]
-	mov bx, [bp + 6]
-	call os_rename_file
+	RELOC_STR 0
+	RELOC_DATA [ebp + 12], [ebp + 16]
 
-	mov ah, 0
+	mov ax, [ebp - 12]	; `filename` (local buffer)
+	mov bx, [ebp - 14]	; `buffer` (local buffer)
+	mov cx, [ebp + 16]	; `size`
+	MOSCALL os_write_file
+	
 	setnc al
+	movzx eax, al
 
-	pop bx
-%endmacro
+	mov bx, [ebp - 10]
+	END_API
 
-%macro OSCALL_GET_FILE_SIZE 0
-	push si
+	
+; int os_file_exists(char *filename);
+GLOBAL _os_file_exists
+
+_os_file_exists:
+	START_API
+
+	RELOC_STR 0
+
+	mov ax, [ebp - 10]
+	MOSCALL os_file_exists
+
+	setnc al
+	movzx eax, al
+	END_API
+	
+
+; int os_create_file(char *filename);
+GLOBAL _os_create_file
+
+_os_create_file:
+	START_API
+
+	RELOC_STR 0
+
+	mov ax, [ebp - 10]
+	MOSCALL os_create_file
+
+	setnc al
+	movzx eax, al
+	END_API
+
+	
+; int os_remove_file(char *filename);
+GLOBAL _os_remove_file
+
+_os_remove_file:
+	START_API
+
+	RELOC_STR 0
+
+	mov ax, [ebp - 10]
+	MOSCALL os_remove_file
+
+	setnc al
+	movzx eax, al
+	END_API
+
+	
+; int os_rename_file(char *oldname, char *newname);
+GLOBAL _os_rename_file
+
+_os_rename_file:
+	START_API
 	push bx
 
-	mov ax, [bp + 4]
-	call os_get_file_size
+	RELOC_STR 0
+	RELOC_STR 1
 
-	mov ah, 0
+	mov ax, [ebp - 12]
+	mov bx, [ebp - 14]
+	MOSCALL os_rename_file
+
 	setnc al
+	movzx eax, al
 
-	mov si, [bp + 6]
-	mov [si], bx
+	mov bx, [ebp - 10]
+	END_API
 
-	pop bx
-	pop si
-%endmacro
+	
+; int os_get_file_size(char *filename, int *size);
+GLOBAL _os_get_file_size
 
+_os_get_file_size:
+	START_API
+	push bx
+
+	RELOC_STR 0
+	
+	mov ax, [ebp - 12]
+	MOSCALL os_get_file_size
+	setnc dl
+
+	mov esi, [ebp + 12]
+	movzx eax, bx
+	mov [esi], eax
+
+	movzx eax, al
+
+	mov bx, [ebp - 10]
+	END_API
+
+	

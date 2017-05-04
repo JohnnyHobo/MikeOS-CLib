@@ -42,7 +42,6 @@ align 4
 
 
 lowmem_offset dw 0
-file_selector_buffer times 13 db 0
 
 
 

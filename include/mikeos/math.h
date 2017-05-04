@@ -4,7 +4,7 @@
 #include "mikeos/struct.h"
 
 int os_bcd_to_int(char bcd);
-void os_long_int_negate(struct longint *value);
-int os_get_random(unsigned int min, unsigned int max);
+void os_long_int_negate(long value);
+int os_get_random(unsigned short min, unsigned short max);
 #endif
 

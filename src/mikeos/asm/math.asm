@@ -1,27 +1,53 @@
-%macro OSCALL_BCD_TO_INT 0
-	mov al, [bp+4]
-	call os_bcd_to_int
-%endmacro
+bits 16
 
-%macro OSCALL_LONG_INT_NEGATE 0
+%include 'mikedev.inc'
+%include 'macros.inc'
+
+; int os_bcd_to_int(char bcd);
+GLOBAL _os_bcd_to_int
+
+_os_bcd_to_int:
+	START_API
+
+	mov al, [ebp + 8]	; `bcd`
+	MOSCALL os_bcd_to_int
+
+	movzx eax, ax
+	END_API
+
+	
+; void os_long_int_negate(long value);
+GLOBAL _os_long_int_negate
+
+_os_long_int_negate:
+	START_API
+
+	mov ax, [ebp + 8]	; `value` (lower half)
+	mov dx, [ebp + 10]	; `value` (higher half)
+	MOSCALL os_long_int_negate
+
+	movzx eax, ax
+	shl eax, 16
+	movzx edx, dx
+	add eax, edx
+
+	END_API
+
+	
+; int os_get_random(unsigned short min, unsigned short max);
+GLOBAL _os_get_random
+
+_os_get_random:
+	START_API
 	push bx
 
-	mov bx, [bp + 4]
+	mov ax, [ebp + 8]	; `min`
+	mov bx, [ebp + 12]	; `max`
+	MOSCALL os_get_random
+	movzx eax, cx
 
-	mov ax, [bx]
-	mov dx, [bx + 2]
-	call os_long_int_negate
-	mov [bx], ax
-	mov [bx + 2], dx
+	mov bx, [ebp - 10]
+	END_API
 
-	pop bx
-%endmacro
+	
 
-%macro OSCALL_GET_RANDOM 0
-	push bx
-	mov ax, [bp+4]
-	mov bx, [bp+6]
-	call os_get_random
-	pop bx
-	mov ax, cx
-%endmacro

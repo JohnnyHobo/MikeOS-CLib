@@ -1,32 +1,74 @@
-%macro OSCALL_PORT_BYTE_OUT 0
-	mov dx, [bp+4]
-	mov al, [bp+6]
-	call os_port_byte_out
-%endmacro
+bits 16
 
-%macro OSCALL_PORT_BYTE_IN 0
-	mov dx, [bp+4]
-	call os_port_byte_in
-%endmacro
+%include 'mikedev.inc'
+%include 'macros.inc'
 
-%macro OSCALL_SERIAL_PORT_ENABLE 0
-	mov ax, [bp+4]
-	call os_serial_port_enable
-	mov al, ah
-%endmacro
 
-%macro OSCALL_SEND_VIA_SERIAL 0
-	mov al, [bp+4]
-	call os_send_via_serial
-	mov al, ah
-%endmacro
+; void os_port_byte_out(int port, char data);
+GLOBAL _os_port_byte_out
 
-%macro OSCALL_GET_VIA_SERIAL 0
-	push si
-	call os_get_via_serial
-	mov si, [bp+4]
-	mov [si], al
-	mov al, ah
-	pop si
-%endmacro
+_os_port_byte_out:
+	START_API
+
+	mov dx, [ebp + 8]
+	mov al, [ebp + 12]
+	MOSCALL os_port_byte_out
+
+	END_API
+
+	
+; char os_port_byte_in(int port);
+GLOBAL _os_port_byte_in
+
+_os_port_byte_in:
+	START_API
+
+	mov dx, [ebp + 8]		; `port`
+	MOSCALL os_port_byte_in
+
+	movzx eax, al
+	END_API
+
+	
+; char os_serial_port_enable(int mode);
+GLOBAL _os_serial_port_enable
+
+_os_serial_port_enable:
+	START_API
+
+	mov ax, [ebp + 8]		; `mode`
+	MOSCALL os_serial_port_enable
+	movzx eax, al
+
+	END_API
+
+	
+; char os_send_via_serial(char data);
+GLOBAL _os_send_via_serial
+
+_os_send_via_serial:
+	START_API
+
+	mov al, [ebp + 8]		; `data`
+	MOSCALL os_send_via_serial
+	movzx eax, al
+
+	END_API
+
+	
+; char os_get_via_serial(char *recieved);
+GLOBAL _os_get_via_serial
+
+_os_get_via_serial:
+	START_API
+
+	MOSCALL os_get_via_serial
+	
+	mov esi, [ebp + 8]
+	mov [esi], al
+
+	movzx eax, ah
+	END_API
+
+	
 

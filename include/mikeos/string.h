@@ -6,7 +6,7 @@
 int os_string_length(char *str);
 int os_find_char_in_string(char *str, char to_find);
 char *os_string_reverse(char *str);
-char *os_string_charchange(char *str, char to_find, char replace_with);
+char *os_string_charchange(char *str, char to_find, char replacement);
 char *os_string_uppercase(char *str);
 char *os_string_lowercase(char *str);
 char *os_string_copy(char *src, char *dest);
@@ -16,13 +16,20 @@ char *os_string_chomp(char *str);
 char *os_string_strip(char *str, char to_remove);
 int os_string_compare(char *str1, char *str2);
 int os_string_strincmp(char *str1, char *str2, int num_chars);
-void os_string_parse(char *src, char **str1, char **str2, char **str3, char **str4);
-int os_string_to_int(char *str);
-char *os_int_to_string(unsigned int value);
-char *os_sint_to_string(signed int value);
-char *os_long_int_to_string(struct longint *value, int base, char *buffer);
+void os_string_parse(char *src, char *str1, char *str2, char *str3, char *str4);
+short os_string_to_int(char *str);
+char *os_int_to_string(unsigned short value);
+char *os_sint_to_string(signed short value);
+char *os_long_int_to_string(long longint, int base, char *buffer);
+#define CLOCK_12H 0
+#define CLOCK_24H 1
 void os_set_time_fmt(int flags);
 char *os_get_time_string(char *buffer);
-void os_set_date_format(int flags);
+#define AMERICAN_DATE 0
+#define BRITISH_DATE 1
+#define ISO_DATE 2
+#define NAME_DATE_MONTH 0x80
+void os_set_date_fmt(int flags);
 char *os_get_date_string(char *buffer);
+
 #endif

@@ -1,6 +1,6 @@
 #ifndef MOSCLIB_HAS_DISK
 #define MOSCLIB_HAS_DISK
-void os_get_file_list(void *buffer);
+char *os_get_file_list(void *buffer);
 int os_load_file(char *filename, void *buffer, int *size);
 int os_write_file(char *filename, void *buffer, int size);
 int os_file_exists(char *filename);

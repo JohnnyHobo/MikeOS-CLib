@@ -7,9 +7,9 @@ EXTERN copy_str_low
 EXTERN copy_str_high
 EXTERN lowmem_offset
 EXTERN lowmem_start
+EXTERN lowmem_segoffs
 EXTERN os_call
 EXTERN os_ds
-EXTERN file_selector_buffer
 
 
 %macro START_API 0
@@ -66,6 +66,32 @@ EXTERN file_selector_buffer
 %endmacro
 
 
+; Parameters:
+; 	1) The source 32-bit address
+;	2) The number of bytes to copy (16-bit).
+%macro RELOC_DATA 2
+	push esi
+	push edi
+	push ecx
+
+	mov esi, %1
+	movzx edi, word [dword lowmem_offset]
+	add edi, [dword lowmem_segoffs]
+	movzx ecx, word %2
+	rep a32 movsb
+
+	sub edi, [dword lowmem_segoffs]
+	mov [dword lowmem_offset], di
+
+	pop ecx
+	pop edi
+	pop esi
+%endmacro
+
+; Parameters:
+;	1) A 16-bit lower memory address.
+;	2) The number of bytes to copy.
+;	3) The destination 32-bit address.
 %macro RESTORE_DATA 3
 	push esi
 	push edi
@@ -75,7 +101,6 @@ EXTERN file_selector_buffer
 	add esi, [dword lowmem_segoffs]
 	mov edi, %3
 	mov ecx, %2
-	xchg bx, bx
 	rep a32 movsb
 
 	pop ecx
