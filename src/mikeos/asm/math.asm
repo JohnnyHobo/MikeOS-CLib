@@ -3,6 +3,8 @@ bits 16
 %include 'mikedev.inc'
 %include 'macros.inc'
 
+section .text
+
 ; int os_bcd_to_int(char bcd);
 GLOBAL _os_bcd_to_int
 
@@ -16,7 +18,7 @@ _os_bcd_to_int:
 	END_API
 
 	
-; void os_long_int_negate(long value);
+; long os_long_int_negate(long value);
 GLOBAL _os_long_int_negate
 
 _os_long_int_negate:
@@ -34,7 +36,7 @@ _os_long_int_negate:
 	END_API
 
 	
-; int os_get_random(unsigned short min, unsigned short max);
+; int os_get_random(short min, short max);
 GLOBAL _os_get_random
 
 _os_get_random:
@@ -44,7 +46,7 @@ _os_get_random:
 	mov ax, [ebp + 8]	; `min`
 	mov bx, [ebp + 12]	; `max`
 	MOSCALL os_get_random
-	movzx eax, cx
+	movsx eax, cx
 
 	mov bx, [ebp - 10]
 	END_API

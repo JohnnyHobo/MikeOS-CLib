@@ -28,17 +28,21 @@ GLOBAL _os_load_file
 
 _os_load_file:
 	START_API
-	push bx
+	push ebx
 
 	RELOC_STR 0
 	ALLOC_DATA 30000
 
-	mov ax, [ebp - 12]
-	mov cx, [ebp - 14]
+	mov ax, [ebp - 14]
+	mov cx, [ebp - 16]
 	MOSCALL os_load_file
 	setnc dl
 
-	RESTORE_DATA ax, 30000, [ebp + 12]
+	; Bug: The Disk API destroys AX & CX
+	; Workaround by getting the value off the stack again.
+
+	movzx ebx, bx
+	RESTORE_DATA [ebp - 16], ebx, [ebp + 12]
 
 	mov esi, [ebp + 16]
 	movzx eax, bx
@@ -46,7 +50,7 @@ _os_load_file:
 
 	movzx eax, dl
 
-	mov bx, [ebp - 10]
+	mov ebx, [ebp - 10]
 	END_API
 
 	
@@ -158,7 +162,7 @@ _os_get_file_size:
 	movzx eax, bx
 	mov [esi], eax
 
-	movzx eax, al
+	movzx eax, dl
 
 	mov bx, [ebp - 10]
 	END_API

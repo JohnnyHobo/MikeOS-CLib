@@ -229,7 +229,8 @@ _os_input_dialog:
 	END_API
 
 	
-; int result = os_dialog_box(char *msg1, char *msg2, char *msg3, int type);
+;enum DIALOG_RESPONSE os_dialog_box(char *msg1, char *msg2, char *msg3, 
+;		enum DIALOG_TYPE type);
 GLOBAL _os_dialog_box
 
 _os_dialog_box:
@@ -355,6 +356,9 @@ _os_input_string:
 	mov bx, [ebp + 12]	
 	MOSCALL os_input_string
 
+	RESTORE_STR ax, [ebp + 8]
+
+	movzx eax, ax
 
 	mov bx, [ebp - 10]
 	END_API

@@ -53,6 +53,9 @@ EXTERN os_ds
 %endmacro
 
 	
+; Parameters:
+; 	1) The lower memory address to copy from.
+;	2) The higher memory address to copy to.
 %macro RESTORE_STR 2
 	push esi
 	push edi
@@ -70,6 +73,8 @@ EXTERN os_ds
 ; 	1) The source 32-bit address
 ;	2) The number of bytes to copy (16-bit).
 %macro RELOC_DATA 2
+	push word [dword lowmem_offset]
+
 	push esi
 	push edi
 	push ecx

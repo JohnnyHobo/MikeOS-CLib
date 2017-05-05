@@ -131,6 +131,9 @@ unsigned short os_string_to_int(char *str);
 /** \brief Converts an unsigned number into an ASCII string.
   * \param value The number to convert.
   * \return A pointer to an internal buffer with the equivelent string.
+  *
+  * For a much more flexible version that supports larger numbers see
+  * \ref os_long_int_to_string.
   */
 const char *os_int_to_string(unsigned short value);
 
@@ -145,9 +148,6 @@ const char *os_sint_to_string(signed short value);
   * \param base The number system in use (e.g. 10 for decimal).
   * \param buffer The location to put the result in.
   * \return \a buffer is returned containing the result.
-  *
-  * This function is similar to \ref os_int_to_string() but it allows a much
-  * larger range, specifying the number system and user specified buffer.
   */
 char *os_long_int_to_string(long longint, int base, char *buffer);
 
@@ -175,21 +175,30 @@ void os_set_time_fmt(int format);
 char *os_get_time_string(char *buffer);
 
 /** Date formats to pass \a os_set_date_fmt()*/
-enum date_format {
-	AMERICAN_DATE,	/**< American Format: MM/DD/YYYY */
-	BRITISH_DATE,	/**< British Format: DD/MM/YYYY */
-	ISO_DATE	/**< ISO8601 Format (kinda): YYYY/MM/DD */
+enum DATE_FORMAT {
+	MDY_DATE_FORMAT,	/**< American Style MM/DD/YYYY */
+	DMY_DATE_FORMAT,	/**< British Style: DD/MM/YYYY */
+	YMD_DATE_FORMAT,	/**< ISO8601 Style: YYYY/MM/DD */
 };
 	
 
-/** Use the month name rather than the number.
+/** Use the name of the month rather than the number.
   * Can be passed to \ref os_set_date_fmt().
-  * Must be OR'd with an existing date format from \ref date_format.
+  * Must be OR'd with an existing date format.
   */
-#define NAME_DATE_MONTH 0x80
+#define ALPHABETIC_MONTH 0x80
+
+/** Date with a named month to avoid confusion. */
+#define SIMPLE_DATE	(DMY_DATE_FORMAT | ALPHABETIC_MONTH)
+/** Use MM/DD/YYYY format. */
+#define AMERICAN_DATE	(MDY_DATE_FORMAT | ('/' << 8))
+/** Use DD/MM/YYYY format. */
+#define BRITISH_DATE	(DMY_DATE_FORMAT | ('/' << 8))
+/** Use YYYY-MM-DD format. */
+#define ISO8601_DATE	(YMD_DATE_FORMAT | ('-' << 8))
 
 /** \brief Changes the format dates are returned in.
-  * \param format to set. For available formats, see \ref date_format.
+  * \param format to set. For available formats, see \ref DATE_FORMAT.
   *
   * To get the current date as a string, see \ref os_get_date_string.
   */

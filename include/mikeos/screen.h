@@ -104,19 +104,95 @@ int os_list_dialog(char *list, char *help1, char *help2);
 
 void os_draw_background(char *top_text, char *bottom_text, int colour);
 void os_print_newline();
-#define OKAY_DIALOG 0
-#define OKAY_CANCEL_DIALOG 1
-#define OKAY_RESPONSE 0
-#define CANCEL_RESPONSE 1
+
+/** The result from a dialog with multiple buttons. */
+enum DIALOG_RESPONSE {
+	OKAY_RESPONSE,		/**< The user selected 'OK' */
+	CANCEL_RESPONSE		/**< The user selected 'CANCEL' */
+};
+
+/** Dialog box types. */
+enum DIALOG_TYPE {
+	OKAY_DIALOG,		/**< Dialog box with only an okay button. */
+	OKAY_CANCEL_DIALOG	/**< Dialog box with okay and cancel buttons.*/
+};
+
+/** \brief Prompts for text input with a dialog box.
+  * \param buffer The buffer to store the input in.
+  * \param msg The prompt to present above the message.
+  */
 char *os_input_dialog(char *buffer, char *msg);
-int os_dialog_box(char *msg1, char *msg2, char *msg3, int type);
+
+/** \brief Presents a dialog box.
+  * \param msg1 The first line of text.
+  * \param msg2 The second line of text.
+  * \param msg3 The third line of text.
+  * \param type The dialog box type. See \ref DIALOG_TYPE
+  */
+enum DIALOG_RESPONSE os_dialog_box(char *msg1, char *msg2, char *msg3, 
+		enum DIALOG_TYPE type);
+
+/** \brief Prints a space character.
+  */
 void os_print_space();
+
+/** \brief Print the character and hexadecimal representation of a string.
+  * \param str A string to look at.
+  */
 void os_dump_string(char *str);
+
+/** \brief Print an alphanumeric digit to the screen.
+  * \param digit The value to print.
+  * 
+  * Values in the range of 0-9 will generate the digits '0'-'9'.
+  * Values in the range of 10-36 will generate the letters 'A'-'Z'.
+  */
 void os_print_digit(int digit);
+
+/** \brief Print a 4-bit value as a hexadecimal (one 'hex' character).
+  * \param value The value to print.
+  *
+  * The upper half of `value` is discarded. The value is then converted to 
+  * a hexadecimal string with "0x" appended to the start and printed to the 
+  * screen.
+  */
 void os_print_1hex(unsigned char value);
+
+/** \brief Print a 8-bit value as a hexadecimal (two 'hex' characters).
+  * \param value The value to print.
+  *
+  * The value is converted to a hexadecimal string with "0x" appended to the
+  * start and printed to the screen.
+  */
 void os_print_2hex(unsigned char value);
+
+/** \brief Print a 16-bit value as a hexadecimal (four 'hex' characters).
+  * \param value The value to print.
+  *
+  * The value is converted to a hexadecimal string with "0x" appended to the
+  * start and then printed to the screen.
+  */
 void os_print_4hex(unsigned short value);
+
+/** \brief Prints a single character to the screen.
+  * \param value A character to print.
+  *
+  * This function is not part of the MikeOS API but needed to display a single
+  * character in C.
+  * Characters are printed in the same way as \ref os_print_string(), meaning a
+  * DOS style newline is used.
+  */
 void os_print_char(char value);
+
+/** \brief Retrieves a string of text input.
+  * \param buffer The location to store the input.
+  * \param max_bytes The number of bytes available in the input buffer.
+  * \return \a buffer is returned with the input stored.
+  * 
+  * Not all versions of MikeOS versions and derivatives support limiting the 
+  * input to a fixed number of characters. 
+  * For these versions the buffer size should be 256 bytes.
+  */
 char *os_input_string(char *buffer, int max_bytes);
 #endif
 

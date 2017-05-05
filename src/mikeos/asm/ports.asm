@@ -5,26 +5,28 @@ bits 16
 
 
 ; void os_port_byte_out(int port, char data);
+; Reimplemented	in library.
 GLOBAL _os_port_byte_out
 
 _os_port_byte_out:
 	START_API
 
-	mov dx, [ebp + 8]
-	mov al, [ebp + 12]
-	MOSCALL os_port_byte_out
+	mov dx, [ebp + 8]		; `port`
+	mov al, [ebp + 12]		; `char`
+	out dx, al
 
 	END_API
 
 	
 ; char os_port_byte_in(int port);
+; Reimplemented	in library.
 GLOBAL _os_port_byte_in
 
 _os_port_byte_in:
 	START_API
 
 	mov dx, [ebp + 8]		; `port`
-	MOSCALL os_port_byte_in
+	in al, dx
 
 	movzx eax, al
 	END_API

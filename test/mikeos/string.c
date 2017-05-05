@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 	char elloh[12];
 	char buf[30];
 	char *str1, *str2, *str3, *str4;
+	long i;
 
 	os_print_string("Hello World");
 	os_print_newline();
@@ -102,11 +103,51 @@ int main(int argc, char *argv[])
 	printf("Original string is \"%s\"\n", buf);
 	os_string_parse(buf, &str1, &str2, &str3, &str4);
 	printf("Parsed strings are: \"%s\",  \"%s\",  \"%s\" and  \"%s\"\n",
-			*str1, *str2, *str3, *str4);
+			str1, str2, str3, str4);
 
+	os_wait_for_key();
+
+	os_string_copy("12345", buf);
+	printf("Converting \"%s\" to an int: %d\n", buf, os_string_to_int(buf));
+
+	i = 54321;
+	printf("Converting unsigned value %d to a string: \"%s\"\n", i,
+			os_int_to_string(i));
+
+	i = -30001;
+	printf("Converting unsigned value %d to a string: \"%s\"\n", i,
+			os_sint_to_string(i));
+
+	i = 1234567890;
+	printf("Converting long unsigned value %d to a string: \"%s\"\n", i,
+			os_long_int_to_string(i, 10, buf));
+
+
+	os_set_time_fmt(CLOCK_12H);
+	printf("Getting time in format %s: \"%s\"\n", "CLOCK_12H", 
+			os_get_time_string(buf));
+
+	os_set_time_fmt(CLOCK_24H);
+	printf("Getting time in format %s: \"%s\"\n", "CLOCK_24H", 
+			os_get_time_string(buf));
+
+	os_set_date_fmt(SIMPLE_DATE);
+	printf("Getting date in format %s: \"%s\"\n", "SIMPLE_DATE", 
+			os_get_date_string(buf));
+
+	os_set_date_fmt(AMERICAN_DATE);
+	printf("Getting date in format %s: \"%s\"\n", "AMERICAN_DATE", 
+			os_get_date_string(buf));
+
+	os_set_date_fmt(BRITISH_DATE);
+	printf("Getting date in format %s: \"%s\"\n", "BRITISH_DATE", 
+			os_get_date_string(buf));
+
+	os_set_date_fmt(ISO8601_DATE);
+	printf("Getting date in format %s: \"%s\"\n", "ISO8601_DATE", 
+			os_get_date_string(buf));
 
 	os_wait_for_key();
 	os_print_newline();
-	os_wait_for_key();
 	return 0;
 }

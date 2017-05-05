@@ -2,6 +2,7 @@
 
 char *options = "Option A,Option B,Maybe C?,Okay then: D";
 char *optch = "ABCD";
+char *dumpstr = "Hello world\r\nNew line!";
 char input_buf[256];
 
 int main()
@@ -28,6 +29,35 @@ int main()
 	os_show_cursor();
 	os_wait_for_key();
 
+	os_print_string("Printing a letter: ");
+	os_print_char('a');
+	os_print_char('\r');
+	os_print_char('\n');
+
+	os_print_string("Hexadecimals: ");
+	os_print_1hex(0x1234);
+	os_print_space();
+	os_print_2hex(0x1234);
+	os_print_space();
+	os_print_4hex(0x1234);
+	os_wait_for_key();
+	os_print_newline();
+
+	os_print_string("Enter some text: ");
+	os_input_string(input_buf, 20);
+	os_print_newline();
+	os_print_string("You entered: ");
+	os_print_string(input_buf);
+	os_wait_for_key();
+	os_print_newline();
+
+	os_print_string("Dumping String: ");
+	os_print_string(dumpstr);
+	os_print_string(" Result: ");
+	os_dump_string(dumpstr);
+	os_wait_for_key();
+	os_print_newline();
+
 	draw_interface();
 	os_wait_for_key();
 
@@ -37,7 +67,6 @@ int main()
 	os_move_cursor(10, 2);
 	os_print_string("Filename is: ");
 	os_print_string(filename);
-	os_print_newline();
 	os_wait_for_key();
 
 	draw_interface();

@@ -252,6 +252,7 @@ _os_string_parse:
 	START_API
 	push bx
 
+	mov eax, [ebp + 12]
 	RELOC_STR 0
 
 	push dword [ebp + 8]
@@ -261,13 +262,11 @@ _os_string_parse:
 
 	mov si, [ebp - 12]		; `src` (duplicated)
 	MOSCALL os_string_parse
-	xchg bx, bx
 
 	RESTORE_DATA si, [ebp - 20], [ebp + 8]
 
 	mov edi, [ebp + 8]
 
-	; FIXME: SS =/= DS
 	sub ax, [ebp - 12]
 	movzx eax, ax
 	add eax, edi
@@ -395,12 +394,12 @@ _os_get_time_string:
 ; void os_set_date_fmt(int format);
 GLOBAL _os_set_date_fmt
 
-_os_date_format:
+_os_set_date_fmt:
 	START_API
 
-	ALLOC_DATA 20
-
-	mov al, [ebp + 8]	; `flags`
+	; Bug: The correct date seperator is not used. Seems to be passed 
+	; correctly, maybe a MikeOS bug?
+	mov ax, [ebp + 8]	; `flags`
 	MOSCALL os_set_date_fmt
 
 	END_API

@@ -12,7 +12,8 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 	int fmtcnt = 0;
 	int count = 0;
 	char ch, *s;
-	char numstr[7];
+	long num;
+	char numstr[12];
 
 	if (!tofile && str) str[0] = '\0';
 
@@ -37,26 +38,40 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 		switch (fmt[fmtcnt]) {
 			case 'd':
 			case 'i':
-				s = sint_to_str(va_arg(arg, int), numstr);
+				num = va_arg(arg, int);
+				if (num < 0) {
+					numstr[0] = '-';
+					os_long_int_to_string(-num, 10, 
+							numstr + 1);
+					s = numstr;
+					break;
+				}
+					
+				s = os_long_int_to_string(num, 10, numstr);
 				break;
 
 			case 'u':
-				s = uint_to_str(va_arg(arg, int), numstr);
+				s = os_long_int_to_string(va_arg(arg, int),
+						10, numstr);
 				break;
 
 
 			case 'x':
-				s = hd_to_str(va_arg(arg, int), numstr);
+				s = os_long_int_to_string(va_arg(arg, int),
+						16, numstr + 2);
 				os_string_lowercase(s);
 				break;
 
 			case 'X':
-				s = hd_to_str(va_arg(arg, int), numstr);
+				s = os_long_int_to_string(va_arg(arg, int),
+						16, numstr + 2);
+				os_string_uppercase(s);
 				break;
 
 			case 'p':
 				strcpy(numstr, "0x");
-				s = hd_to_str(va_arg(arg, int), numstr + 2);
+				s = os_long_int_to_string(va_arg(arg, int),
+						16, numstr + 2);
 				break;
 
 			case 'c':
@@ -116,29 +131,6 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 
 	return count;
 }
-
-char *num_to_str(int hassign, int base, int size, void *value, 
-		char *str, int maxlen)
-{
-	char *num = value;
-	int isneg;
-	int len = 0;
-
-	if (maxlen == 1) {
-		str[0] = '\0';
-		return str;
-	}
-
-	/* If negative, invert and remember sign */
-	if (hassign && num[size - 1] & 0x80) {
-		str[len++] = '-';
-	}
-
-	/* TODO */
-
-	return 0;
-}
-
 
 int printf(char *format, ...)
 {
