@@ -1,10 +1,14 @@
 #include "mikeos.h"
 
+static int asdf;
+
 int main(int argc, char **argv)
 {
 	int x = 0;
 	int y = 0;
 	int key;
+
+	asdf = 5;
 	
 	do {
 		os_clear_screen();
@@ -21,5 +25,10 @@ int main(int argc, char **argv)
 	os_clear_screen();
 	
 	return 0;
+}
+
+static int fdsa(int x)
+{
+	return x + 1;
 }
 

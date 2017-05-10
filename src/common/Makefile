@@ -1,7 +1,7 @@
-OBJECTS = asm/crt0.o asm/c0du.o
+OBJECTS = crt0.o asm/c0du.o
 
 all: $(OBJECTS)
-	cp asm/crt0.o ../../lib/crt0.o
+	cp crt0.o ../../lib/crt0.o
 	cp asm/c0du.o ../../lib/c0du.o
 
 %.o : %.c;

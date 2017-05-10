@@ -14,6 +14,7 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 	char ch, *s;
 	long num;
 	char numstr[12];
+	int *foo;
 
 	if (!tofile && str) str[0] = '\0';
 
@@ -69,9 +70,10 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 				break;
 
 			case 'p':
-				strcpy(numstr, "0x");
-				s = os_long_int_to_string(va_arg(arg, int),
+				s = strcpy(numstr, "0x");
+				os_long_int_to_string(va_arg(arg, int),
 						16, numstr + 2);
+				os_string_uppercase(s + 2);
 				break;
 
 			case 'c':
@@ -87,7 +89,7 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 				break;
 
 			case 'n':
-				*(va_arg(arg, int*)) = count;
+				*va_arg(arg, int*) = count;
 				break;
 
 		}
@@ -115,9 +117,9 @@ int print_string(int tofile, FILE *f, char *str, int limit, char *fmt,
 
 			case 'c':
 			case '%':
-				if (tofile && str) {
+				if (tofile) {
 					fputc(ch, f);
-				} else {
+				} else if (str) {
 					str[count] = ch;
 				}
 

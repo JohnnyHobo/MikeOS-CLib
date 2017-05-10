@@ -1,93 +1,97 @@
 bits 16
 
+
+; int strcmp(char *str1, char *str2);
 GLOBAL _strcmp
-GLOBAL _strncat
 
 _strcmp:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push si
-	push di
+	push esi
+	push edi
 
-	mov di, [bp + 4]
+	mov edi, [ebp + 8]
 	mov al, 0
-	mov cx, -1
+	mov ecx, -1
 	cld
-	repne scasb
+	repne a32 scasb
 
-	sub di, [bp + 4]
-	mov cx, di
+	sub edi, [ebp + 8]
+	mov ecx, edi
 	
-	mov si, [bp + 4]
-	mov di, [bp + 6]
-	repe cmpsb
+	mov esi, [ebp + 8]
+	mov edi, [ebp + 12]
+	repe a32 cmpsb
 
-	mov al, [si - 1]
-	cmp al, [di - 1]
+	mov al, [esi - 1]
+	cmp al, [edi - 1]
 
 	ja .higher
 	jb .lower
 
-	mov ax, 0
+	mov eax, 0
 .finish:
-	pop di
-	pop si
+	pop edi
+	pop esi
 
-	leave
-	ret
+	o32 leave
+	retf
 
 .higher:
-	mov ax, 1
+	mov eax, 1
 	jmp .finish
 
 .lower:
-	mov ax, -1
+	mov eax, -1
 	jmp .finish
 
 
-_strncat:
-	push bp
-	mov bp, sp
+; char *strncat(char *destination, char *source, size_t num);
+GLOBAL _strncat
 
-	push si
-	push di
+_strncat:
+	push ebp
+	movzx ebp, sp
+
+	push esi
+	push edi
 
 	; Find the length of the string to add.
-	mov di, [bp + 6]
-	mov cx, [bp + 8]
-	inc cx
+	mov edi, [ebp + 12]
+	mov ecx, [ebp + 16]
+	inc ecx
 	mov al, 0
 	cld
-	repne scasb
+	repne a32 scasb
 
 	; Remember the last chararacter address.
-	mov si, di
+	mov esi, edi
 
 	; Now find the end of the base string.
-	mov di, [bp + 4]
-	mov cx, -1
+	mov edi, [ebp + 8]
+	mov ecx, -1
 	mov al, 0
-	repne scasb
-	dec di
+	repne a32 scasb
+	dec edi
 
 	; Now figure out the length to copy.
-	mov cx, si
-	sub cx, [bp + 6]
-	dec cx
+	mov ecx, esi
+	sub ecx, [ebp + 12]
+	dec ecx
 
 	; Copy the new string after the end of the base string.
-	mov si, [bp + 6]
-	rep movsb
+	mov esi, [ebp + 12]
+	rep a32 movsb
 
 	mov al, 0
-	stosb
+	a32 stosb
 
-	pop di
-	pop si
+	pop edi
+	pop esi
 
-	mov ax, [bp + 4]
+	mov eax, [ebp + 8]
 
-	leave
-	ret
+	o32 leave
+	retf
 

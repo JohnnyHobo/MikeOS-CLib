@@ -1,149 +1,158 @@
 bits 16
 
-GLOBAL _memcpy
-GLOBAL _memset
-GLOBAL _memcmp
-GLOBAL _memchr
-GLOBAL _memmove
 
+; void *memcpy(void *destination, void *source, size_t num);
+GLOBAL _memcpy
 
 _memcpy:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push si
-	push di
+	push esi
+	push edi
 
-	mov di, [bp + 4]
-	mov si, [bp + 6]
-	mov cx, [bp + 8]
+	mov edi, [ebp + 8]
+	mov esi, [ebp + 12]
+	mov ecx, [ebp + 16]
 	cld
-	rep movsb
+	rep a32 movsb
 	
-	mov ax, [bp + 4]
+	mov eax, [ebp + 8]
 
-	pop di
-	pop si
+	pop edi
+	pop esi
 
-	leave
-	ret
+	o32 leave
+	retf
 
 
+
+; void *memset(void *ptr, int value, size_t num);
+GLOBAL _memset
 
 _memset:
-	push bp
-	mov bp, sp
-	push di
+	push ebp
+	movzx ebp, sp
 
-	mov di, [bp + 4]
-	mov al, [bp + 6]
-	mov cx, [bp + 8]
+	push edi
+
+	mov edi, [ebp + 8]
+	mov al, [ebp + 12]
+	mov ecx, [ebp + 16]
 	cld
 	rep a32 stosb
-	mov ax, [bp + 4]
+	mov eax, [ebp + 8]
 
-	pop di
-	leave
-	ret
+	pop edi
+
+	o32 leave
+	retf
 
 
+; void *memcmp(void *ptr1, void *ptr2, size_t num);
+GLOBAL _memcmp
 
 _memcmp:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push si
-	push di
+	push esi
+	push edi
 
-	mov si, [bp + 4]
-	mov di, [bp + 6]
-	mov cx, [bp + 8]
+	mov esi, [ebp + 8]
+	mov edi, [ebp + 12]
+	mov ecx, [ebp + 16]
 	cld
-	repe cmpsb
+	repe a32 cmpsb
 	je .equal
 	ja .greater
 
-	mov ax, -1
+	mov eax, -1
 
 .done:
-	pop di
-	pop si
+	pop edi
+	pop esi
 
-	leave
-	ret
+	o32 leave
+	retf
 
 .greater:
-	mov ax, 1
+	mov eax, 1
 	jmp .done
 
 .equal:
-	mov ax, 0
+	mov eax, 0
 	jmp .done
 	
 
+; void *memchr(void *ptr1, void *ptr2, size_t num);
+GLOBAL _memchr
 
 _memchr:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push di
+	push edi
 
-	mov di, [bp + 4]
-	mov al, [bp + 6]
-	mov cx, [bp + 8]
+	mov edi, [ebp + 8]
+	mov al, [ebp + 12]
+	mov ecx, [ebp + 16]
 	cld
-	repne scasb
+	repne a32 scasb
 	jne .not_found
 
-	dec di
-	mov ax, di
+	dec edi
+	mov eax, edi
 
 .done:
-	pop di
-	leave
-	ret
+	pop edi
+	o32 leave
+	retf
 
 .not_found:
-	mov ax, 0
+	mov eax, 0
 	jmp .done
 
 
+; void *memmove(void *destination, void *source, size_t num);
+GLOBAL _memmove
+
 _memmove:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push si
-	push di
+	push esi
+	push edi
 
-	mov di, [bp + 4]
-	mov si, [bp + 6]
-	mov cx, [bp + 8]
+	mov edi, [ebp + 8]
+	mov esi, [ebp + 12]
+	mov ecx, [ebp + 16]
 
 	; If the destination is greater than the source, copy backwards.
-	cmp si, di
+	cmp esi, edi
 	jb .backwards
 
 	cld
-	rep movsb
+	rep a32 movsb
 
 .done:
-	pop di
-	pop si
-	leave
-	ret
+	pop edi
+	pop esi
+	o32 leave
+	retf
 
 
 .backwards:
 	; Start at the end to avoid overwriting the source data.
 	std
-	add di, cx
-	dec di
-	add si, cx
-	dec si
-
-	rep movsb
+	add edi, ecx
+	dec edi
+	add esi, ecx
+	dec esi
 
 	cld
+	rep a32 movsb
+
 	jmp .done
 
 

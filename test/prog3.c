@@ -1,6 +1,6 @@
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main()
 {
@@ -9,6 +9,7 @@ int main()
 	int b = 345;
 	int i;
 	char *ptr, *ptr2;
+	char buf[10];
 
 	r = div(a, b);
 
@@ -40,6 +41,9 @@ int main()
 	printf("MEMMOVE initial string: %s\n", ptr);
 	memmove(ptr + 4, ptr, 8);
 	printf("MEMMOVE final string: %s\n", ptr);
+
+	printf("Press ENTER to continue.\n");
+	fgets(buf, 8, stdin);
 
 	return 0;
 }

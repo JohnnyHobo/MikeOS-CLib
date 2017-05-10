@@ -60,7 +60,7 @@ _os_move_cursor:
 	START_API
 
 	mov dh, [ebp + 8]
-	mov al, [ebp + 12]
+	mov dl, [ebp + 12]
 	MOSCALL os_move_cursor
 
 	END_API
@@ -364,5 +364,4 @@ _os_input_string:
 	END_API
 
 section .bss
-	file_selector_buffer 	times 13 db 0
-
+	file_selector_buffer 	resb 13 

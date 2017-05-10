@@ -34,9 +34,11 @@ GLOBAL _os_fatal_error
 _os_fatal_error:
 	START_API
 
-	mov ax, [ebp + 8]	; `error`
+	RELOC_STR 0
+
+	mov ax, [ebp - 10]	; `error`
 	MOSCALL os_fatal_error
 
-	END_API
+	END_API			; Is this even needed? It shouldn't return.
 
 	

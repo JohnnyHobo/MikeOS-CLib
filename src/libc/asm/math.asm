@@ -1,27 +1,28 @@
 bits 16
 
+; div_t div(int numerator, int denominator);
 GLOBAL _div
 
 _div:
-	push bp
-	mov bp, sp
+	push ebp
+	movzx ebp, sp
 
-	push bx
-	mov bx, [bp + 4]
+	push ebx
+	mov ebx, [ebp + 8]	; Structure implicitly passed on the stack.
 
-	mov ax, [bp + 6]
-	cwd
+	mov eax, [ebp + 12]	; Numerator
+	cdq
 
-	mov cx, [bp + 8]
-	idiv cx
+	mov ecx, [ebp + 16]	; Denominator
+	idiv ecx
 	
-	mov [bx], ax
-	mov [bx + 2], dx
+	mov [ebx], eax
+	mov [ebx + 4], edx
 
-	pop bx
+	pop ebx
 
-	leave
-	ret
+	o32 leave
+	retf
 
 	
 	

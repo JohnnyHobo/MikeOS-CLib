@@ -6,10 +6,10 @@
 EXTERN copy_str_low
 EXTERN copy_str_high
 EXTERN lowmem_offset
-EXTERN lowmem_start
-EXTERN lowmem_segoffs
-EXTERN os_call
-EXTERN os_ds
+EXTERN _lowmem_start
+EXTERN _lowmem_segoffs
+EXTERN _os_call
+EXTERN _os_ds
 
 
 %macro START_API 0
@@ -19,7 +19,7 @@ EXTERN os_ds
 	push esi
 	push edi
 	
-	mov si, [dword lowmem_start]
+	mov si, [dword _lowmem_start]
 	mov [dword lowmem_offset], si
 %endmacro
 
@@ -35,8 +35,8 @@ EXTERN os_ds
 
 %macro MOSCALL 1
 	push word %1
-	push word [dword os_ds]
-	call far [dword os_call]
+	push word [dword _os_ds]
+	call far [dword _os_call]
 %endmacro
 
 
@@ -81,11 +81,11 @@ EXTERN os_ds
 
 	mov esi, %1
 	movzx edi, word [dword lowmem_offset]
-	add edi, [dword lowmem_segoffs]
+	add edi, [dword _lowmem_segoffs]
 	movzx ecx, word %2
 	rep a32 movsb
 
-	sub edi, [dword lowmem_segoffs]
+	sub edi, [dword _lowmem_segoffs]
 	mov [dword lowmem_offset], di
 
 	pop ecx
@@ -103,7 +103,7 @@ EXTERN os_ds
 	push ecx
 
 	movzx esi, word %1
-	add esi, [dword lowmem_segoffs]
+	add esi, [dword _lowmem_segoffs]
 	mov edi, %3
 	mov ecx, %2
 	rep a32 movsb
