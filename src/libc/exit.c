@@ -2,7 +2,7 @@ void _exit();
 
 void exit(int status)
 {
-	/* See the file 'asm/start.asm' */
+	/* See the file 'crt0.c' */
 	_Exit();
 }
 

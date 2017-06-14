@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_DISK
-#define MOSCLIB_HAS_DISK
+#ifndef MOSCLIB_HAS_MIKEOS_DISK
+#define MOSCLIB_HAS_MIKEOS_DISK
 
 /** \brief Retrieves a list of files in the current directory.
   * \param buffer The buffer to store the list of files in.

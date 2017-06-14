@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_PORTS
-#define MOSCLIB_HAS_PORTS
+#ifndef MOSCLIB_HAS_MIKEOS_PORTS
+#define MOSCLIB_HAS_MIKEOS_PORTS
 
 /** \brief Send data to an I/O port.
   * \param port The port number.
@@ -34,19 +34,19 @@ char os_serial_port_enable(enum SERIAL_MODE mode);
   * \param data The data to send.
   * \return A result code. The SERIAL_ERROR bit is set if an error occurred.
   *
-  * Be sure the enable the serial port with \ref os_serial_enable() first.
+  * Be sure the enable the serial port with \ref os_serial_port_enable() first.
   */
 char os_send_via_serial(char data);
 
 /** \brief Recieve 7-bt data to this machine from the serial port.
-  * \param The location to store the recieved data.
+  * \param received The location to store the recieved data.
   * \return A result code. The SERIAL_ERROR bit is set if an error occurred.
   * 
   * The recieved data is only valid if that result code does not indicate an
   * error occurred.
-  * Be sure the enable the serial port with \ref os_serial_enable() first.
+  * Be sure the enable the serial port with \ref os_serial_port_enable() first.
   */
-char os_get_via_serial(char *recieved);
+char os_get_via_serial(char *received);
 
 #endif
 

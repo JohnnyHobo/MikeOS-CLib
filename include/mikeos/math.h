@@ -1,7 +1,5 @@
-#ifndef MOSCLIB_HAS_MATH
-#define MOSCLIB_HAS_MATH
-
-#include "mikeos/struct.h"
+#ifndef MOSCLIB_HAS_MIKEOS_MATH
+#define MOSCLIB_HAS_MIKEOS_MATH
 
 /** \brief Converts an 8-bit BCD number to a binary number.
   * \param bcd The number to convert.
@@ -9,8 +7,8 @@
   */
 int os_bcd_to_int(char bcd);
 
-/** Produces the negative value of a long.
-  * \param The value to negate.
+/** \brief Produces the negative value of a long.
+  * \param value The value to negate.
   * \return The negated value.
   */
 long os_long_int_negate(long value);

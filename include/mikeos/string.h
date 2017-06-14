@@ -1,7 +1,5 @@
-#ifndef MOSCLIB_HAS_STRING
-#define MOSCLIB_HAS_STRING
-
-#include "mikeos/struct.h"
+#ifndef MOSCLIB_HAS_MIKEOS_STRING
+#define MOSCLIB_HAS_MIKEOS_STRING
 
 /** \brief Find the number of ASCII characters in a string.
   * \param str A pointer to the string to count.

@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_SCREEN
-#define MOSCLIB_HAS_SCREEN
+#ifndef MOSCLIB_HAS_MIKEOS_SCREEN
+#define MOSCLIB_HAS_MIKEOS_SCREEN
 
 /** \anchor screen_api
   */
@@ -43,6 +43,10 @@ void os_move_cursor(int row, int col);
   */
 void os_get_cursor_pos(int *row, int *col);
 
+enum LINE_STYLE {
+	SINGLE_LINE,
+	DOUBLE_LINE
+};
 
 /** \brief Draws a horizontal line across the screen.
   *
@@ -53,9 +57,7 @@ void os_get_cursor_pos(int *row, int *col);
   * horizontal position of the line. After drawing the line the cursor will be
   * moved to the first horizontal position of the next line.
   */
-void os_print_horiz_line(int type);
-#define SINGLE_LINE 0
-#define DOUBLE_LINE 1
+void os_print_horiz_line(enum LINE_STYLE type);
 
 /** \brief Shows a visible cursor at the cursor position.
   * 
@@ -68,8 +70,8 @@ void os_hide_cursor();
 
 /** \brief Draws a rectagular block of colour.
   *
-  * \param colour The colour to draw with. Use a background colour i.e. RED_BG
-  * not RED.
+  * \param colour The colour to draw with. 
+  * For possible colours see the list of \ref bgcolours "Background Colours".
   * \param x The horizontal position to start at.
   * \param y The vertical position to start at.
   * \param width The horizontal width of the block.

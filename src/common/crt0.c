@@ -37,7 +37,7 @@ void _Exit()
 	/* Restore the original stack and call the os_exit routine. */
 	asm(	"mov ebx, [ebp - 4]\n"
 
-		"mov ax, [ebp - 10]\n"
+		"mov ax, [ebp - 6]\n"
 		"cli\n"
 		"mov sp, [ebp - 8]\n"
 		"mov ss, ax\n"

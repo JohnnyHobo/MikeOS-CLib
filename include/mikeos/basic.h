@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_BASIC
-#define MOSCLIB_HAS_BASIC
+#ifndef MOSCLIB_HAS_MIKEOS_BASIC
+#define MOSCLIB_HAS_MIKEOS_BASIC
 /** \brief Runs a MikeOS BASIC program from memory.
   * \param code A pointer to the loaded code.
   * \param size The length of the code in bytes.

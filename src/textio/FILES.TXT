@@ -1,3 +1,10 @@
-textio.c
-rawtio.c
+backend.c
+char.c
+core.c
+cursor.c
+internal.c
+mode.c
+page.c
+print.c
+shapes.c
 ../common/minmax.c

@@ -1,295 +1,312 @@
-#ifndef MOSCLIB_HAS_COLOURS
-#define MOSCLIB_HAS_COLOURS
+#ifndef MOSCLIB_HAS_MIKEOS_COLOURS
+#define MOSCLIB_HAS_MIKEOS_COLOURS
 
-#define BLACK_BG 0x00
-#define BLUE_BG 0x10
-#define GREEN_BG 0x20
-#define CYAN_BG 0x30
-#define RED_BG 0x40
-#define MAGENTA_BG 0x50
-#define BROWN_BG 0x60
-#define LIGHTGREY_BG 0x70
-#define GREY_BG 0x80
-#define LIGHTBLUE_BG 0x90
-#define LIGHTGREEN_BG 0xA0
-#define LIGHTCYAN_BG 0xB0
-#define LIGHTRED_BG 0xC0
-#define LIGHTMAGENTA_BG 0xD0
-#define YELLOW_BG 0xE0
-#define WHITE_BG 0xF0
+/** \name Foreground Colours
+  * \anchor fgcolours
+  *
+  * @{
+  */
+#define  BLACK         0x0
+#define  BLUE          0x1
+#define  GREEN         0x2
+#define  CYAN          0x3
+#define  RED           0x4
+#define  MAGENTA       0x5
+#define  BROWN         0x6
+#define  LIGHTGREY     0x7
+#define  GREY          0x8
+#define  LIGHTBLUE     0x9
+#define  LIGHTGREEN    0xA
+#define  LIGHTCYAN     0xB
+#define  LIGHTRED      0xC
+#define  LIGHTMAGENTA  0xD
+#define  YELLOW        0xE
+#define  WHITE         0xF
+/**@}*/
 
-#define BLACK 0x0
-#define BLUE 0x1
-#define GREEN 0x2
-#define CYAN 0x3
-#define RED 0x4
-#define MAGENTA 0x5
-#define BROWN 0x6
-#define LIGHTGREY 0x7
-#define GREY 0x8
-#define LIGHTBLUE 0x9
-#define LIGHTGREEN 0xA
-#define LIGHTCYAN 0xB
-#define LIGHTRED 0xC
-#define LIGHTMAGENTA 0xD
-#define YELLOW 0xE
-#define WHITE 0xF
+/** \name Background Colours
+  * \anchor bgcolours
+  * @{
+  */
+#define  BLACK_BG         BLACK         <<  4
+#define  BLUE_BG          BLUE          <<  4
+#define  GREEN_BG         GREEN         <<  4
+#define  CYAN_BG          CYAN          <<  4
+#define  RED_BG           RED           <<  4
+#define  MAGENTA_BG       MAGENTA       <<  4
+#define  BROWN_BG         BROWN         <<  4
+#define  LIGHTGREY_BG     LIGHTGREY     <<  4
+#define  GREY_BG          GREY          <<  4
+#define  LIGHTBLUE_BG     LIGHTBLUE     <<  4
+#define  LIGHTGREEN_BG    LIGHTGREEN    <<  4
+#define  LIGHTCYAN_BG     LIGHTCYAN     <<  4
+#define  LIGHTRED_BG      LIGHTRED      <<  4
+#define  LIGHTMAGENTA_BG  LIGHTMAGENTA  <<  4
+#define  YELLOW_BG        YELLOW        <<  4
+#define  WHITE_BG         WHITE         <<  4
+/**@}*/
 
-#define BLACK_ON_BLACK 0x00
-#define BLACK_ON_BLUE 0x10
-#define BLACK_ON_GREEN 0x20
-#define BLACK_ON_CYAN 0x30
-#define BLACK_ON_RED 0x40
-#define BLACK_ON_MAGENTA 0x50
-#define BLACK_ON_BROWN 0x60
-#define BLACK_ON_LIGHTGREY 0x70
-#define BLACK_ON_GREY 0x80
-#define BLACK_ON_LIGHTBLUE 0x90
-#define BLACK_ON_LIGHTGREEN 0xA0
-#define BLACK_ON_LIGHTCYAN 0xB0
-#define BLACK_ON_LIGHTRED 0xC0
-#define BLACK_ON_LIGHTMAGENTA 0xD0
-#define BLACK_ON_YELLOW 0xE0
-#define BLACK_ON_WHITE 0xF0
-#define BLUE_ON_BLACK 0x01
-#define BLUE_ON_BLUE 0x11
-#define BLUE_ON_GREEN 0x21
-#define BLUE_ON_CYAN 0x31
-#define BLUE_ON_RED 0x41
-#define BLUE_ON_MAGENTA 0x51
-#define BLUE_ON_BROWN 0x61
-#define BLUE_ON_LIGHTGREY 0x71
-#define BLUE_ON_GREY 0x81
-#define BLUE_ON_LIGHTBLUE 0x91
-#define BLUE_ON_LIGHTGREEN 0xA1
-#define BLUE_ON_LIGHTCYAN 0xB1
-#define BLUE_ON_LIGHTRED 0xC1
-#define BLUE_ON_LIGHTMAGENTA 0xD1
-#define BLUE_ON_YELLOW 0xE1
-#define BLUE_ON_WHITE 0xF1
-#define GREEN_ON_BLACK 0x02
-#define GREEN_ON_BLUE 0x12
-#define GREEN_ON_GREEN 0x22
-#define GREEN_ON_CYAN 0x32
-#define GREEN_ON_RED 0x42
-#define GREEN_ON_MAGENTA 0x52
-#define GREEN_ON_BROWN 0x62
-#define GREEN_ON_LIGHTGREY 0x72
-#define GREEN_ON_GREY 0x82
-#define GREEN_ON_LIGHTBLUE 0x92
-#define GREEN_ON_LIGHTGREEN 0xA2
-#define GREEN_ON_LIGHTCYAN 0xB2
-#define GREEN_ON_LIGHTRED 0xC2
-#define GREEN_ON_LIGHTMAGENTA 0xD2
-#define GREEN_ON_YELLOW 0xE2
-#define GREEN_ON_WHITE 0xF2
-#define CYAN_ON_BLACK 0x03
-#define CYAN_ON_BLUE 0x13
-#define CYAN_ON_GREEN 0x23
-#define CYAN_ON_CYAN 0x33
-#define CYAN_ON_RED 0x43
-#define CYAN_ON_MAGENTA 0x53
-#define CYAN_ON_BROWN 0x63
-#define CYAN_ON_LIGHTGREY 0x73
-#define CYAN_ON_GREY 0x83
-#define CYAN_ON_LIGHTBLUE 0x93
-#define CYAN_ON_LIGHTGREEN 0xA3
-#define CYAN_ON_LIGHTCYAN 0xB3
-#define CYAN_ON_LIGHTRED 0xC3
-#define CYAN_ON_LIGHTMAGENTA 0xD3
-#define CYAN_ON_YELLOW 0xE3
-#define CYAN_ON_WHITE 0xF3
-#define RED_ON_BLACK 0x04
-#define RED_ON_BLUE 0x14
-#define RED_ON_GREEN 0x24
-#define RED_ON_CYAN 0x34
-#define RED_ON_RED 0x44
-#define RED_ON_MAGENTA 0x54
-#define RED_ON_BROWN 0x64
-#define RED_ON_LIGHTGREY 0x74
-#define RED_ON_GREY 0x84
-#define RED_ON_LIGHTBLUE 0x94
-#define RED_ON_LIGHTGREEN 0xA4
-#define RED_ON_LIGHTCYAN 0xB4
-#define RED_ON_LIGHTRED 0xC4
-#define RED_ON_LIGHTMAGENTA 0xD4
-#define RED_ON_YELLOW 0xE4
-#define RED_ON_WHITE 0xF4
-#define MAGENTA_ON_BLACK 0x05
-#define MAGENTA_ON_BLUE 0x15
-#define MAGENTA_ON_GREEN 0x25
-#define MAGENTA_ON_CYAN 0x35
-#define MAGENTA_ON_RED 0x45
-#define MAGENTA_ON_MAGENTA 0x55
-#define MAGENTA_ON_BROWN 0x65
-#define MAGENTA_ON_LIGHTGREY 0x75
-#define MAGENTA_ON_GREY 0x85
-#define MAGENTA_ON_LIGHTBLUE 0x95
-#define MAGENTA_ON_LIGHTGREEN 0xA5
-#define MAGENTA_ON_LIGHTCYAN 0xB5
-#define MAGENTA_ON_LIGHTRED 0xC5
-#define MAGENTA_ON_LIGHTMAGENTA 0xD5
-#define MAGENTA_ON_YELLOW 0xE5
-#define MAGENTA_ON_WHITE 0xF5
-#define BROWN_ON_BLACK 0x06
-#define BROWN_ON_BLUE 0x16
-#define BROWN_ON_GREEN 0x26
-#define BROWN_ON_CYAN 0x36
-#define BROWN_ON_RED 0x46
-#define BROWN_ON_MAGENTA 0x56
-#define BROWN_ON_BROWN 0x66
-#define BROWN_ON_LIGHTGREY 0x76
-#define BROWN_ON_GREY 0x86
-#define BROWN_ON_LIGHTBLUE 0x96
-#define BROWN_ON_LIGHTGREEN 0xA6
-#define BROWN_ON_LIGHTCYAN 0xB6
-#define BROWN_ON_LIGHTRED 0xC6
-#define BROWN_ON_LIGHTMAGENTA 0xD6
-#define BROWN_ON_YELLOW 0xE6
-#define BROWN_ON_WHITE 0xF6
-#define LIGHTGREY_ON_BLACK 0x07
-#define LIGHTGREY_ON_BLUE 0x17
-#define LIGHTGREY_ON_GREEN 0x27
-#define LIGHTGREY_ON_CYAN 0x37
-#define LIGHTGREY_ON_RED 0x47
-#define LIGHTGREY_ON_MAGENTA 0x57
-#define LIGHTGREY_ON_BROWN 0x67
-#define LIGHTGREY_ON_LIGHTGREY 0x77
-#define LIGHTGREY_ON_GREY 0x87
-#define LIGHTGREY_ON_LIGHTBLUE 0x97
-#define LIGHTGREY_ON_LIGHTGREEN 0xA7
-#define LIGHTGREY_ON_LIGHTCYAN 0xB7
-#define LIGHTGREY_ON_LIGHTRED 0xC7
-#define LIGHTGREY_ON_LIGHTMAGENTA 0xD7
-#define LIGHTGREY_ON_YELLOW 0xE7
-#define LIGHTGREY_ON_WHITE 0xF7
-#define GREY_ON_BLACK 0x08
-#define GREY_ON_BLUE 0x18
-#define GREY_ON_GREEN 0x28
-#define GREY_ON_CYAN 0x38
-#define GREY_ON_RED 0x48
-#define GREY_ON_MAGENTA 0x58
-#define GREY_ON_BROWN 0x68
-#define GREY_ON_LIGHTGREY 0x78
-#define GREY_ON_GREY 0x88
-#define GREY_ON_LIGHTBLUE 0x98
-#define GREY_ON_LIGHTGREEN 0xA8
-#define GREY_ON_LIGHTCYAN 0xB8
-#define GREY_ON_LIGHTRED 0xC8
-#define GREY_ON_LIGHTMAGENTA 0xD8
-#define GREY_ON_YELLOW 0xE8
-#define GREY_ON_WHITE 0xF8
-#define LIGHTBLUE_ON_BLACK 0x09
-#define LIGHTBLUE_ON_BLUE 0x19
-#define LIGHTBLUE_ON_GREEN 0x29
-#define LIGHTBLUE_ON_CYAN 0x39
-#define LIGHTBLUE_ON_RED 0x49
-#define LIGHTBLUE_ON_MAGENTA 0x59
-#define LIGHTBLUE_ON_BROWN 0x69
-#define LIGHTBLUE_ON_LIGHTGREY 0x79
-#define LIGHTBLUE_ON_GREY 0x89
-#define LIGHTBLUE_ON_LIGHTBLUE 0x99
-#define LIGHTBLUE_ON_LIGHTGREEN 0xA9
-#define LIGHTBLUE_ON_LIGHTCYAN 0xB9
-#define LIGHTBLUE_ON_LIGHTRED 0xC9
-#define LIGHTBLUE_ON_LIGHTMAGENTA 0xD9
-#define LIGHTBLUE_ON_YELLOW 0xE9
-#define LIGHTBLUE_ON_WHITE 0xF9
-#define LIGHTGREEN_ON_BLACK 0x0A
-#define LIGHTGREEN_ON_BLUE 0x1A
-#define LIGHTGREEN_ON_GREEN 0x2A
-#define LIGHTGREEN_ON_CYAN 0x3A
-#define LIGHTGREEN_ON_RED 0x4A
-#define LIGHTGREEN_ON_MAGENTA 0x5A
-#define LIGHTGREEN_ON_BROWN 0x6A
-#define LIGHTGREEN_ON_LIGHTGREY 0x7A
-#define LIGHTGREEN_ON_GREY 0x8A
-#define LIGHTGREEN_ON_LIGHTBLUE 0x9A
-#define LIGHTGREEN_ON_LIGHTGREEN 0xAA
-#define LIGHTGREEN_ON_LIGHTCYAN 0xBA
-#define LIGHTGREEN_ON_LIGHTRED 0xCA
-#define LIGHTGREEN_ON_LIGHTMAGENTA 0xDA
-#define LIGHTGREEN_ON_YELLOW 0xEA
-#define LIGHTGREEN_ON_WHITE 0xFA
-#define LIGHTCYAN_ON_BLACK 0x0B
-#define LIGHTCYAN_ON_BLUE 0x1B
-#define LIGHTCYAN_ON_GREEN 0x2B
-#define LIGHTCYAN_ON_CYAN 0x3B
-#define LIGHTCYAN_ON_RED 0x4B
-#define LIGHTCYAN_ON_MAGENTA 0x5B
-#define LIGHTCYAN_ON_BROWN 0x6B
-#define LIGHTCYAN_ON_LIGHTGREY 0x7B
-#define LIGHTCYAN_ON_GREY 0x8B
-#define LIGHTCYAN_ON_LIGHTBLUE 0x9B
-#define LIGHTCYAN_ON_LIGHTGREEN 0xAB
-#define LIGHTCYAN_ON_LIGHTCYAN 0xBB
-#define LIGHTCYAN_ON_LIGHTRED 0xCB
-#define LIGHTCYAN_ON_LIGHTMAGENTA 0xDB
-#define LIGHTCYAN_ON_YELLOW 0xEB
-#define LIGHTCYAN_ON_WHITE 0xFB
-#define LIGHTRED_ON_BLACK 0x0C
-#define LIGHTRED_ON_BLUE 0x1C
-#define LIGHTRED_ON_GREEN 0x2C
-#define LIGHTRED_ON_CYAN 0x3C
-#define LIGHTRED_ON_RED 0x4C
-#define LIGHTRED_ON_MAGENTA 0x5C
-#define LIGHTRED_ON_BROWN 0x6C
-#define LIGHTRED_ON_LIGHTGREY 0x7C
-#define LIGHTRED_ON_GREY 0x8C
-#define LIGHTRED_ON_LIGHTBLUE 0x9C
-#define LIGHTRED_ON_LIGHTGREEN 0xAC
-#define LIGHTRED_ON_LIGHTCYAN 0xBC
-#define LIGHTRED_ON_LIGHTRED 0xCC
-#define LIGHTRED_ON_LIGHTMAGENTA 0xDC
-#define LIGHTRED_ON_YELLOW 0xEC
-#define LIGHTRED_ON_WHITE 0xFC
-#define LIGHTMAGENTA_ON_BLACK 0x0D
-#define LIGHTMAGENTA_ON_BLUE 0x1D
-#define LIGHTMAGENTA_ON_GREEN 0x2D
-#define LIGHTMAGENTA_ON_CYAN 0x3D
-#define LIGHTMAGENTA_ON_RED 0x4D
-#define LIGHTMAGENTA_ON_MAGENTA 0x5D
-#define LIGHTMAGENTA_ON_BROWN 0x6D
-#define LIGHTMAGENTA_ON_LIGHTGREY 0x7D
-#define LIGHTMAGENTA_ON_GREY 0x8D
-#define LIGHTMAGENTA_ON_LIGHTBLUE 0x9D
-#define LIGHTMAGENTA_ON_LIGHTGREEN 0xAD
-#define LIGHTMAGENTA_ON_LIGHTCYAN 0xBD
-#define LIGHTMAGENTA_ON_LIGHTRED 0xCD
-#define LIGHTMAGENTA_ON_LIGHTMAGENTA 0xDD
-#define LIGHTMAGENTA_ON_YELLOW 0xED
-#define LIGHTMAGENTA_ON_WHITE 0xFD
-#define YELLOW_ON_BLACK 0x0E
-#define YELLOW_ON_BLUE 0x1E
-#define YELLOW_ON_GREEN 0x2E
-#define YELLOW_ON_CYAN 0x3E
-#define YELLOW_ON_RED 0x4E
-#define YELLOW_ON_MAGENTA 0x5E
-#define YELLOW_ON_BROWN 0x6E
-#define YELLOW_ON_LIGHTGREY 0x7E
-#define YELLOW_ON_GREY 0x8E
-#define YELLOW_ON_LIGHTBLUE 0x9E
-#define YELLOW_ON_LIGHTGREEN 0xAE
-#define YELLOW_ON_LIGHTCYAN 0xBE
-#define YELLOW_ON_LIGHTRED 0xCE
-#define YELLOW_ON_LIGHTMAGENTA 0xDE
-#define YELLOW_ON_YELLOW 0xEE
-#define YELLOW_ON_WHITE 0xFE
-#define WHITE_ON_BLACK 0x0F
-#define WHITE_ON_BLUE 0x1F
-#define WHITE_ON_GREEN 0x2F
-#define WHITE_ON_CYAN 0x3F
-#define WHITE_ON_RED 0x4F
-#define WHITE_ON_MAGENTA 0x5F
-#define WHITE_ON_BROWN 0x6F
-#define WHITE_ON_LIGHTGREY 0x7F
-#define WHITE_ON_GREY 0x8F
-#define WHITE_ON_LIGHTBLUE 0x9F
-#define WHITE_ON_LIGHTGREEN 0xAF
-#define WHITE_ON_LIGHTCYAN 0xBF
-#define WHITE_ON_LIGHTRED 0xCF
-#define WHITE_ON_LIGHTMAGENTA 0xDF
-#define WHITE_ON_YELLOW 0xEF
-#define WHITE_ON_WHITE 0xFF
+
+/** \name Colour Combinations
+  * \anchor dblcolours
+  * @{
+  */
+#define  BLACK_ON_BLACK                BLACK         |  BLACK_BG
+#define  BLUE_ON_BLACK                 BLUE          |  BLACK_BG
+#define  GREEN_ON_BLACK                GREEN         |  BLACK_BG
+#define  CYAN_ON_BLACK                 CYAN          |  BLACK_BG
+#define  RED_ON_BLACK                  RED           |  BLACK_BG
+#define  MAGENTA_ON_BLACK              MAGENTA       |  BLACK_BG
+#define  BROWN_ON_BLACK                BROWN         |  BLACK_BG
+#define  LIGHTGREY_ON_BLACK            LIGHTGREY     |  BLACK_BG
+#define  GREY_ON_BLACK                 GREY          |  BLACK_BG
+#define  LIGHTBLUE_ON_BLACK            LIGHTBLUE     |  BLACK_BG
+#define  LIGHTGREEN_ON_BLACK           LIGHTGREEN    |  BLACK_BG
+#define  LIGHTCYAN_ON_BLACK            LIGHTCYAN     |  BLACK_BG
+#define  LIGHTRED_ON_BLACK             LIGHTRED      |  BLACK_BG
+#define  LIGHTMAGENTA_ON_BLACK         LIGHTMAGENTA  |  BLACK_BG
+#define  YELLOW_ON_BLACK               YELLOW        |  BLACK_BG
+#define  WHITE_ON_BLACK                WHITE         |  BLACK_BG
+#define  BLACK_ON_BLUE                 BLACK         |  BLUE_BG
+#define  BLUE_ON_BLUE                  BLUE          |  BLUE_BG
+#define  GREEN_ON_BLUE                 GREEN         |  BLUE_BG
+#define  CYAN_ON_BLUE                  CYAN          |  BLUE_BG
+#define  RED_ON_BLUE                   RED           |  BLUE_BG
+#define  MAGENTA_ON_BLUE               MAGENTA       |  BLUE_BG
+#define  BROWN_ON_BLUE                 BROWN         |  BLUE_BG
+#define  LIGHTGREY_ON_BLUE             LIGHTGREY     |  BLUE_BG
+#define  GREY_ON_BLUE                  GREY          |  BLUE_BG
+#define  LIGHTBLUE_ON_BLUE             LIGHTBLUE     |  BLUE_BG
+#define  LIGHTGREEN_ON_BLUE            LIGHTGREEN    |  BLUE_BG
+#define  LIGHTCYAN_ON_BLUE             LIGHTCYAN     |  BLUE_BG
+#define  LIGHTRED_ON_BLUE              LIGHTRED      |  BLUE_BG
+#define  LIGHTMAGENTA_ON_BLUE          LIGHTMAGENTA  |  BLUE_BG
+#define  YELLOW_ON_BLUE                YELLOW        |  BLUE_BG
+#define  WHITE_ON_BLUE                 WHITE         |  BLUE_BG
+#define  BLACK_ON_GREEN                BLACK         |  GREEN_BG
+#define  BLUE_ON_GREEN                 BLUE          |  GREEN_BG
+#define  GREEN_ON_GREEN                GREEN         |  GREEN_BG
+#define  CYAN_ON_GREEN                 CYAN          |  GREEN_BG
+#define  RED_ON_GREEN                  RED           |  GREEN_BG
+#define  MAGENTA_ON_GREEN              MAGENTA       |  GREEN_BG
+#define  BROWN_ON_GREEN                BROWN         |  GREEN_BG
+#define  LIGHTGREY_ON_GREEN            LIGHTGREY     |  GREEN_BG
+#define  GREY_ON_GREEN                 GREY          |  GREEN_BG
+#define  LIGHTBLUE_ON_GREEN            LIGHTBLUE     |  GREEN_BG
+#define  LIGHTGREEN_ON_GREEN           LIGHTGREEN    |  GREEN_BG
+#define  LIGHTCYAN_ON_GREEN            LIGHTCYAN     |  GREEN_BG
+#define  LIGHTRED_ON_GREEN             LIGHTRED      |  GREEN_BG
+#define  LIGHTMAGENTA_ON_GREEN         LIGHTMAGENTA  |  GREEN_BG
+#define  YELLOW_ON_GREEN               YELLOW        |  GREEN_BG
+#define  WHITE_ON_GREEN                WHITE         |  GREEN_BG
+#define  BLACK_ON_CYAN                 BLACK         |  CYAN_BG
+#define  BLUE_ON_CYAN                  BLUE          |  CYAN_BG
+#define  GREEN_ON_CYAN                 GREEN         |  CYAN_BG
+#define  CYAN_ON_CYAN                  CYAN          |  CYAN_BG
+#define  RED_ON_CYAN                   RED           |  CYAN_BG
+#define  MAGENTA_ON_CYAN               MAGENTA       |  CYAN_BG
+#define  BROWN_ON_CYAN                 BROWN         |  CYAN_BG
+#define  LIGHTGREY_ON_CYAN             LIGHTGREY     |  CYAN_BG
+#define  GREY_ON_CYAN                  GREY          |  CYAN_BG
+#define  LIGHTBLUE_ON_CYAN             LIGHTBLUE     |  CYAN_BG
+#define  LIGHTGREEN_ON_CYAN            LIGHTGREEN    |  CYAN_BG
+#define  LIGHTCYAN_ON_CYAN             LIGHTCYAN     |  CYAN_BG
+#define  LIGHTRED_ON_CYAN              LIGHTRED      |  CYAN_BG
+#define  LIGHTMAGENTA_ON_CYAN          LIGHTMAGENTA  |  CYAN_BG
+#define  YELLOW_ON_CYAN                YELLOW        |  CYAN_BG
+#define  WHITE_ON_CYAN                 WHITE         |  CYAN_BG
+#define  BLACK_ON_RED                  BLACK         |  RED_BG
+#define  BLUE_ON_RED                   BLUE          |  RED_BG
+#define  GREEN_ON_RED                  GREEN         |  RED_BG
+#define  CYAN_ON_RED                   CYAN          |  RED_BG
+#define  RED_ON_RED                    RED           |  RED_BG
+#define  MAGENTA_ON_RED                MAGENTA       |  RED_BG
+#define  BROWN_ON_RED                  BROWN         |  RED_BG
+#define  LIGHTGREY_ON_RED              LIGHTGREY     |  RED_BG
+#define  GREY_ON_RED                   GREY          |  RED_BG
+#define  LIGHTBLUE_ON_RED              LIGHTBLUE     |  RED_BG
+#define  LIGHTGREEN_ON_RED             LIGHTGREEN    |  RED_BG
+#define  LIGHTCYAN_ON_RED              LIGHTCYAN     |  RED_BG
+#define  LIGHTRED_ON_RED               LIGHTRED      |  RED_BG
+#define  LIGHTMAGENTA_ON_RED           LIGHTMAGENTA  |  RED_BG
+#define  YELLOW_ON_RED                 YELLOW        |  RED_BG
+#define  WHITE_ON_RED                  WHITE         |  RED_BG
+#define  BLACK_ON_MAGENTA              BLACK         |  MAGENTA_BG
+#define  BLUE_ON_MAGENTA               BLUE          |  MAGENTA_BG
+#define  GREEN_ON_MAGENTA              GREEN         |  MAGENTA_BG
+#define  CYAN_ON_MAGENTA               CYAN          |  MAGENTA_BG
+#define  RED_ON_MAGENTA                RED           |  MAGENTA_BG
+#define  MAGENTA_ON_MAGENTA            MAGENTA       |  MAGENTA_BG
+#define  BROWN_ON_MAGENTA              BROWN         |  MAGENTA_BG
+#define  LIGHTGREY_ON_MAGENTA          LIGHTGREY     |  MAGENTA_BG
+#define  GREY_ON_MAGENTA               GREY          |  MAGENTA_BG
+#define  LIGHTBLUE_ON_MAGENTA          LIGHTBLUE     |  MAGENTA_BG
+#define  LIGHTGREEN_ON_MAGENTA         LIGHTGREEN    |  MAGENTA_BG
+#define  LIGHTCYAN_ON_MAGENTA          LIGHTCYAN     |  MAGENTA_BG
+#define  LIGHTRED_ON_MAGENTA           LIGHTRED      |  MAGENTA_BG
+#define  LIGHTMAGENTA_ON_MAGENTA       LIGHTMAGENTA  |  MAGENTA_BG
+#define  YELLOW_ON_MAGENTA             YELLOW        |  MAGENTA_BG
+#define  WHITE_ON_MAGENTA              WHITE         |  MAGENTA_BG
+#define  BLACK_ON_BROWN                BLACK         |  BROWN_BG
+#define  BLUE_ON_BROWN                 BLUE          |  BROWN_BG
+#define  GREEN_ON_BROWN                GREEN         |  BROWN_BG
+#define  CYAN_ON_BROWN                 CYAN          |  BROWN_BG
+#define  RED_ON_BROWN                  RED           |  BROWN_BG
+#define  MAGENTA_ON_BROWN              MAGENTA       |  BROWN_BG
+#define  BROWN_ON_BROWN                BROWN         |  BROWN_BG
+#define  LIGHTGREY_ON_BROWN            LIGHTGREY     |  BROWN_BG
+#define  GREY_ON_BROWN                 GREY          |  BROWN_BG
+#define  LIGHTBLUE_ON_BROWN            LIGHTBLUE     |  BROWN_BG
+#define  LIGHTGREEN_ON_BROWN           LIGHTGREEN    |  BROWN_BG
+#define  LIGHTCYAN_ON_BROWN            LIGHTCYAN     |  BROWN_BG
+#define  LIGHTRED_ON_BROWN             LIGHTRED      |  BROWN_BG
+#define  LIGHTMAGENTA_ON_BROWN         LIGHTMAGENTA  |  BROWN_BG
+#define  YELLOW_ON_BROWN               YELLOW        |  BROWN_BG
+#define  WHITE_ON_BROWN                WHITE         |  BROWN_BG
+#define  BLACK_ON_LIGHTGREY            BLACK         |  LIGHTGREY_BG
+#define  BLUE_ON_LIGHTGREY             BLUE          |  LIGHTGREY_BG
+#define  GREEN_ON_LIGHTGREY            GREEN         |  LIGHTGREY_BG
+#define  CYAN_ON_LIGHTGREY             CYAN          |  LIGHTGREY_BG
+#define  RED_ON_LIGHTGREY              RED           |  LIGHTGREY_BG
+#define  MAGENTA_ON_LIGHTGREY          MAGENTA       |  LIGHTGREY_BG
+#define  BROWN_ON_LIGHTGREY            BROWN         |  LIGHTGREY_BG
+#define  LIGHTGREY_ON_LIGHTGREY        LIGHTGREY     |  LIGHTGREY_BG
+#define  GREY_ON_LIGHTGREY             GREY          |  LIGHTGREY_BG
+#define  LIGHTBLUE_ON_LIGHTGREY        LIGHTBLUE     |  LIGHTGREY_BG
+#define  LIGHTGREEN_ON_LIGHTGREY       LIGHTGREEN    |  LIGHTGREY_BG
+#define  LIGHTCYAN_ON_LIGHTGREY        LIGHTCYAN     |  LIGHTGREY_BG
+#define  LIGHTRED_ON_LIGHTGREY         LIGHTRED      |  LIGHTGREY_BG
+#define  LIGHTMAGENTA_ON_LIGHTGREY     LIGHTMAGENTA  |  LIGHTGREY_BG
+#define  YELLOW_ON_LIGHTGREY           YELLOW        |  LIGHTGREY_BG
+#define  WHITE_ON_LIGHTGREY            WHITE         |  LIGHTGREY_BG
+#define  BLACK_ON_GREY                 BLACK         |  GREY_BG
+#define  BLUE_ON_GREY                  BLUE          |  GREY_BG
+#define  GREEN_ON_GREY                 GREEN         |  GREY_BG
+#define  CYAN_ON_GREY                  CYAN          |  GREY_BG
+#define  RED_ON_GREY                   RED           |  GREY_BG
+#define  MAGENTA_ON_GREY               MAGENTA       |  GREY_BG
+#define  BROWN_ON_GREY                 BROWN         |  GREY_BG
+#define  LIGHTGREY_ON_GREY             LIGHTGREY     |  GREY_BG
+#define  GREY_ON_GREY                  GREY          |  GREY_BG
+#define  LIGHTBLUE_ON_GREY             LIGHTBLUE     |  GREY_BG
+#define  LIGHTGREEN_ON_GREY            LIGHTGREEN    |  GREY_BG
+#define  LIGHTCYAN_ON_GREY             LIGHTCYAN     |  GREY_BG
+#define  LIGHTRED_ON_GREY              LIGHTRED      |  GREY_BG
+#define  LIGHTMAGENTA_ON_GREY          LIGHTMAGENTA  |  GREY_BG
+#define  YELLOW_ON_GREY                YELLOW        |  GREY_BG
+#define  WHITE_ON_GREY                 WHITE         |  GREY_BG
+#define  BLACK_ON_LIGHTBLUE            BLACK         |  LIGHTBLUE_BG
+#define  BLUE_ON_LIGHTBLUE             BLUE          |  LIGHTBLUE_BG
+#define  GREEN_ON_LIGHTBLUE            GREEN         |  LIGHTBLUE_BG
+#define  CYAN_ON_LIGHTBLUE             CYAN          |  LIGHTBLUE_BG
+#define  RED_ON_LIGHTBLUE              RED           |  LIGHTBLUE_BG
+#define  MAGENTA_ON_LIGHTBLUE          MAGENTA       |  LIGHTBLUE_BG
+#define  BROWN_ON_LIGHTBLUE            BROWN         |  LIGHTBLUE_BG
+#define  LIGHTGREY_ON_LIGHTBLUE        LIGHTGREY     |  LIGHTBLUE_BG
+#define  GREY_ON_LIGHTBLUE             GREY          |  LIGHTBLUE_BG
+#define  LIGHTBLUE_ON_LIGHTBLUE        LIGHTBLUE     |  LIGHTBLUE_BG
+#define  LIGHTGREEN_ON_LIGHTBLUE       LIGHTGREEN    |  LIGHTBLUE_BG
+#define  LIGHTCYAN_ON_LIGHTBLUE        LIGHTCYAN     |  LIGHTBLUE_BG
+#define  LIGHTRED_ON_LIGHTBLUE         LIGHTRED      |  LIGHTBLUE_BG
+#define  LIGHTMAGENTA_ON_LIGHTBLUE     LIGHTMAGENTA  |  LIGHTBLUE_BG
+#define  YELLOW_ON_LIGHTBLUE           YELLOW        |  LIGHTBLUE_BG
+#define  WHITE_ON_LIGHTBLUE            WHITE         |  LIGHTBLUE_BG
+#define  BLACK_ON_LIGHTGREEN           BLACK         |  LIGHTGREEN_BG
+#define  BLUE_ON_LIGHTGREEN            BLUE          |  LIGHTGREEN_BG
+#define  GREEN_ON_LIGHTGREEN           GREEN         |  LIGHTGREEN_BG
+#define  CYAN_ON_LIGHTGREEN            CYAN          |  LIGHTGREEN_BG
+#define  RED_ON_LIGHTGREEN             RED           |  LIGHTGREEN_BG
+#define  MAGENTA_ON_LIGHTGREEN         MAGENTA       |  LIGHTGREEN_BG
+#define  BROWN_ON_LIGHTGREEN           BROWN         |  LIGHTGREEN_BG
+#define  LIGHTGREY_ON_LIGHTGREEN       LIGHTGREY     |  LIGHTGREEN_BG
+#define  GREY_ON_LIGHTGREEN            GREY          |  LIGHTGREEN_BG
+#define  LIGHTBLUE_ON_LIGHTGREEN       LIGHTBLUE     |  LIGHTGREEN_BG
+#define  LIGHTGREEN_ON_LIGHTGREEN      LIGHTGREEN    |  LIGHTGREEN_BG
+#define  LIGHTCYAN_ON_LIGHTGREEN       LIGHTCYAN     |  LIGHTGREEN_BG
+#define  LIGHTRED_ON_LIGHTGREEN        LIGHTRED      |  LIGHTGREEN_BG
+#define  LIGHTMAGENTA_ON_LIGHTGREEN    LIGHTMAGENTA  |  LIGHTGREEN_BG
+#define  YELLOW_ON_LIGHTGREEN          YELLOW        |  LIGHTGREEN_BG
+#define  WHITE_ON_LIGHTGREEN           WHITE         |  LIGHTGREEN_BG
+#define  BLACK_ON_LIGHTCYAN            BLACK         |  LIGHTCYAN_BG
+#define  BLUE_ON_LIGHTCYAN             BLUE          |  LIGHTCYAN_BG
+#define  GREEN_ON_LIGHTCYAN            GREEN         |  LIGHTCYAN_BG
+#define  CYAN_ON_LIGHTCYAN             CYAN          |  LIGHTCYAN_BG
+#define  RED_ON_LIGHTCYAN              RED           |  LIGHTCYAN_BG
+#define  MAGENTA_ON_LIGHTCYAN          MAGENTA       |  LIGHTCYAN_BG
+#define  BROWN_ON_LIGHTCYAN            BROWN         |  LIGHTCYAN_BG
+#define  LIGHTGREY_ON_LIGHTCYAN        LIGHTGREY     |  LIGHTCYAN_BG
+#define  GREY_ON_LIGHTCYAN             GREY          |  LIGHTCYAN_BG
+#define  LIGHTBLUE_ON_LIGHTCYAN        LIGHTBLUE     |  LIGHTCYAN_BG
+#define  LIGHTGREEN_ON_LIGHTCYAN       LIGHTGREEN    |  LIGHTCYAN_BG
+#define  LIGHTCYAN_ON_LIGHTCYAN        LIGHTCYAN     |  LIGHTCYAN_BG
+#define  LIGHTRED_ON_LIGHTCYAN         LIGHTRED      |  LIGHTCYAN_BG
+#define  LIGHTMAGENTA_ON_LIGHTCYAN     LIGHTMAGENTA  |  LIGHTCYAN_BG
+#define  YELLOW_ON_LIGHTCYAN           YELLOW        |  LIGHTCYAN_BG
+#define  WHITE_ON_LIGHTCYAN            WHITE         |  LIGHTCYAN_BG
+#define  BLACK_ON_LIGHTRED             BLACK         |  LIGHTRED_BG
+#define  BLUE_ON_LIGHTRED              BLUE          |  LIGHTRED_BG
+#define  GREEN_ON_LIGHTRED             GREEN         |  LIGHTRED_BG
+#define  CYAN_ON_LIGHTRED              CYAN          |  LIGHTRED_BG
+#define  RED_ON_LIGHTRED               RED           |  LIGHTRED_BG
+#define  MAGENTA_ON_LIGHTRED           MAGENTA       |  LIGHTRED_BG
+#define  BROWN_ON_LIGHTRED             BROWN         |  LIGHTRED_BG
+#define  LIGHTGREY_ON_LIGHTRED         LIGHTGREY     |  LIGHTRED_BG
+#define  GREY_ON_LIGHTRED              GREY          |  LIGHTRED_BG
+#define  LIGHTBLUE_ON_LIGHTRED         LIGHTBLUE     |  LIGHTRED_BG
+#define  LIGHTGREEN_ON_LIGHTRED        LIGHTGREEN    |  LIGHTRED_BG
+#define  LIGHTCYAN_ON_LIGHTRED         LIGHTCYAN     |  LIGHTRED_BG
+#define  LIGHTRED_ON_LIGHTRED          LIGHTRED      |  LIGHTRED_BG
+#define  LIGHTMAGENTA_ON_LIGHTRED      LIGHTMAGENTA  |  LIGHTRED_BG
+#define  YELLOW_ON_LIGHTRED            YELLOW        |  LIGHTRED_BG
+#define  WHITE_ON_LIGHTRED             WHITE         |  LIGHTRED_BG
+#define  BLACK_ON_LIGHTMAGENTA         BLACK         |  LIGHTMAGENTA_BG
+#define  BLUE_ON_LIGHTMAGENTA          BLUE          |  LIGHTMAGENTA_BG
+#define  GREEN_ON_LIGHTMAGENTA         GREEN         |  LIGHTMAGENTA_BG
+#define  CYAN_ON_LIGHTMAGENTA          CYAN          |  LIGHTMAGENTA_BG
+#define  RED_ON_LIGHTMAGENTA           RED           |  LIGHTMAGENTA_BG
+#define  MAGENTA_ON_LIGHTMAGENTA       MAGENTA       |  LIGHTMAGENTA_BG
+#define  BROWN_ON_LIGHTMAGENTA         BROWN         |  LIGHTMAGENTA_BG
+#define  LIGHTGREY_ON_LIGHTMAGENTA     LIGHTGREY     |  LIGHTMAGENTA_BG
+#define  GREY_ON_LIGHTMAGENTA          GREY          |  LIGHTMAGENTA_BG
+#define  LIGHTBLUE_ON_LIGHTMAGENTA     LIGHTBLUE     |  LIGHTMAGENTA_BG
+#define  LIGHTGREEN_ON_LIGHTMAGENTA    LIGHTGREEN    |  LIGHTMAGENTA_BG
+#define  LIGHTCYAN_ON_LIGHTMAGENTA     LIGHTCYAN     |  LIGHTMAGENTA_BG
+#define  LIGHTRED_ON_LIGHTMAGENTA      LIGHTRED      |  LIGHTMAGENTA_BG
+#define  LIGHTMAGENTA_ON_LIGHTMAGENTA  LIGHTMAGENTA  |  LIGHTMAGENTA_BG
+#define  YELLOW_ON_LIGHTMAGENTA        YELLOW        |  LIGHTMAGENTA_BG
+#define  WHITE_ON_LIGHTMAGENTA         WHITE         |  LIGHTMAGENTA_BG
+#define  BLACK_ON_YELLOW               BLACK         |  YELLOW_BG
+#define  BLUE_ON_YELLOW                BLUE          |  YELLOW_BG
+#define  GREEN_ON_YELLOW               GREEN         |  YELLOW_BG
+#define  CYAN_ON_YELLOW                CYAN          |  YELLOW_BG
+#define  RED_ON_YELLOW                 RED           |  YELLOW_BG
+#define  MAGENTA_ON_YELLOW             MAGENTA       |  YELLOW_BG
+#define  BROWN_ON_YELLOW               BROWN         |  YELLOW_BG
+#define  LIGHTGREY_ON_YELLOW           LIGHTGREY     |  YELLOW_BG
+#define  GREY_ON_YELLOW                GREY          |  YELLOW_BG
+#define  LIGHTBLUE_ON_YELLOW           LIGHTBLUE     |  YELLOW_BG
+#define  LIGHTGREEN_ON_YELLOW          LIGHTGREEN    |  YELLOW_BG
+#define  LIGHTCYAN_ON_YELLOW           LIGHTCYAN     |  YELLOW_BG
+#define  LIGHTRED_ON_YELLOW            LIGHTRED      |  YELLOW_BG
+#define  LIGHTMAGENTA_ON_YELLOW        LIGHTMAGENTA  |  YELLOW_BG
+#define  YELLOW_ON_YELLOW              YELLOW        |  YELLOW_BG
+#define  WHITE_ON_YELLOW               WHITE         |  YELLOW_BG
+#define  BLACK_ON_WHITE                BLACK         |  WHITE_BG
+#define  BLUE_ON_WHITE                 BLUE          |  WHITE_BG
+#define  GREEN_ON_WHITE                GREEN         |  WHITE_BG
+#define  CYAN_ON_WHITE                 CYAN          |  WHITE_BG
+#define  RED_ON_WHITE                  RED           |  WHITE_BG
+#define  MAGENTA_ON_WHITE              MAGENTA       |  WHITE_BG
+#define  BROWN_ON_WHITE                BROWN         |  WHITE_BG
+#define  LIGHTGREY_ON_WHITE            LIGHTGREY     |  WHITE_BG
+#define  GREY_ON_WHITE                 GREY          |  WHITE_BG
+#define  LIGHTBLUE_ON_WHITE            LIGHTBLUE     |  WHITE_BG
+#define  LIGHTGREEN_ON_WHITE           LIGHTGREEN    |  WHITE_BG
+#define  LIGHTCYAN_ON_WHITE            LIGHTCYAN     |  WHITE_BG
+#define  LIGHTRED_ON_WHITE             LIGHTRED      |  WHITE_BG
+#define  LIGHTMAGENTA_ON_WHITE         LIGHTMAGENTA  |  WHITE_BG
+#define  YELLOW_ON_WHITE               YELLOW        |  WHITE_BG
+#define  WHITE_ON_WHITE                WHITE         |  WHITE_BG
+/**@}*/
 
 #endif

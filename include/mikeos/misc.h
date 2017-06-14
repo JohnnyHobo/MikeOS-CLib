@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_MISC
-#define MOSCLIB_HAS_MISC
+#ifndef MOSCLIB_HAS_MIKEOS_MISC
+#define MOSCLIB_HAS_MIKEOS_MISC
 
 /** \brief Retrieve the current MikeOS API version.
   * \return A numeric version number.

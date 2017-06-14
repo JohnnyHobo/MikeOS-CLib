@@ -1,5 +1,5 @@
-#ifndef MOSCLIB_HAS_KEYBOARD
-#define MOSCLIB_HAS_KEYBOARD
+#ifndef MOSCLIB_HAS_MIKEOS_KEYBOARD
+#define MOSCLIB_HAS_MIKEOS_KEYBOARD
 
 /** \anchor keyboard_api
   */

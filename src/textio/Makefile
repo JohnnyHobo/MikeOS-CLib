@@ -1,4 +1,5 @@
-OBJECTS = textio.o rawtio.o ../common/minmax.o
+OBJECTS = backend.o char.o core.o cursor.o internal.o mode.o page.o print.o
+OBJECTS += shapes.o ../common/minmax.o
 
 all: $(OBJECTS)
 	smlrcc -flat32 -c -o libtextio.a $(OBJECTS)

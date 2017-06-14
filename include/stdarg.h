@@ -7,5 +7,6 @@ typedef char* va_list;
 #define va_start(ap, n) { ap = (char*) &n + __align_size(n); }
 #define va_arg(ap, type) (ap += __align_size(type), *(type*) (ap - __align_size(type)))
 #define va_end(ap)
+#define va_copy(dest, src) dest = src;
 
 #endif
